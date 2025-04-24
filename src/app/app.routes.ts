@@ -11,6 +11,10 @@ export const routes: Routes = [
     loadChildren: () => import ('./convenciones/hotel/hotel.routes'),
   },
   {
+    path: 'evento',
+    loadChildren: () => import ('./convenciones/evento/evento.routes'),
+  },
+  {
     path: '**',
     redirectTo: ''
   }
