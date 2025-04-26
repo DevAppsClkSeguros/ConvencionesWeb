@@ -1,0 +1,15 @@
+<div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow h-full">
+  <figure><img [src]="card.imageUrl" [alt]="card.title" /></figure>
+  <div class="card-body">
+    <h2 class="card-title">{{ card.title }}</h2>
+    <p>{{ card.description }}</p>
+    @if (card.buttonText) {
+    <div class="card-actions justify-end">
+      <button class="btn" [ngClass]="card.buttonClass || 'btn-primary'"
+      [routerLink]="[card.redirectTo]" >
+        {{ card.buttonText }}
+      </button>
+    </div>
+    }
+  </div>
+</div>

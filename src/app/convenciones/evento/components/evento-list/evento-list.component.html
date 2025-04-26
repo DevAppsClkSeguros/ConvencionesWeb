@@ -1,1 +1,50 @@
-<p>evento works!</p>,
+<div class="overflow-x-auto">
+  <table class="table ml-5">
+    <!-- head -->
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Evento</th>
+        <th>Dirección</th>
+        <th>Fecha</th>
+        <th>Estatus</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- row 1 -->
+       @for (evento of eventoList; track evento.subtitulo; let i = $index) {
+         <tr>
+          <td>{{i + 1}}</td>
+           <td>
+             <div class="flex items-center gap-3">
+               <div class="avatar">
+                 <div class="mask mask-squircle h-12 w-12">
+                   <img src="https://cdn.developmentservices.com.mx/Storage/ClickSegurosVip/images/ClickSegurosImagen.jpg"
+                   alt="{{evento.nombreConvencion}}" class="object-contain "/>
+                 </div>
+               </div>
+               <div>
+                 <div class="font-bold">{{evento.nombreConvencion}}</div>
+                 <div class="text-sm opacity-50">{{evento.subtitulo}}</div>
+               </div>
+             </div>
+           </td>
+           <td>
+             {{evento.direccion}}
+             <br />
+             <span class="badge badge-ghost badge-sm">{{evento.latitud}} {{evento.longitud}}</span>
+           </td>
+           <td>{{evento.fecha_inicio | date: 'YYYY/MM/dd'}} - {{evento.fecha_fin | date: 'YYYY/MM/dd'}}</td>
+           <td>Activo</td>
+           <th>
+             <button class="btn btn-primary btn-xs" [routerLink]="[`/evento/${i}/edit`]" >Editar</button>
+           </th>
+           <th>
+             <button class="btn btn-secondary btn-xs" [routerLink]="[`/evento/new`]">Eliminar</button>
+           </th>
+         </tr>
+       }
+    </tbody>
+  </table>
+</div>

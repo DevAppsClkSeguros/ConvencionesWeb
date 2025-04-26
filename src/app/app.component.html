@@ -3,6 +3,8 @@
     <shared-navbar></shared-navbar>
   }
   <router-outlet />
-  <div class=" flex-1 flex-grow"></div>
-  <shared-footer></shared-footer>
+  @if (showLayout) {
+    <div class=" flex-1 flex-grow"></div>
+    <shared-footer></shared-footer>
+  }
 </main>

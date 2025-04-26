@@ -1,10 +1,10 @@
-export interface Evento {
-  response: Response[];
+export interface EventoResponse {
+  response: Evento[];
   status:   boolean;
   message:  string[];
 }
 
-export interface Response {
+export interface Evento {
   nombreConvencion: string;
   subtitulo:        string;
   fecha_inicio:     Date;

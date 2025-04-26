@@ -1,0 +1,4 @@
+/* En tu archivo CSS global o componente */
+.lg\:grid-cols-7-custom {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}

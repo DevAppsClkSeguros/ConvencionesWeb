@@ -1,14 +1,20 @@
-<div class="hero min-h-screen"
-  style="background-image: url(https://img.daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.webp);">
-  <div class="hero-overlay"></div>
-  <div class="hero-content text-neutral-content text-center">
-    <div class="max-w-md">
-      <h1 class="mb-5 text-5xl font-bold">Hello there</h1>
-      <p class="mb-5">
-        Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi exercitationem
-        quasi. In deleniti eaque aut repudiandae et a id nisi.
-      </p>
-      <button class="btn btn-primary" [routerLink]="['/hotel']" routerLinkActive="router-link-active" >Get Started</button>
-    </div>
+<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+  <!-- Título -->
+  <div class="text-center mb-12">
+    <h1 class="text-4xl font-bold text-gray-900 mb-4">Nuestros Servicios</h1>
+    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Descubre las soluciones que ofrecemos para tu negocio</p>
+  </div>
+
+  <!-- Grid de Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+    <!-- Card 1 -->
+      @for (card of cards; track card.title) {
+    <app-card [card]="card"></app-card>
+  }
+  </div>
+
+  <!-- CTA Final -->
+  <div class="text-center mt-16">
+    <button class="btn btn-accent btn-lg">Ver todos los servicios</button>
   </div>
 </div>
