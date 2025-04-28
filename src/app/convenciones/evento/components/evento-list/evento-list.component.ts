@@ -3,10 +3,11 @@ import { EventoService } from '../../services/evento.service';
 import { Evento } from '../../interfaces/evento.interface';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { SearchInputComponent } from "../../../../shared/components/search-input/search-input.component";
 
 @Component({
   selector: 'evento-list',
-  imports: [DatePipe, RouterLink],
+  imports: [DatePipe, RouterLink, SearchInputComponent],
   templateUrl: './evento-list.component.html',
 })
 export class EventoComponent implements OnInit {

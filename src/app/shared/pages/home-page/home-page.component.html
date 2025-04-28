@@ -1,8 +1,7 @@
-<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-gray-50 py-5 px-4 sm:px-6 lg:px-8">
   <!-- Título -->
   <div class="text-center mb-12">
-    <h1 class="text-4xl font-bold text-gray-900 mb-4">Nuestros Servicios</h1>
-    <p class="text-lg text-gray-600 max-w-2xl mx-auto">Descubre las soluciones que ofrecemos para tu negocio</p>
+    <h1 class="text-4xl mb-4 text-shadow">¡Bienvenido al Administrador Convenciones Click!</h1>
   </div>
 
   <!-- Grid de Cards -->
@@ -11,10 +10,5 @@
       @for (card of cards; track card.title) {
     <app-card [card]="card"></app-card>
   }
-  </div>
-
-  <!-- CTA Final -->
-  <div class="text-center mt-16">
-    <button class="btn btn-accent btn-lg">Ver todos los servicios</button>
   </div>
 </div>

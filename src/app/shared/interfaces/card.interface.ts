@@ -5,4 +5,11 @@ export interface Card {
   buttonText?: string;
   buttonClass?: string;
   redirectTo: string;
+  visible: boolean;
+  subMenu: SubMenu[];
+}
+
+export interface SubMenu {
+    title: string;
+    route: string;
 }

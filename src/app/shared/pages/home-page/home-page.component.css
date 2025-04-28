@@ -2,3 +2,7 @@
 .lg\:grid-cols-7-custom {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
+
+.text-shadow {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}

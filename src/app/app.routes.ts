@@ -12,12 +12,12 @@ export const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: 'hotel',
-    loadChildren: () => import('./convenciones/hotel/hotel.routes'),
-  },
-  {
     path: 'evento',
     loadChildren: () => import('./convenciones/evento/evento.routes'),
+  },
+  {
+    path: 'hotel',
+    loadChildren: () => import('./convenciones/hotel/hotel.routes'),
   },
   {
     path: '**',
