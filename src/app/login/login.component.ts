@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
@@ -19,20 +19,20 @@ export class LoginComponent {
   };
 
   onSubmit() {
-    this.loginError = false;
-    // Aquí iría la lógica para manejar el login
     console.log('Credenciales enviadas:', this.credentials);
     this.authService
       .login(this.credentials.email, this.credentials.password)
       .subscribe({
         next: (data) => {
           if (data.status) {
+            this.loginError = false;
             this.router.navigateByUrl('/dashboard');
           } else {
             this.loginError = true;
           }
         },
         error: (e) => {
+          this.loginError = true;
           console.log('El error del login: ', e);
         },
       });
