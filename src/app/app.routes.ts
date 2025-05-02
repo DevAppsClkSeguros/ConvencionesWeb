@@ -23,6 +23,10 @@ export const routes: Routes = [
     loadChildren: () => import('./convenciones/hotel/hotel.routes'),
   },
   {
+    path: 'usuarios',
+    loadChildren: () => import('./convenciones/convencionistas/convencionistas.routes'),
+  },
+  {
     path: '**',
     redirectTo: 'login',
   },

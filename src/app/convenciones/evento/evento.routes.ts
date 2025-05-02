@@ -1,11 +1,11 @@
 import { Routes } from '@angular/router';
-import { EventoComponent } from './components/evento-list/evento-list.component';
+import { EventosListComponent } from './components/evento-list/eventos-list.component';
 import { EventoUpdateComponent } from './components/evento-update/evento-update.component';
 
 export const HotelRoutes: Routes = [
   {
     path: '',
-    component: EventoComponent,
+    component: EventosListComponent,
   },
   {
     path: ':id/edit',
