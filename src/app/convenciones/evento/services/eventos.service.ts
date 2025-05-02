@@ -15,27 +15,16 @@ export class EventosService {
       .get<EventoResponse>(
         `${AppConfig.APIREST_URL}/api/Convenciones/GetEventos`
       )
-      .pipe(
-        catchError((error) => {
-          return throwError(() => new Error(`No se pudo obtener los Eventos`));
-        })
-      );
+      .pipe(catchError(AppConfig.handleErrors));
   }
 
   getEventosById(idEvento: number) {}
 
   searchEventos(query: string): Observable<EventoResponse> {
     return this.http
-    .get<EventoResponse>(
-      `${AppConfig.APIREST_URL}/api/Convenciones/GetEventos`,
-      {
-        headers: AppConfig.getCommonHeadersRest(),
-      }
-    )
-    .pipe(
-      catchError((error) => {
-        return throwError(() => new Error(`No se pudo obtener los Eventos`));
-      })
-    );
+      .get<EventoResponse>(
+        `${AppConfig.APIREST_URL}/api/Convenciones/GetEventos`
+      )
+      .pipe(catchError(AppConfig.handleErrors));
   }
 }
