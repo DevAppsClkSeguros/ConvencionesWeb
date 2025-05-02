@@ -13,10 +13,7 @@ export class EventosService {
   getEventos(): Observable<EventoResponse> {
     return this.http
       .get<EventoResponse>(
-        `${AppConfig.APIREST_URL}/api/Convenciones/GetEventos`,
-        {
-          headers: AppConfig.getCommonHeadersRest(),
-        }
+        `${AppConfig.APIREST_URL}/api/Convenciones/GetEventos`
       )
       .pipe(
         catchError((error) => {
