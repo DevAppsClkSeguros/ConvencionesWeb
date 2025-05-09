@@ -14,8 +14,8 @@
         </fieldset>
       </div>
       <shared-search-input class="w-full sm:w-auto" placerholder="Buscar usuario" (value)="query.set($event)"
-        [debounceTime]="1000" [initialValue]="query()"></shared-search-input>
-      <a routerLink="by-country" class="btn btn-info">
+        [debounceTime]="500" [initialValue]="query()"></shared-search-input>
+      <a (click)="refrescaDatos()" class="btn btn-info">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
             <path stroke-dasharray="32" stroke-dashoffset="32" d="M12 3c4.97 0 9 4.03 9 9c0 4.97 -4.03 9 -9 9">
@@ -69,7 +69,7 @@
       </thead>
       <tbody>
         <!-- row 1 -->
-        @for (convencionista of convencionistaResource.value(); track convencionista.id) {
+        @for (convencionista of filteredConvencionistas(); track convencionista.id) {
         <tr>
           <td>{{convencionista.id}}</td>
           <td>
@@ -99,7 +99,7 @@
               [routerLink]="[`/convencionistas/${convencionista.id}/edit`]">Editar</button>
           </th>
           <th>
-            <button class="btn btn-secondary btn-xs" [routerLink]="[`/convencionistas/new`]">Eliminar</button>
+            <button class="btn btn-secondary btn-xs" (click)="eliminarConvencionista(convencionista.id)">Eliminar</button>
           </th>
         </tr>
         }

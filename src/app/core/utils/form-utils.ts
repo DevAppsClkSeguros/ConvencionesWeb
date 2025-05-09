@@ -5,7 +5,7 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 
-export class Formutils {
+export class FormUtils {
   //Expresiones regulares
   static namePattern = '([a-zA-Z]+) ([a-zA-Z]+)';
   static emailPattern = '^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$';
@@ -23,7 +23,7 @@ export class Formutils {
         case 'email':
           return 'Correo electrónico invalido';
         case 'pattern':
-          if (errors['pattern'].requiredPattern === Formutils.emailPattern) {
+          if (errors['pattern'].requiredPattern === FormUtils.emailPattern) {
             return 'El valor ingresado no luce como un correo electrónico';
           }
           return 'Error de patron contra expresión regular';
@@ -44,7 +44,7 @@ export class Formutils {
     if (!form.controls[fieldName]) return null;
     const errors = form.controls[fieldName].errors ?? {};
 
-    return Formutils.getTextError(errors);
+    return FormUtils.getTextError(errors);
   }
 
   static isValidFieldInArray(formArray: FormArray, index: number) {
@@ -61,7 +61,7 @@ export class Formutils {
 
     const errors = formArray.controls[index].errors ?? {};
 
-    return Formutils.getTextError(errors);
+    return FormUtils.getTextError(errors);
   }
 
   static isFieldOneEqualFieldTwo(field1: string, field2: string) {

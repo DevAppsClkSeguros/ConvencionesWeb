@@ -1,5 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { Location } from '@angular/common';
+import { ConvencionistasService } from '../../services/convencionistas.service';
+import { FormUtils } from '../../../../core/utils/form-utils';
 
 @Component({
   selector: 'convencionistas-update',
@@ -7,39 +15,52 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   templateUrl: './convencionistas-update.component.html',
 })
 export class ConvencionistasUpdateComponent implements OnInit {
-
   private fb = inject(FormBuilder);
+  location = inject(Location);
+  formUtils = FormUtils;
+  convencionistasService = inject(ConvencionistasService);
+
   myForm: FormGroup = this.fb.group({
+    id: [0],
     clave: ['', [Validators.required, Validators.minLength(5)]],
-    name: ['', Validators.required],
+    nombreCompleto: ['', Validators.required],
     puesto: ['', Validators.required],
     telefono: [''],
+    imagen: [''],
     perfil: [''],
     categoria: [''],
-    convencion: ['']
+    convencion: [''],
   });
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
-  }
+  getPerfiles() {}
 
-  getPerfiles() {
+  getCategorias() {}
 
-  }
-
-  getCategorias() {
-
-  }
-
-  getConvenciones() {
-
-  }
+  getConvenciones() {}
 
   onFileSelected($event: Event) {
     throw new Error('Method not implemented.');
   }
 
   onSubmit() {
-    this.myForm.markAllAsTouched();
+    if (this.myForm.invalid) {
+      this.myForm.markAllAsTouched();
+      return;
+    }
+    this.convencionistasService
+      .NuevoConvencionista(this.myForm.value)
+      .subscribe({
+        next: (data) => {
+          if (data.status) {
+            this.location.back();
+          }
+        },
+      });
+  }
+
+  goBack() {
+    this.location.back();
   }
 }
