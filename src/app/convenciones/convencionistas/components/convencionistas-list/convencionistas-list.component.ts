@@ -14,10 +14,12 @@ import {
   imports: [SearchInputComponent, RouterLink],
   templateUrl: './convencionistas-list.component.html',
 })
-export class ConvencionistasListComponent {
+export class ConvencionistasListComponent implements OnInit {
   convencionistasService = inject(ConvencionistasService);
   router = inject(Router);
   query = signal('');
+
+  convenciones: any = [];
 
   // convencionistaResource = rxResource({
   //   request: () => ({ query: this.query() }),
@@ -28,6 +30,9 @@ export class ConvencionistasListComponent {
   //   },
   // });
 
+  ngOnInit(): void {
+    this.cargaConvenciones();
+  }
   convencionistaResource = rxResource({
     request: () => ({}), // sin dependencias reactivas
     loader: () => {
@@ -52,6 +57,23 @@ export class ConvencionistasListComponent {
     conv.puesto.toLocaleLowerCase().includes(texto)
     );
   });
+
+  cargaConvenciones() {
+    this.convenciones = [
+      {
+        id: 1,
+        nombre: 'Los Cabos'
+      },
+      {
+        id: 1,
+        nombre: 'Costa rica'
+      },
+      {
+        id: 1,
+        nombre: 'Punta cana'
+      }
+    ];
+  }
 
   refrescaDatos() {
     this.query.set('');

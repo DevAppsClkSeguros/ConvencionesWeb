@@ -1,40 +1,50 @@
 import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../core/interceptor/auth.service';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { FormUtils } from '../core/utils/form-utils';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
 })
 export class LoginComponent {
   authService = inject(AuthService);
   router = inject(Router);
+  fb = inject(FormBuilder);
   loginError = false;
-  credentials = {
-    email: '',
-    password: '',
-  };
+  loading = false;
+  credencialesInvalidas = false;
+  formUtils = FormUtils;
+  myForm = this.fb.group({
+    email: ['', Validators.required],
+    password: ['', Validators.required]
+  });
 
   onSubmit() {
-    console.log('Credenciales enviadas:', this.credentials);
+    if (this.myForm.invalid) {
+      this.myForm.markAllAsTouched();
+      return;
+    }
+    this.loading = true;
     this.authService
-      .login(this.credentials.email, this.credentials.password)
+      .login(this.myForm.value)
       .subscribe({
         next: (data) => {
           if (data.status) {
-            this.loginError = false;
             this.router.navigateByUrl('/dashboard');
           } else {
-            this.loginError = true;
+            this.loginError = false;
+            this.credencialesInvalidas = true;
           }
         },
         error: (e) => {
-          this.loginError = true;
           console.log('El error del login: ', e);
         },
+        complete: () => {
+          this.loading=false;
+        }
       });
   }
 }

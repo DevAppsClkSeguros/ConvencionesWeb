@@ -18,11 +18,11 @@ export class AuthService {
   }
 
   // 2.1 Login: obtén token y guárdalo
-  login(user: string, pass: string) {
+  login(credenciales: any) {
     return this.http
       .post<Login>(`${this.apiBase}/login`, {
-        UserName: user,
-        Password: pass,
+        UserName: credenciales.email,
+        Password: credenciales.password,
       })
       .pipe(
         tap((resp) => {
@@ -52,5 +52,10 @@ export class AuthService {
 
   getToken(): string {
     return this.tokenSub.value ?? '';
+  }
+
+  logOut() {
+    localStorage.removeItem('authToken');
+    this.tokenSub.next(null);
   }
 }
