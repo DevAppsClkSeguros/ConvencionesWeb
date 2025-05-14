@@ -83,7 +83,17 @@
       <!-- Foto -->
       <div>
         <label class="label">Foto</label>
-        <input type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)" />
+        <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
+          accept="image/*" />
+          @if(myForm.get('imagen')?.invalid && myForm.get('imagen')?.touched) {
+            <div class="text-error text-sm mt-1">
+              📸 La imagen es obligatoria
+            </div>
+          }
+        @if(imagePreview) {
+          <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
+          <button (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
+        }
       </div>
     </div>
 
@@ -92,5 +102,11 @@
       <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
       <button type="submit" class="btn btn-primary">Guardar</button>
     </div>
+    <h3>
+      {{myForm.valid}}
+    </h3>
+    <h2>
+      {{myForm.value | json}}
+    </h2>
   </form>
 </div>

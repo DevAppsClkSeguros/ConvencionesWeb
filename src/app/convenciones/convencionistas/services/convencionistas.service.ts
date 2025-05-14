@@ -31,7 +31,7 @@ export class ConvencionistasService {
           nombreCompleto: convencionista.nombreCompleto,
           puesto: convencionista.puesto,
           telefono: convencionista.telefono,
-          imagen: 'url',
+          imagen: convencionista.url,
         }
       )
       .pipe(catchError(AppConfig.handleErrors));

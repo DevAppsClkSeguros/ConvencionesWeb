@@ -5,20 +5,24 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Location } from '@angular/common';
+import { JsonPipe, Location } from '@angular/common';
 import { ConvencionistasService } from '../../services/convencionistas.service';
 import { FormUtils } from '../../../../core/utils/form-utils';
+import { CdnService } from '../../../../shared/services/cdn.service';
 
 @Component({
   selector: 'convencionistas-update',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, JsonPipe],
   templateUrl: './convencionistas-update.component.html',
 })
 export class ConvencionistasUpdateComponent implements OnInit {
   private fb = inject(FormBuilder);
   location = inject(Location);
+  cdnService = inject(CdnService);
   formUtils = FormUtils;
   convencionistasService = inject(ConvencionistasService);
+  selectedFile: File | null = null;
+  imagePreview: string | ArrayBuffer | null = null;
 
   myForm: FormGroup = this.fb.group({
     id: [0],
@@ -26,7 +30,8 @@ export class ConvencionistasUpdateComponent implements OnInit {
     nombreCompleto: ['', Validators.required],
     puesto: ['', Validators.required],
     telefono: [''],
-    imagen: [''],
+    imagen: [null, Validators.required],
+    url: [''],
     perfil: [''],
     categoria: [''],
     convencion: [''],
@@ -40,8 +45,46 @@ export class ConvencionistasUpdateComponent implements OnInit {
 
   getConvenciones() {}
 
-  onFileSelected($event: Event) {
-    throw new Error('Method not implemented.');
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+
+      // Validaciones básicas del archivo
+      if (!this.selectedFile.type.match('image.*')) {
+        alert('Solo se permiten imágenes');
+        return;
+      }
+
+      // Actualizar el formulario
+      this.myForm.patchValue({
+        imagen: this.selectedFile,
+      });
+      this.myForm.get('imagen')?.markAsTouched();
+      this.myForm.get('imagen')?.updateValueAndValidity();
+
+      // Opcional: Mostrar previsualización
+      this.previewImage(this.selectedFile);
+    }
+  }
+
+  private previewImage(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      // Aquí puedes asignar la imagen previsualizada a una propiedad
+      // para mostrarla en el template si lo deseas
+      this.imagePreview = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  limpiarImagen(inputRef: HTMLInputElement): void {
+    this.imagePreview = null;
+    inputRef.value = '';
+    this.selectedFile = null;
+    this.myForm.patchValue({ imagen: null });
+    this.myForm.get('imagen')?.updateValueAndValidity();
   }
 
   onSubmit() {
@@ -49,13 +92,27 @@ export class ConvencionistasUpdateComponent implements OnInit {
       this.myForm.markAllAsTouched();
       return;
     }
-    this.convencionistasService
-      .NuevoConvencionista(this.myForm.value)
+    const file: File = this.myForm.controls['imagen'].value;
+    this.cdnService
+      .uploadFile('convencionista', 'imagen', file)
       .subscribe({
         next: (data) => {
-          if (data.status) {
-            this.location.back();
-          }
+          this.myForm.patchValue({
+            url: data.response,
+          });
+          console.log('Data de la imagen: ', data);
+        },
+        error: (e) => {},
+        complete: () => {
+          this.convencionistasService
+            .NuevoConvencionista(this.myForm.value)
+            .subscribe({
+              next: (data) => {
+                if (data.status) {
+                  this.location.back();
+                }
+              },
+            });
         },
       });
   }

@@ -11,6 +11,6 @@ export interface Convencionista {
   puesto:         string;
   telefono:       string;
   imagen:         string;
-  hoteles?:        any[];
+  url:            string;
 }
 
