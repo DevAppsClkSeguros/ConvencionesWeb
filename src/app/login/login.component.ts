@@ -3,6 +3,7 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../core/interceptor/auth.service';
 import { FormUtils } from '../core/utils/form-utils';
+import { NotificacionService } from '../shared/services/notificacion.service';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +14,7 @@ export class LoginComponent {
   authService = inject(AuthService);
   router = inject(Router);
   fb = inject(FormBuilder);
+  notificacion = inject(NotificacionService);
   loginError = false;
   loading = false;
   credencialesInvalidas = false;
@@ -41,8 +43,11 @@ export class LoginComponent {
         },
         error: (e) => {
           console.log('El error del login: ', e);
+          this.loading = false;
+          this.notificacion.show('Ocurrio un error...', 'error');
         },
         complete: () => {
+          console.log('mi complete');
           this.loading=false;
         }
       });

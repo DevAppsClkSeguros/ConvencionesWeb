@@ -32,9 +32,9 @@ export class ConvencionistasUpdateComponent implements OnInit {
     telefono: [''],
     imagen: [null, Validators.required],
     url: [''],
-    perfil: [''],
-    categoria: [''],
-    convencion: [''],
+    perfil: [0],
+    categoria: [0],
+    convencion: [0],
   });
 
   ngOnInit(): void {}
