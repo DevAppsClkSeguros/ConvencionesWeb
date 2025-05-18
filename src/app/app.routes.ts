@@ -11,7 +11,6 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: HomePageComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: 'evento',
