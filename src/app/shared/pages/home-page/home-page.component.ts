@@ -22,7 +22,7 @@ export class HomePageComponent implements OnInit {
       subMenu: [
         { title: 'Convención', route: '/evento' },
         { title: 'Encuesta', route: '/dashboard' },
-        { title: 'Usuarios', route: '/convencionistas' },
+        { title: 'Convencionistas', route: '/convencionistas' },
       ],
     },
     {
@@ -33,7 +33,6 @@ export class HomePageComponent implements OnInit {
       redirectTo: '',
       visible: true,
       subMenu: [
-        { title: 'Nuestro destino', route: 'cs-dat-evn-nuestro-dest' },
         { title: 'Hotel', route: 'cs-dat-evn-hotel' },
       ],
     },
