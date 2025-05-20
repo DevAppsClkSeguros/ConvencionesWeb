@@ -32,6 +32,9 @@ export class ConvencionistasService {
           puesto: convencionista.puesto,
           telefono: convencionista.telefono,
           imagen: convencionista.url,
+          perfilConvencionistaId: convencionista.perfilConvencionistaId,
+          categoriaUsuarioId: convencionista.categoriaUsuarioId,
+          eventoId: convencionista.eventoId,
         }
       )
       .pipe(catchError(AppConfig.handleErrors));

@@ -5,12 +5,15 @@ export interface ConvencionistasResponse {
 }
 
 export interface Convencionista {
-  id:             number;
-  clave:          string;
+  id: number;
+  clave: string;
   nombreCompleto: string;
-  puesto:         string;
-  telefono:       string;
-  imagen:         string;
-  url:            string;
+  puesto: string;
+  telefono: string;
+  imagen: string;
+  url: string;
+  perfilConvencionistaId: number;
+  categoriaUsuarioId: number;
+  eventoId: number;
 }
 

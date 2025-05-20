@@ -7,8 +7,9 @@ import {
 } from '@angular/forms';
 import { JsonPipe, Location } from '@angular/common';
 import { ConvencionistasService } from '../../services/convencionistas.service';
-import { FormUtils } from '../../../../core/utils/form-utils';
-import { CdnService } from '../../../../shared/services/cdn.service';
+import { FormUtils } from '@core/utils/form-utils';
+import { CdnService } from '@shared/services/cdn.service';
+import { NotificacionService } from '@shared/services/notificacion.service';
 
 @Component({
   selector: 'convencionistas-update',
@@ -19,6 +20,7 @@ export class ConvencionistasUpdateComponent implements OnInit {
   private fb = inject(FormBuilder);
   location = inject(Location);
   cdnService = inject(CdnService);
+  notificacion = inject(NotificacionService);
   formUtils = FormUtils;
   convencionistasService = inject(ConvencionistasService);
   selectedFile: File | null = null;
@@ -32,9 +34,9 @@ export class ConvencionistasUpdateComponent implements OnInit {
     telefono: [''],
     imagen: [null, Validators.required],
     url: [''],
-    perfil: [0],
-    categoria: [0],
-    convencion: [0],
+    perfilConvencionistaId: 0,
+    categoriaUsuarioId: 0,
+    eventoId: 0,
   });
 
   ngOnInit(): void {}
@@ -93,28 +95,36 @@ export class ConvencionistasUpdateComponent implements OnInit {
       return;
     }
     const file: File = this.myForm.controls['imagen'].value;
-    this.cdnService
-      .uploadFile('convencionista', 'imagen', file)
-      .subscribe({
-        next: (data) => {
-          this.myForm.patchValue({
-            url: data.response,
+    this.cdnService.uploadFile('convencionista', 'imagen', file).subscribe({
+      next: (data) => {
+        this.myForm.patchValue({
+          url: data.response,
+        });
+        console.log('Data de la imagen: ', data);
+      },
+      error: (e) => {},
+      complete: () => {
+        this.convencionistasService
+          .NuevoConvencionista(this.myForm.value)
+          .subscribe({
+            next: (data) => {
+              if (data.status) {
+                this.notificacion.show(
+                  'Convencionista guardado correctamente.',
+                  'success'
+                );
+                this.location.back();
+              }
+            },
+            error: (e) => {
+              this.notificacion.show(
+                'Ocurrio un error a guardar al convencionista, favor de intentarlo nuevamente',
+                'error'
+              );
+            },
           });
-          console.log('Data de la imagen: ', data);
-        },
-        error: (e) => {},
-        complete: () => {
-          this.convencionistasService
-            .NuevoConvencionista(this.myForm.value)
-            .subscribe({
-              next: (data) => {
-                if (data.status) {
-                  this.location.back();
-                }
-              },
-            });
-        },
-      });
+      },
+    });
   }
 
   goBack() {
