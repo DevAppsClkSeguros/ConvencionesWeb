@@ -5,6 +5,7 @@ export interface EventoResponse {
 }
 
 export interface Evento {
+  id:               string;
   nombreConvencion: string;
   subtitulo:        string;
   fecha_inicio:     Date;

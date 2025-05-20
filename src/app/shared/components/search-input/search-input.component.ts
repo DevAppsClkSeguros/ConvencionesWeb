@@ -9,7 +9,7 @@ export class SearchInputComponent {
   placerholder = input('Buscar..');
   value = output<string>();
   debounceTime = input(300);
-  initialValue = input<string>('')
+  initialValue = input<string>('');
 
   inputValue = signal<string>('');
   debounceEffect = effect((onCleanUp) => {

@@ -1,24 +1,47 @@
-<div class="hero bg-base-200 min-h-screen">
-  <div class="hero-content flex-col lg:flex-row-reverse">
-    <div class="text-center lg:text-left">
-      <h1 class="text-5xl font-bold">Inicia sesión!</h1>
-      <p class="py-6">
-        Accede al sistema de gestión de convenciones para crear, editar y administrar todos los aspectos de tus eventos.
-      </p>
-    </div>
-    <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
-      <div class="card-body">
-        <fieldset class="fieldset">
-          <label class="label">Usuario</label>
-          <input type="email" class="input" placeholder="Usuario"
-          required [(ngModel)]="credentials.email"/>
-          <label class="label">Contraseña</label>
-          <input type="password" class="input" placeholder="Contraseña"
-          required [(ngModel)]="credentials.password"/>
-          <div><a class="link link-hover">¿Olvidaste la contraseña?</a></div>
-          <button class="btn btn-neutral mt-4" (click)="onSubmit()">Entrar</button>
-        </fieldset>
+<form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+  <div class="hero bg-base-200 min-h-screen">
+    <div class="hero-content flex-col lg:flex-row-reverse">
+      <div class="text-center lg:text-left">
+        <h1 class="text-5xl font-bold">Inicia sesión!</h1>
+        <p class="py-6">
+          Accede al sistema de gestión de convenciones para crear, editar y administrar todos los aspectos de tus
+          eventos.
+        </p>
+      </div>
+      <div class="card bg-base-100 w-full max-w-sm shrink-0 shadow-2xl">
+        <div class="card-body">
+          @if (credencialesInvalidas) {
+          <div role="alert" class="alert alert-error alert-soft">
+            <span>Por favor, verifique sus credenciales. El usuario o la contraseña son incorrectos.</span>
+          </div>
+          }
+          <fieldset class="fieldset">
+            <label class="label">Usuario</label>
+            <input type="email" class="input" placeholder="Usuario" required formControlName="email" />
+            @if (formUtils.isValidField(myForm, 'email')){
+            <small class="text-error">
+              {{formUtils.getFieldError(myForm, 'email')}}
+            </small>
+            }
+            <label class="label">Contraseña</label>
+            <input type="password" class="input" placeholder="Contraseña" required formControlName="password" />
+            @if (formUtils.isValidField(myForm, 'password')){
+            <small class="text-error">
+              {{formUtils.getFieldError(myForm, 'password')}}
+            </small>
+            }
+            <div><a class="link link-hover"
+              [routerLink]="['/cuenta/recuperar-password']" >¿Olvidaste la contraseña?</a></div>
+            <button class="btn btn-neutral mt-4" [disabled]="loading">
+              @if (!loading) {
+              Entrar
+              } @else {
+              <span class="loading loading-spinner loading-sm"></span>
+              }
+            </button>
+          </fieldset>
+        </div>
       </div>
     </div>
   </div>
-</div>
+</form>

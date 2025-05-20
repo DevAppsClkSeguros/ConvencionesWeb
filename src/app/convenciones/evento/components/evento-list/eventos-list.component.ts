@@ -2,9 +2,9 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { EventosService } from '../../services/eventos.service';
 import { DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { SearchInputComponent } from "../../../../shared/components/search-input/search-input.component";
+import { SearchInputComponent } from '../../../../shared/components/search-input/search-input.component';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { map, of } from 'rxjs';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'evento-list',
@@ -12,21 +12,23 @@ import { map, of } from 'rxjs';
   templateUrl: './eventos-list.component.html',
 })
 export class EventosListComponent implements OnInit {
-
   eventosService = inject(EventosService);
   router = inject(Router);
   // eventoList: Evento[] = [];
   query = signal('');
 
-
   eventoResource = rxResource({
     request: () => ({ query: this.query() }),
     loader: ({ request }) => {
-      if (!request.query) return of();
-        return this.eventosService.getEventos().
-        pipe(
-          map(resp => resp.response)
-        );
+      if (!request.query) {
+        return this.eventosService
+          .getEventos()
+          .pipe(map((resp) => resp.response));
+      } else {
+        return this.eventosService
+          .getEventos()
+          .pipe(map((resp) => resp.response));
+      }
     },
   });
 
@@ -39,4 +41,4 @@ export class EventosListComponent implements OnInit {
     //   }
     // })
   }
- }
+}

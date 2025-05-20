@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { HomePageComponent } from './shared/pages/home-page/home-page.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
+import { PasswordResetInitComponent } from './account/password-reset/init/password-reset-init/password-reset-init.component';
 
 export const routes: Routes = [
   {
@@ -22,8 +23,16 @@ export const routes: Routes = [
     loadChildren: () => import('./convenciones/hotel/hotel.routes'),
   },
   {
-    path: 'usuarios',
+    path: 'convencionistas',
     loadChildren: () => import('./convenciones/convencionistas/convencionistas.routes'),
+  },
+  {
+    path: 'cuenta',
+    loadChildren: () => import('./account/account.routes')
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./admin/administrar-usuarios/administrarUsuarios.routes')
   },
   {
     path: '**',
