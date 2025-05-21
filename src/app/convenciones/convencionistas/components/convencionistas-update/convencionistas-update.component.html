@@ -52,7 +52,7 @@
       <!-- Perfil -->
       <div>
         <label class="label">Perfil</label>
-        <select formControlName="perfil" class="select select-bordered w-full">
+        <select formControlName="perfilConvencionistaId" class="select select-bordered w-full">
           <option value="" disabled selected>Selecciona un perfil</option>
           <!-- <option *ngFor="let perfil of perfiles" [value]="perfil">{{ perfil }}</option> -->
         </select>
@@ -62,7 +62,7 @@
       <!-- Categoría -->
       <div>
         <label class="label">Categoría</label>
-        <select formControlName="categoria" class="select select-bordered w-full">
+        <select formControlName="categoriaUsuarioId" class="select select-bordered w-full">
           <option value="" disabled selected>Selecciona una categoría</option>
           <!-- <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option> -->
         </select>
@@ -72,7 +72,7 @@
       <!-- Convención -->
       <div>
         <label class="label">Convención</label>
-        <select formControlName="convencion" class="select select-bordered w-full">
+        <select formControlName="eventoId" class="select select-bordered w-full">
           <option value="" disabled selected>Selecciona una convención</option>
           <!-- <option *ngFor="let conv of convenciones" [value]="conv">{{ conv }}</option> -->
         </select>
@@ -84,11 +84,6 @@
         <label class="label">Fotooo</label>
         <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
           accept="image/*" />
-          @if(myForm.get('imagen')?.invalid && myForm.get('imagen')?.touched) {
-            <div class="text-error text-sm mt-1">
-              📸 La imagen es obligatoria
-            </div>
-          }
         @if(imagePreview) {
           <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
           <button (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>

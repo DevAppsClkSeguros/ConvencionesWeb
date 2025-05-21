@@ -35,12 +35,11 @@ export class AuthService {
   // 2.2 Renueva token: úsalo en 401 o cuando quieras
   renewToken() {
     const current = this.tokenSub.value;
-    console.log('renovando token');
     if (!current) return throwError(() => new Error('Sin token para renovar'));
-    console.log('renovando token1');
+    console.log('Ese es el token actual para la renovación: ', current);
     return this.http
-      .post<RenewResp>(`${this.apiBase}/renovar-token`, {
-        TokenAntiguo: current,
+      .get<RenewResp>(`${this.apiBase}/renovar-token`, {
+        headers: { Authorization: `Bearer ${current}` },
       })
       .pipe(
         tap((resp) => {

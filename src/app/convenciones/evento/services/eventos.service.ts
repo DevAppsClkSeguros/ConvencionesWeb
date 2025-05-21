@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { AppConfig } from '../../../shared/app-config';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { EventoResponse } from '../interfaces/evento.interface';
+import { ConvencionResponse } from '../interfaces/evento.interface';
 
 @Injectable({ providedIn: 'root' })
 export class EventosService {
@@ -10,9 +10,9 @@ export class EventosService {
 
   private http = inject(HttpClient);
 
-  getEventos(): Observable<EventoResponse> {
+  getEventos(): Observable<ConvencionResponse> {
     return this.http
-      .get<EventoResponse>(
+      .get<ConvencionResponse>(
         `${AppConfig.APIREST_URL}/api/Convenciones/GetEventos`
       )
       .pipe(catchError(AppConfig.handleErrors));
@@ -20,9 +20,9 @@ export class EventosService {
 
   getEventosById(idEvento: number) {}
 
-  searchEventos(query: string): Observable<EventoResponse> {
+  searchEventos(query: string): Observable<ConvencionResponse> {
     return this.http
-      .get<EventoResponse>(
+      .get<ConvencionResponse>(
         `${AppConfig.APIREST_URL}/api/Convenciones/GetEventos`
       )
       .pipe(catchError(AppConfig.handleErrors));

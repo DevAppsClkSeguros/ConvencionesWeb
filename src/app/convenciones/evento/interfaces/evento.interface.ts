@@ -1,13 +1,14 @@
-export interface EventoResponse {
-  response: Evento[];
-  status:   boolean;
-  message:  string[];
+export interface ConvencionResponse {
+  response: Convencion[];
+  status: boolean;
+  message: string[];
 }
 
-export interface Evento {
+export interface Convencion {
   id:               string;
   nombreConvencion: string;
   subtitulo:        string;
+  activo:           boolean;
   fecha_inicio:     Date;
   fecha_fin:        Date;
   imagen:           string;

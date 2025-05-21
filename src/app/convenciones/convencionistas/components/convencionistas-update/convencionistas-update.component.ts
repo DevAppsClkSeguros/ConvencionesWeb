@@ -32,7 +32,7 @@ export class ConvencionistasUpdateComponent implements OnInit {
     nombreCompleto: ['', Validators.required],
     puesto: ['', Validators.required],
     telefono: [''],
-    imagen: [null, Validators.required],
+    imagen: [null],
     url: [''],
     perfilConvencionistaId: 0,
     categoriaUsuarioId: 0,
@@ -100,7 +100,6 @@ export class ConvencionistasUpdateComponent implements OnInit {
         this.myForm.patchValue({
           url: data.response,
         });
-        console.log('Data de la imagen: ', data);
       },
       error: (e) => {},
       complete: () => {
@@ -110,7 +109,7 @@ export class ConvencionistasUpdateComponent implements OnInit {
             next: (data) => {
               if (data.status) {
                 this.notificacion.show(
-                  'Convencionista guardado correctamente.',
+                  'Registro guardado correctamente.',
                   'success'
                 );
                 this.location.back();
@@ -118,7 +117,7 @@ export class ConvencionistasUpdateComponent implements OnInit {
             },
             error: (e) => {
               this.notificacion.show(
-                'Ocurrio un error a guardar al convencionista, favor de intentarlo nuevamente',
+                'Ocurrio un error a guardar el registro, favor de intentarlo nuevamente',
                 'error'
               );
             },
