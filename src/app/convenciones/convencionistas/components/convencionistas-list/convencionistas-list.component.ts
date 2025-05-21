@@ -8,6 +8,9 @@ import {
   ConvencionistasResponse,
   Convencionista,
 } from '../../interfaces/convencionistas.interface';
+import { EventosService } from 'src/app/convenciones/evento/services/eventos.service';
+import { Convencion } from 'src/app/convenciones/evento/interfaces/evento.interface';
+import { NotificacionService } from '@shared/services/notificacion.service';
 
 @Component({
   selector: 'convencionistas-list',
@@ -16,10 +19,12 @@ import {
 })
 export class ConvencionistasListComponent implements OnInit {
   convencionistasService = inject(ConvencionistasService);
+  eventosService = inject(EventosService);
+  notificacion = inject(NotificacionService);
   router = inject(Router);
   query = signal('');
 
-  convenciones: any = [];
+  convenciones = signal<Convencion[]>([]);
 
   // convencionistaResource = rxResource({
   //   request: () => ({ query: this.query() }),
@@ -50,29 +55,29 @@ export class ConvencionistasListComponent implements OnInit {
     if (!lista) return [];
     if (!texto) return lista;
 
-    return lista.filter((conv) =>
-      conv.clave.toLocaleLowerCase().includes(texto) ||
-      conv.nombreCompleto.toLowerCase().includes(texto) ||
-    conv.telefono.includes(texto) ||
-    conv.puesto.toLocaleLowerCase().includes(texto)
+    return lista.filter(
+      (conv) =>
+        conv.clave.toLocaleLowerCase().includes(texto) ||
+        conv.nombreCompleto.toLowerCase().includes(texto) ||
+        conv.telefono.includes(texto) ||
+        conv.puesto.toLocaleLowerCase().includes(texto)
     );
   });
 
   cargaConvenciones() {
-    this.convenciones = [
-      {
-        id: 1,
-        nombre: 'Los Cabos'
+    this.eventosService.getEventos().subscribe({
+      next: (data) => {
+        if (data.status) {
+          this.convenciones.set(data.response);
+        }
       },
-      {
-        id: 1,
-        nombre: 'Costa rica'
-      },
-      {
-        id: 1,
-        nombre: 'Punta cana'
+      error: (e) => {
+        this.notificacion.show(
+          'Ocurrio un error al recuperar lista de convenciones',
+          'error'
+        );
       }
-    ];
+    });
   }
 
   refrescaDatos() {
