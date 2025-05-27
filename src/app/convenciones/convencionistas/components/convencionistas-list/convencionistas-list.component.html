@@ -4,15 +4,16 @@
     <div class="flex flex-col sm:flex-row items-center justify-end gap-4 w-full md:w-auto">
       <div class="w-full sm:w-auto">
         <fieldset class="fieldset h-10">
-          <select class="select">
-            <option selected>Todas las convenciones</option>
+          <select #convencionSelect class="select" [value]="convencionSeleccionada()"
+            (change)="convencionSeleccionada.set(convencionSelect.value)">
+            <option value="" selected>Todas las convenciones</option>
             @for (convencion of convenciones(); track convencion.id) {
-              <option [value]="convencion.id">{{convencion.nombreConvencion}}</option>
+            <option [value]="convencion.nombreConvencion">{{convencion.nombreConvencion}}</option>
             }
           </select>
         </fieldset>
       </div>
-      <shared-search-input class="w-full sm:w-auto" placerholder="Buscar usuario" (value)="query.set($event)"
+      <shared-search-input class="w-full sm:w-auto" placerholder="Buscar convencionista" (value)="query.set($event)"
         [debounceTime]="500" [initialValue]="query()"></shared-search-input>
       <a (click)="refrescaDatos()" class="btn btn-info">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -63,6 +64,7 @@
           <th>Clave</th>
           <th>Teléfono</th>
           <th>Perfil</th>
+          <th>Convención</th>
           <th></th>
         </tr>
       </thead>
@@ -75,9 +77,8 @@
             <div class="flex items-center gap-3">
               <div class="avatar">
                 <div class="mask mask-squircle h-12 w-12">
-                  <img
-                    src="{{convencionista.imagen}}"
-                    alt="{{convencionista.nombreCompleto}}" class="object-contain " />
+                  <img src="{{convencionista.imagen}}" alt="{{convencionista.nombreCompleto}}"
+                    class="object-contain " />
                 </div>
               </div>
               <div>
@@ -93,12 +94,14 @@
           </td>
           <td>{{convencionista.telefono}}</td>
           <td>Admin</td>
+          <td>{{convencionista.nombreEvento}}</td>
           <th>
             <button class="btn btn-primary btn-xs"
               [routerLink]="[`/convencionistas/${convencionista.id}/edit`]">Editar</button>
           </th>
           <th>
-            <button class="btn btn-secondary btn-xs" (click)="eliminarConvencionista(convencionista.id)">Eliminar</button>
+            <button class="btn btn-secondary btn-xs"
+              (click)="eliminarConvencionista(convencionista.id)">Eliminar</button>
           </th>
         </tr>
         }

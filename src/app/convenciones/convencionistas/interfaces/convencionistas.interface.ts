@@ -15,5 +15,6 @@ export interface Convencionista {
   perfilConvencionistaId: number;
   categoriaUsuarioId: number;
   eventoId: number;
+  nombreEvento: string;
 }
 
