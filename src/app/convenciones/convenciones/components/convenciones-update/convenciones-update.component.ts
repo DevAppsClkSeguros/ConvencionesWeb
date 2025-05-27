@@ -6,9 +6,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 @Component({
   selector: 'evento-update',
   imports: [ReactiveFormsModule],
-  templateUrl: './evento-update.component.html',
+  templateUrl: './convenciones-update.component.html',
 })
-export class EventoUpdateComponent {
+export class ConvencionesUpdateComponent {
   location = inject(Location);
 
   eventoForm: FormGroup;

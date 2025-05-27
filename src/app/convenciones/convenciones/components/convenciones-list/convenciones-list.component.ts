@@ -2,16 +2,17 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { EventosService } from '../../services/eventos.service';
 import { DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
-import { SearchInputComponent } from '../../../../shared/components/search-input/search-input.component';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { IconRefreshComponent } from "@shared/icons/icon-refresh/icon-refresh.component";
+import { IconAddComponent } from "@shared/icons/icon-add/icon-add.component";
 
 @Component({
-  selector: 'evento-list',
-  imports: [DatePipe, RouterLink, SearchInputComponent],
-  templateUrl: './eventos-list.component.html',
+  selector: 'convenciones-list',
+  imports: [DatePipe, RouterLink, IconRefreshComponent, IconAddComponent],
+  templateUrl: './convenciones-list.component.html',
 })
-export class EventosListComponent implements OnInit {
+export class ConvencionesListComponent implements OnInit {
   eventosService = inject(EventosService);
   router = inject(Router);
   // eventoList: Evento[] = [];

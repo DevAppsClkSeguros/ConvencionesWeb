@@ -20,7 +20,7 @@ export class HomePageComponent implements OnInit {
       redirectTo: '/evento',
       visible: true,
       subMenu: [
-        { title: 'Convención', route: '/evento' },
+        { title: 'Convención', route: '/convenciones' },
         { title: 'Encuesta', route: '/dashboard' },
         { title: 'Convencionistas', route: '/convencionistas' },
       ],
@@ -32,9 +32,7 @@ export class HomePageComponent implements OnInit {
       buttonText: 'Contratar',
       redirectTo: '',
       visible: true,
-      subMenu: [
-        { title: 'Hotel', route: 'cs-dat-evn-hotel' },
-      ],
+      subMenu: [{ title: 'Hotel', route: 'cs-dat-evn-hotel' }],
     },
     {
       title: 'Vuelos',
