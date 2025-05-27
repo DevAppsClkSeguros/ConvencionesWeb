@@ -6,12 +6,14 @@ import { catchError, map, of } from 'rxjs';
 import { Convencion } from 'src/app/convenciones/evento/interfaces/evento.interface';
 import { ConvencionistasService } from '../../services/convencionistas.service';
 import { EventosService } from 'src/app/convenciones/evento/services/eventos.service';
+import { IconAddComponent } from "@shared/icons/icon-add/icon-add.component";
+import { IconRefreshComponent } from "@shared/icons/icon-refresh/icon-refresh.component";
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
 
 @Component({
   selector: 'convencionistas-list',
-  imports: [SearchInputComponent, RouterLink, FormsModule],
+  imports: [SearchInputComponent, RouterLink, FormsModule, IconAddComponent, IconRefreshComponent],
   templateUrl: './convencionistas-list.component.html',
 })
 export class ConvencionistasListComponent implements OnInit {
