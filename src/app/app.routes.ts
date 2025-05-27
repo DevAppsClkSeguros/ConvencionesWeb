@@ -14,8 +14,8 @@ export const routes: Routes = [
     component: HomePageComponent,
   },
   {
-    path: 'evento',
-    loadChildren: () => import('./convenciones/evento/evento.routes'),
+    path: 'convenciones',
+    loadChildren: () => import('./convenciones/convenciones/convenciones.routes'),
     canActivate: [AuthGuard],
   },
   {

@@ -4,51 +4,23 @@
     <div class="flex flex-col sm:flex-row items-center justify-end gap-4 w-full md:w-auto">
       <div class="w-full sm:w-auto">
         <fieldset class="fieldset h-10">
-          <select class="select">
-            <option selected>Todas las convenciones</option>
+          <select #convencionSelect class="select" [value]="convencionSeleccionada()"
+            (change)="convencionSeleccionada.set(convencionSelect.value)">
+            <option value="" selected>Todas las convenciones</option>
             @for (convencion of convenciones(); track convencion.id) {
-              <option [value]="convencion.id">{{convencion.nombreConvencion}}</option>
+            <option [value]="convencion.nombreConvencion">{{convencion.nombreConvencion}}</option>
             }
           </select>
         </fieldset>
       </div>
-      <shared-search-input class="w-full sm:w-auto" placerholder="Buscar usuario" (value)="query.set($event)"
+      <shared-search-input class="w-full sm:w-auto" placerholder="Buscar convencionista" (value)="query.set($event)"
         [debounceTime]="500" [initialValue]="query()"></shared-search-input>
       <a (click)="refrescaDatos()" class="btn btn-info">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-            <path stroke-dasharray="32" stroke-dashoffset="32" d="M12 3c4.97 0 9 4.03 9 9c0 4.97 -4.03 9 -9 9">
-              <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.4s" values="32;0" />
-              <set fill="freeze" attributeName="stroke-dasharray" begin="0.8s" to="2 4" />
-            </path>
-            <path stroke-dasharray="32" stroke-dashoffset="32" d="M12 21c-4.97 0 -9 -4.03 -9 -9c0 -4.97 4.03 -9 9 -9">
-              <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.4s" dur="0.4s" values="32;0" />
-            </path>
-            <path stroke-dasharray="10" stroke-dashoffset="10" d="M12 8v7.5">
-              <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.8s" dur="0.2s" values="10;0" />
-            </path>
-            <path stroke-dasharray="6" stroke-dashoffset="6" d="M12 15.5l3.5 -3.5M12 15.5l-3.5 -3.5">
-              <animate fill="freeze" attributeName="stroke-dashoffset" begin="1s" dur="0.2s" values="6;0" />
-            </path>
-          </g>
-        </svg>
+        <shared-icon-refresh />
         Refrescar
       </a>
       <a routerLink="/convencionistas/new" class="btn btn-primary">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-            <path stroke-dasharray="64" stroke-dashoffset="64"
-              d="M3 12c0 -4.97 4.03 -9 9 -9c4.97 0 9 4.03 9 9c0 4.97 -4.03 9 -9 9c-4.97 0 -9 -4.03 -9 -9Z">
-              <animate fill="freeze" attributeName="stroke-dashoffset" dur="0.6s" values="64;0" />
-            </path>
-            <path stroke-dasharray="12" stroke-dashoffset="12" d="M7 12h10">
-              <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.6s" dur="0.2s" values="12;0" />
-            </path>
-            <path stroke-dasharray="12" stroke-dashoffset="12" d="M12 7v10">
-              <animate fill="freeze" attributeName="stroke-dashoffset" begin="0.8s" dur="0.2s" values="12;0" />
-            </path>
-          </g>
-        </svg>
+        <shared-icon-add />
         Nuevo
       </a>
     </div>
@@ -63,6 +35,7 @@
           <th>Clave</th>
           <th>Teléfono</th>
           <th>Perfil</th>
+          <th>Convención</th>
           <th></th>
         </tr>
       </thead>
@@ -75,9 +48,8 @@
             <div class="flex items-center gap-3">
               <div class="avatar">
                 <div class="mask mask-squircle h-12 w-12">
-                  <img
-                    src="{{convencionista.imagen}}"
-                    alt="{{convencionista.nombreCompleto}}" class="object-contain " />
+                  <img src="{{convencionista.imagen}}" alt="{{convencionista.nombreCompleto}}"
+                    class="object-contain " />
                 </div>
               </div>
               <div>
@@ -93,12 +65,14 @@
           </td>
           <td>{{convencionista.telefono}}</td>
           <td>Admin</td>
+          <td>{{convencionista.nombreEvento}}</td>
           <th>
             <button class="btn btn-primary btn-xs"
               [routerLink]="[`/convencionistas/${convencionista.id}/edit`]">Editar</button>
           </th>
           <th>
-            <button class="btn btn-secondary btn-xs" (click)="eliminarConvencionista(convencionista.id)">Eliminar</button>
+            <button class="btn btn-secondary btn-xs"
+              (click)="eliminarConvencionista(convencionista.id)">Eliminar</button>
           </th>
         </tr>
         }
