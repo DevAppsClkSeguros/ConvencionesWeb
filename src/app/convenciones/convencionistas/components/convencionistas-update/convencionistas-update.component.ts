@@ -42,9 +42,10 @@ export class ConvencionistasUpdateComponent {
     telefono: [''],
     imagen: [null],
     url: [''],
-    perfilConvencionistaId: 0,
-    categoriaUsuarioId: 0,
-    eventoId: 0,
+    documento: [''],
+    perfilConvencionistaId: 2,
+    categoriaUsuarioId: 1,
+    eventoId: 2,
   });
 
   convencionistaResource = rxResource({

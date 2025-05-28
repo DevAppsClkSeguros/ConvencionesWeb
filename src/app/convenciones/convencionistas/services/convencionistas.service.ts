@@ -40,6 +40,7 @@ export class ConvencionistasService {
           puesto: convencionista.puesto,
           telefono: convencionista.telefono,
           imagen: convencionista.url,
+          documento: convencionista.documento,
           perfilConvencionistaId: convencionista.perfilConvencionistaId,
           categoriaUsuarioId: convencionista.categoriaUsuarioId,
           eventoId: convencionista.eventoId,
