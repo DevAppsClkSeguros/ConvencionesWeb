@@ -1,3 +1,4 @@
+<shared-not-found />
 <div class="min-h-screen flex items-center justify-center bg-base-200">
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
     <h2 class="text-3xl font-bold mb-6">Datos de Usuario</h2>
@@ -5,8 +6,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <div>
         <label class="label">ID</label>
-        <input type="text" formControlName="id" class="input input-bordered w-full"
-        />
+        <input type="text" formControlName="id" class="input input-bordered w-full" />
       </div>
 
       <!-- Clave -->
@@ -14,9 +14,9 @@
         <label class="label">Clave</label>
         <input type="text" formControlName="clave" class="input input-bordered w-full" />
         @if (formUtils.isValidField(myForm, 'clave')){
-          <small class="text-error">
-            {{formUtils.getFieldError(myForm, 'clave')}}
-          </small>
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'clave')}}
+        </small>
         }
       </div>
 
@@ -24,7 +24,7 @@
       <div>
         <label class="label">Nombre completo</label>
         <input type="text" formControlName="nombreCompleto" class="input input-bordered w-full"
-        placeholder="Nombre y apellidos"/>
+          placeholder="Nombre y apellidos" />
         @if (formUtils.isValidField(myForm, 'nombreCompleto')){
         <small class="text-error">
           {{formUtils.getFieldError(myForm, 'nombreCompleto')}}
@@ -73,20 +73,22 @@
       <div>
         <label class="label">Convención</label>
         <select formControlName="eventoId" class="select select-bordered w-full">
-          <option value="" disabled selected>Selecciona una convención</option>
-          <!-- <option *ngFor="let conv of convenciones" [value]="conv">{{ conv }}</option> -->
+          <option value="" selected>Selecciona una convención</option>
+          @for (convencion of convenciones(); track convencion.id) {
+          <option>{{convencion.nombreConvencion}}</option>
+          }
         </select>
         <small class="text-error">Campo obligatorio.</small>
       </div>
 
       <!-- Foto -->
       <div>
-        <label class="label">Fotooo</label>
+        <label class="label">Foto</label>
         <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
           accept="image/*" />
         @if(imagePreview) {
-          <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
-          <button (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
+        <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
+        <button (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
         }
       </div>
     </div>

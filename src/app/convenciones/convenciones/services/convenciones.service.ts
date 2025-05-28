@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { AppConfig } from '../../../shared/app-config';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { ConvencionResponse } from '../interfaces/evento.interface';
+import { ConvencionResponse } from '../interfaces/convenciones.interface';
 
 @Injectable({ providedIn: 'root' })
-export class EventosService {
+export class ConvencionesService {
   constructor() {}
 
   private http = inject(HttpClient);

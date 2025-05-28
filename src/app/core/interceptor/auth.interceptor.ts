@@ -7,7 +7,6 @@ import { inject } from '@angular/core';
 import { AuthService } from './auth.service';
 import { catchError, switchMap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { NotificacionService } from '@shared/services/notificacion.service';
 
 export const authInterceptorFn: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);

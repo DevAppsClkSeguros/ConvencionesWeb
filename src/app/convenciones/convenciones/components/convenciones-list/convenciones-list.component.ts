@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { EventosService } from '../../services/eventos.service';
+import { ConvencionesService } from '../../services/convenciones.service';
 import { DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -13,7 +13,7 @@ import { IconAddComponent } from "@shared/icons/icon-add/icon-add.component";
   templateUrl: './convenciones-list.component.html',
 })
 export class ConvencionesListComponent implements OnInit {
-  eventosService = inject(EventosService);
+  convencionesService = inject(ConvencionesService);
   router = inject(Router);
   // eventoList: Evento[] = [];
   query = signal('');
@@ -22,11 +22,11 @@ export class ConvencionesListComponent implements OnInit {
     request: () => ({ query: this.query() }),
     loader: ({ request }) => {
       if (!request.query) {
-        return this.eventosService
+        return this.convencionesService
           .getEventos()
           .pipe(map((resp) => resp.response));
       } else {
-        return this.eventosService
+        return this.convencionesService
           .getEventos()
           .pipe(map((resp) => resp.response));
       }

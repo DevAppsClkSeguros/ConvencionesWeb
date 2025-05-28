@@ -19,6 +19,14 @@ export class ConvencionistasService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
+  GetConvencionista(idConvencionista: number): Observable<ConvencionistasResponse> {
+    return this.http
+      .get<ConvencionistasResponse>(
+        `${AppConfig.APIREST_URL}/api/Convencionistas/DetallesConvencionista/${idConvencionista}`
+      )
+      .pipe(catchError(AppConfig.handleErrors));
+  }
+
   NuevoConvencionista(
     convencionista: Convencionista
   ): Observable<ConvencionistasResponse> {

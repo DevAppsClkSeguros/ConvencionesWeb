@@ -5,9 +5,12 @@ export interface RenewResp {
   token: string;
 }
 export interface Login {
-  token:      string;
-  expiracion: Date;
+  response: Token;
   status:     boolean;
   message:    string[];
 }
 
+export interface Token {
+  token: string;
+  expiracion: Date;
+}
