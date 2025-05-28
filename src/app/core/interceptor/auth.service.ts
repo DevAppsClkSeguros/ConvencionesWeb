@@ -2,13 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, tap, throwError } from 'rxjs';
 import { Login } from './auth.interface';
-interface RenewResp {
-  token: string;
-}
+import { AppConfig } from '@shared/app-config';
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private apiBase =
-    'https://dev.developmentservices.com.mx/ApisConvenciones/api/Usuarios';
+  private apiBase = `${AppConfig.APIREST_URL}/api/Usuarios`;
   private tokenSub = new BehaviorSubject<string | null>(null);
   token$ = this.tokenSub.asObservable();
 
@@ -17,7 +15,6 @@ export class AuthService {
     if (t) this.tokenSub.next(t);
   }
 
-  // 2.1 Login: obtén token y guárdalo
   login(credenciales: any) {
     return this.http
       .post<Login>(`${this.apiBase}/login`, {
@@ -26,25 +23,38 @@ export class AuthService {
       })
       .pipe(
         tap((resp) => {
-          localStorage.setItem('authToken', resp.token);
-          this.tokenSub.next(resp.token);
+          localStorage.setItem('authToken', resp.response.token);
+          this.tokenSub.next(resp.response.token);
         })
       );
   }
 
-  // 2.2 Renueva token: úsalo en 401 o cuando quieras
+  isTokenExpiredOrCloseToExpiry(
+    token: string,
+    thresholdSeconds: number = 60
+  ): boolean {
+    const decoded = decodeToken(token);
+    if (!decoded || !decoded.exp) return true;
+
+    const now = new Date().getTime() / 1000;
+    const expirationTime = decoded.exp;
+    const timeLeft = expirationTime - now;
+    return timeLeft < thresholdSeconds;
+  }
+
   renewToken() {
     const current = this.tokenSub.value;
     if (!current) return throwError(() => new Error('Sin token para renovar'));
     console.log('Ese es el token actual para la renovación: ', current);
     return this.http
-      .get<RenewResp>(`${this.apiBase}/renovar-token`, {
+      .get<Login>(`${this.apiBase}/renovar-token`, {
         headers: { Authorization: `Bearer ${current}` },
       })
       .pipe(
         tap((resp) => {
-          localStorage.setItem('authToken', resp.token);
-          this.tokenSub.next(resp.token);
+          localStorage.setItem('authToken', resp.response.token);
+          this.tokenSub.next(resp.response.token);
+          console.log('Token renovado: ', resp.response.token);
         })
       );
   }
@@ -58,3 +68,20 @@ export class AuthService {
     this.tokenSub.next(null);
   }
 }
+
+const decodeToken = (token: string): any => {
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    console.error('Error al decodificar el token', e);
+    return null;
+  }
+};

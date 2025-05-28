@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,17 +10,25 @@ import { ConvencionistasService } from '../../services/convencionistas.service';
 import { FormUtils } from '@core/utils/form-utils';
 import { CdnService } from '@shared/services/cdn.service';
 import { NotificacionService } from '@shared/services/notificacion.service';
+import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
+import { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
+import { ActivatedRoute } from '@angular/router';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
 @Component({
   selector: 'convencionistas-update',
-  imports: [ReactiveFormsModule, JsonPipe],
+  imports: [ReactiveFormsModule, JsonPipe, NotFoundComponent],
   templateUrl: './convencionistas-update.component.html',
 })
-export class ConvencionistasUpdateComponent implements OnInit {
+export class ConvencionistasUpdateComponent {
   private fb = inject(FormBuilder);
+  convencionistaId = inject(ActivatedRoute).snapshot.params['id'];
   location = inject(Location);
   cdnService = inject(CdnService);
   notificacion = inject(NotificacionService);
+  convencionesService = inject(ConvencionesService);
+  convenciones = signal<Convencion[]>([]);
   formUtils = FormUtils;
   convencionistasService = inject(ConvencionistasService);
   selectedFile: File | null = null;
@@ -34,22 +42,66 @@ export class ConvencionistasUpdateComponent implements OnInit {
     telefono: [''],
     imagen: [null],
     url: [''],
-    perfilConvencionistaId: 0,
-    categoriaUsuarioId: 0,
-    eventoId: 0,
+    documento: [''],
+    perfilConvencionistaId: 2,
+    categoriaUsuarioId: 1,
+    eventoId: 2,
   });
 
-  ngOnInit(): void {}
+  convencionistaResource = rxResource({
+    request: () => ({ id: this.convencionistaId }),
+    loader: ({ request }) =>
+      this.convencionistasService.GetConvencionista(this.convencionistaId),
+  });
 
-  getPerfiles() {}
+  convencionistaData = this.convencionistaResource.value; // Señal con los datos
 
-  getCategorias() {}
+  constructor() {
+    effect(() => {
+      const data = this.convencionistaData();
+      if (data?.status) {
+        // Solo si hay datos
+        this.llenarFormulario(data.response);
+        // this.loadImagePreview(data.imagen); // Si necesitas cargar la imagen
+      }
+    });
+  }
 
-  getConvenciones() {}
+  private llenarFormulario(convencionista: any): void {
+    console.log('Convencionista a llenar el formulario: ', convencionista);
+    this.myForm.patchValue({
+      id: convencionista.id,
+      clave: convencionista.clave,
+      nombreCompleto: convencionista.nombreCompleto,
+      puesto: convencionista.puesto,
+      telefono: convencionista.telefono,
+      imagen: convencionista.imagen, // Nombre del archivo o URL
+      url: convencionista.url,
+      perfilConvencionistaId: convencionista.perfilConvencionistaId,
+      categoriaUsuarioId: convencionista.categoriaUsuarioId,
+      eventoId: convencionista.eventoId,
+    });
+    this.imagePreview = convencionista.url;
+  }
+
+  getConvenciones() {
+    this.convencionesService.getEventos().subscribe({
+      next: (data) => {
+        if (data.status) {
+          this.convenciones.set(data.response);
+        }
+      },
+      error: (e) => {
+        this.notificacion.show(
+          'Ocurrio un error al recuperar lista de convenciones',
+          'error'
+        );
+      },
+    });
+  }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
 
@@ -58,15 +110,11 @@ export class ConvencionistasUpdateComponent implements OnInit {
         alert('Solo se permiten imágenes');
         return;
       }
-
-      // Actualizar el formulario
       this.myForm.patchValue({
         imagen: this.selectedFile,
       });
       this.myForm.get('imagen')?.markAsTouched();
       this.myForm.get('imagen')?.updateValueAndValidity();
-
-      // Opcional: Mostrar previsualización
       this.previewImage(this.selectedFile);
     }
   }
@@ -74,8 +122,6 @@ export class ConvencionistasUpdateComponent implements OnInit {
   private previewImage(file: File): void {
     const reader = new FileReader();
     reader.onload = (e: any) => {
-      // Aquí puedes asignar la imagen previsualizada a una propiedad
-      // para mostrarla en el template si lo deseas
       this.imagePreview = e.target.result;
     };
     reader.readAsDataURL(file);

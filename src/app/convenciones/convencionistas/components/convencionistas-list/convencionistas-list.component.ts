@@ -3,22 +3,28 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { catchError, map, of } from 'rxjs';
-import { Convencion } from 'src/app/convenciones/convenciones/interfaces/evento.interface';
+import { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
 import { ConvencionistasService } from '../../services/convencionistas.service';
-import { EventosService } from 'src/app/convenciones/convenciones/services/eventos.service';
-import { IconAddComponent } from "@shared/icons/icon-add/icon-add.component";
-import { IconRefreshComponent } from "@shared/icons/icon-refresh/icon-refresh.component";
+import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
+import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
+import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
 
 @Component({
   selector: 'convencionistas-list',
-  imports: [SearchInputComponent, RouterLink, FormsModule, IconAddComponent, IconRefreshComponent],
+  imports: [
+    SearchInputComponent,
+    RouterLink,
+    FormsModule,
+    IconAddComponent,
+    IconRefreshComponent,
+  ],
   templateUrl: './convencionistas-list.component.html',
 })
 export class ConvencionistasListComponent implements OnInit {
   convencionistasService = inject(ConvencionistasService);
-  eventosService = inject(EventosService);
+  eventosService = inject(ConvencionesService);
   notificacion = inject(NotificacionService);
   router = inject(Router);
   query = signal('');
@@ -36,7 +42,7 @@ export class ConvencionistasListComponent implements OnInit {
   // });
 
   ngOnInit(): void {
-    this.cargaConvenciones();
+    this.getConvenciones();
   }
   convencionistaResource = rxResource({
     request: () => ({}), // sin dependencias reactivas
@@ -92,7 +98,7 @@ export class ConvencionistasListComponent implements OnInit {
     });
   });
 
-  cargaConvenciones() {
+  getConvenciones() {
     this.eventosService.getEventos().subscribe({
       next: (data) => {
         if (data.status) {

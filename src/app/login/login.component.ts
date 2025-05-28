@@ -61,7 +61,7 @@ export class LoginComponent {
       },
       error: (e) => {
         this.loading = false;
-        this.notificacion.show('Ocurrio un error...', 'error');
+        this.notificacion.show('Ocurrio un error al iniciar sesión, inténtelo nuevamente', 'error');
       },
       complete: () => {
         this.loading = false;

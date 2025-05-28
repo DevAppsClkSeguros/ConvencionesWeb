@@ -12,6 +12,7 @@ export interface Convencionista {
   telefono: string;
   imagen: string;
   url: string;
+  documento: string;
   perfilConvencionistaId: number;
   categoriaUsuarioId: number;
   eventoId: number;
