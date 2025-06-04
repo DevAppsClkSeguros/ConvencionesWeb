@@ -1,45 +1,70 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { ConvencionesService } from '../../services/convenciones.service';
 import { DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { IconRefreshComponent } from "@shared/icons/icon-refresh/icon-refresh.component";
-import { IconAddComponent } from "@shared/icons/icon-add/icon-add.component";
+import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
+import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
+import { NotificacionService } from '@shared/services/notificacion.service';
+import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'convenciones-list',
-  imports: [DatePipe, RouterLink, IconRefreshComponent, IconAddComponent],
+  imports: [
+    DatePipe,
+    RouterLink,
+    IconRefreshComponent,
+    IconAddComponent,
+    ConfirmModalComponent,
+  ],
   templateUrl: './convenciones-list.component.html',
 })
-export class ConvencionesListComponent implements OnInit {
+export class ConvencionesListComponent {
   convencionesService = inject(ConvencionesService);
   router = inject(Router);
-  // eventoList: Evento[] = [];
+  notificacion = inject(NotificacionService);
+  mensajeEliminar = '';
   query = signal('');
 
-  eventoResource = rxResource({
+  @ViewChild('deleteModal') deleteModal!: ConfirmModalComponent;
+  convencionId: number = 0;
+
+  convencionesResource = rxResource({
     request: () => ({ query: this.query() }),
     loader: ({ request }) => {
-      if (!request.query) {
-        return this.convencionesService
-          .getEventos()
-          .pipe(map((resp) => resp.response));
-      } else {
-        return this.convencionesService
-          .getEventos()
-          .pipe(map((resp) => resp.response));
-      }
+      return this.convencionesService
+        .obtieneConvenciones()
+        .pipe(map((resp) => resp.response));
     },
   });
 
-  ngOnInit(): void {
-    // this.eventoService.getEventos().
-    // subscribe({
-    //   next: (data) => {
-    //     console.log("DataEvento: ", data);
-    //     this.eventoList = data.response;
-    //   }
-    // })
+  refrescaDatos() {
+    this.convencionesResource.reload();
+  }
+
+  abrirModal(convencionId: number) {
+    this.convencionId = convencionId;
+    this.mensajeEliminar = `¿Está seguro de eliminar el registro ${convencionId}? Esta acción no se puede deshacer.`;
+    this.deleteModal.show();
+  }
+
+  eliminaConvencion() {
+    this.convencionesService.eliminaConvencion(this.convencionId).subscribe({
+      next: (data) => {
+        if (data.status) {
+          this.notificacion.show(
+            'Convención eliminada correctamente',
+            'success'
+          );
+        }
+      },
+      error: (e) => {
+        this.notificacion.show('Error al eliminar la convención', 'error');
+      },
+      complete: () => {
+        this.refrescaDatos();
+      },
+    });
   }
 }

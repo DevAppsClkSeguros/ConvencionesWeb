@@ -8,7 +8,7 @@
             (change)="convencionSeleccionada.set(convencionSelect.value)">
             <option value="" selected>Todas las convenciones</option>
             @for (convencion of convenciones(); track convencion.id) {
-            <option [value]="convencion.nombreConvencion">{{convencion.nombreConvencion}}</option>
+            <option [value]="convencion.nombreEvento">{{convencion.nombreEvento}}</option>
             }
           </select>
         </fieldset>
@@ -72,7 +72,7 @@
           </th>
           <th>
             <button class="btn btn-secondary btn-xs"
-              (click)="eliminarConvencionista(convencionista.id)">Eliminar</button>
+              (click)="abrirModal(convencionista.id)">Eliminar</button>
           </th>
         </tr>
         }
@@ -80,3 +80,6 @@
     </table>
   </div>
 </div>
+
+<shared-confirm-modal #deleteModal titulo="¡Confirmar Eliminación!" mensajeAceptar="Si, Eliminar"
+  mensaje="{{mensajeEliminar}}" (confirmar)="eliminaConvencionista()" (cancelar)="convencionistaId = 0" />

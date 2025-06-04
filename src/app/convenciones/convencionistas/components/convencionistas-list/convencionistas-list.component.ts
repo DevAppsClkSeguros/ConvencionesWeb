@@ -1,4 +1,11 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -10,6 +17,7 @@ import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
 import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
+import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
 
 @Component({
   selector: 'convencionistas-list',
@@ -19,6 +27,7 @@ import { SearchInputComponent } from '@shared/components/search-input/search-inp
     FormsModule,
     IconAddComponent,
     IconRefreshComponent,
+    ConfirmModalComponent,
   ],
   templateUrl: './convencionistas-list.component.html',
 })
@@ -29,17 +38,12 @@ export class ConvencionistasListComponent implements OnInit {
   router = inject(Router);
   query = signal('');
   convencionSeleccionada = signal<string>('');
+  mensajeEliminar = '';
 
   convenciones = signal<Convencion[]>([]);
 
-  // convencionistaResource = rxResource({
-  //   request: () => ({ query: this.query() }),
-  //   loader: ({ request }) => {
-  //     return this.convencionistasService
-  //       .GetConvencionistas()
-  //       .pipe(map((resp) => resp.response));
-  //   },
-  // });
+  @ViewChild('deleteModal') deleteModal!: ConfirmModalComponent;
+  convencionistaId: number = 0;
 
   ngOnInit(): void {
     this.getConvenciones();
@@ -60,22 +64,6 @@ export class ConvencionistasListComponent implements OnInit {
     },
   });
 
-  // 🧠 Aquí sí usas query para filtrar localmente
-  // filteredConvencionistas = computed(() => {
-  //   const lista = this.convencionistaResource.value(); // <- aquí está el pedo
-  //   const texto = this.query().toLowerCase().trim();
-
-  //   if (!lista) return [];
-  //   if (!texto) return lista;
-
-  //   return lista.filter(
-  //     (conv) =>
-  //       conv.clave.toLocaleLowerCase().includes(texto) ||
-  //       conv.nombreCompleto.toLowerCase().includes(texto) ||
-  //       conv.telefono.includes(texto) ||
-  //       conv.puesto.toLocaleLowerCase().includes(texto)
-  //   );
-  // });
   filteredConvencionistas = computed(() => {
     const listaConvenciones = this.convencionistaResource.value();
     const texto = this.query().toLowerCase().trim();
@@ -99,7 +87,7 @@ export class ConvencionistasListComponent implements OnInit {
   });
 
   getConvenciones() {
-    this.eventosService.getEventos().subscribe({
+    this.eventosService.obtieneConvenciones().subscribe({
       next: (data) => {
         if (data.status) {
           this.convenciones.set(data.response);
@@ -120,18 +108,33 @@ export class ConvencionistasListComponent implements OnInit {
     this.convencionistaResource.reload();
   }
 
-  eliminarConvencionista(id: number) {
-    const confirmed = window.confirm(
-      '¿Estás seguro de que quieres eliminar este elemento? Esta acción no se puede deshacer.'
-    );
-    if (confirmed) {
-      this.convencionistasService.eliminarConvencionista(id).subscribe({
+  abrirModal(convencionId: number) {
+    this.convencionistaId = convencionId;
+    this.mensajeEliminar = `¿Está seguro de eliminar el registro ${convencionId}? Esta acción no se puede deshacer.`;
+    this.deleteModal.show();
+  }
+
+  eliminaConvencionista() {
+    this.convencionistasService
+      .eliminaConvencionista(this.convencionistaId)
+      .subscribe({
         next: (data) => {
           if (data.status) {
-            this.convencionistaResource.reload();
+            this.notificacion.show(
+              'Convencionista eliminado correctamente',
+              'success'
+            );
           }
         },
+        error: (e) => {
+          this.notificacion.show(
+            'Error al eliminar la convencionista',
+            'error'
+          );
+        },
+        complete: () => {
+          this.refrescaDatos();
+        },
       });
-    }
   }
 }

@@ -16,7 +16,6 @@ export const routes: Routes = [
   {
     path: 'convenciones',
     loadChildren: () => import('./convenciones/convenciones/convenciones.routes'),
-    canActivate: [AuthGuard],
   },
   {
     path: 'hotel',

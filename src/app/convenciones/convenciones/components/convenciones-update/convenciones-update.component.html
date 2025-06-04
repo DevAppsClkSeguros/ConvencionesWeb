@@ -1,25 +1,117 @@
-<form [formGroup]="eventoForm" (ngSubmit)="guardar()" class="flex flex-col gap-4 max-w-lg mx-auto">
+<div class="min-h-screen flex items-center justify-center bg-base-200">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
+    <h2 class="text-3xl font-bold mb-6">Datos de la convención</h2>
 
-  <input type="text" placeholder="Evento" formControlName="evento" class="input input-bordered" />
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div>
+        <label class="label">ID</label>
+        <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
+      </div>
 
-  <input type="text" placeholder="Subtítulo" formControlName="subtitulo" class="input input-bordered" />
+      <!-- Nombre -->
+      <div>
+        <label class="label">Nombre</label>
+        <input type="text" formControlName="nombreEvento" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'nombreEvento')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'nombreEvento')}}
+        </small>
+        }
+      </div>
 
-  <input type="datetime-local" placeholder="Fecha Inicial" formControlName="fechaInicial"
-    class="input input-bordered" />
+      <!-- Lugar destino -->
+      <div>
+        <label class="label">Lugar destino</label>
+        <input type="text" formControlName="lugarDestino" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'lugarDestino')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'lugarDestino')}}
+        </small>
+        }
+      </div>
 
-  <input type="datetime-local" placeholder="Fecha Final" formControlName="fechaFinal" class="input input-bordered" />
+      <!-- Estatus -->
+      <div>
+        <label class="label w-full">Estatus</label>
+        <input type="checkbox" formControlName="activo" class="toggle toggle-primary " />
+        @if (formUtils.isValidField(myForm, 'activo')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'activo')}}
+        </small>
+        }
+      </div>
 
-  <div class="flex items-center gap-2">
-    <label for="estatus">Estatus:</label>
-    <input type="checkbox" formControlName="estatus" id="estatus" class="toggle" />
-  </div>
+      <!-- Latitud -->
+      <div>
+        <label class="label">Latitud</label>
+        <input type="tel" formControlName="latitud" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'latitud')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'latitud')}}
+        </small>
+        }
+      </div>
 
-  <input type="text" placeholder="Dirección" formControlName="direccion" class="input input-bordered" />
+      <!-- Longitud -->
+      <div>
+        <label class="label">Longitud</label>
+        <input type="tel" formControlName="longitud" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'longitud')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'longitud')}}
+        </small>
+        }
+      </div>
 
-  <input type="text" placeholder="Latitud" formControlName="latitud" class="input input-bordered" />
+      <!-- Fecha inicio -->
+      <div>
+        <label class="label">Fecha inicio</label>
+        <input type="date" formControlName="fecha_inicio" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'fecha_inicio')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'fecha_inicio')}}
+        </small>
+        }
+      </div>
 
-  <input type="text" placeholder="Longitud" formControlName="longitud" class="input input-bordered" />
+      <!-- Fecha fin -->
+      <div>
+        <label class="label">Fecha fin</label>
+        <input type="date" formControlName="fecha_fin" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'fecha_fin')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'fecha_fin')}}
+        </small>
+        }
+      </div>
 
-  <button type="submit" class="btn btn-primary">Guardar</button>
+      <!-- Foto -->
+      <div>
+        <label class="label">Foto</label>
+        <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
+          accept="image/*" />
+        @if(imagePreview) {
+        <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
+        <button (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
+        }
+        @if (formUtils.isValidField(myForm, 'imagen')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'imagen')}}
+        </small>
+        }
+      </div>
+    </div>
 
-</form>
+    <!-- Botones -->
+    <div class="flex justify-end mt-8 gap-4">
+      <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+    <h3>
+      {{myForm.valid}}
+    </h3>
+    <h2>
+      {{myForm.value | json}}
+    </h2>
+  </form>
+</div>

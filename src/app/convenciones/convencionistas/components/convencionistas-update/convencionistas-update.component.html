@@ -1,108 +1,112 @@
-<shared-not-found />
-<div class="min-h-screen flex items-center justify-center bg-base-200">
-  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
-    <h2 class="text-3xl font-bold mb-6">Datos de Usuario</h2>
+<!-- @if (convencionistaResource?.error()) { -->
+  <shared-not-found />
+<!-- } -->
+<!-- @if (!convencionistaResource?.error) { -->
+  <div class="min-h-screen flex items-center justify-center bg-base-200">
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
+      <h2 class="text-3xl font-bold mb-6">Datos del convencionista</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <label class="label">ID</label>
-        <input type="text" formControlName="id" class="input input-bordered w-full" />
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="label">ID</label>
+          <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
+        </div>
 
-      <!-- Clave -->
-      <div>
-        <label class="label">Clave</label>
-        <input type="text" formControlName="clave" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'clave')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'clave')}}
-        </small>
-        }
-      </div>
-
-      <!-- Nombre completo -->
-      <div>
-        <label class="label">Nombre completo</label>
-        <input type="text" formControlName="nombreCompleto" class="input input-bordered w-full"
-          placeholder="Nombre y apellidos" />
-        @if (formUtils.isValidField(myForm, 'nombreCompleto')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'nombreCompleto')}}
-        </small>
-        }
-      </div>
-
-      <!-- Puesto -->
-      <div>
-        <label class="label">Puesto</label>
-        <input type="text" formControlName="puesto" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'puesto')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'puesto')}}
-        </small>
-        }
-      </div>
-
-      <!-- Teléfono -->
-      <div>
-        <label class="label">Teléfono</label>
-        <input type="tel" formControlName="telefono" class="input input-bordered w-full" />
-      </div>
-
-      <!-- Perfil -->
-      <div>
-        <label class="label">Perfil</label>
-        <select formControlName="perfilConvencionistaId" class="select select-bordered w-full">
-          <option value="" disabled selected>Selecciona un perfil</option>
-          <!-- <option *ngFor="let perfil of perfiles" [value]="perfil">{{ perfil }}</option> -->
-        </select>
-        <small class="text-error">Campo obligatorio.</small>
-      </div>
-
-      <!-- Categoría -->
-      <div>
-        <label class="label">Categoría</label>
-        <select formControlName="categoriaUsuarioId" class="select select-bordered w-full">
-          <option value="" disabled selected>Selecciona una categoría</option>
-          <!-- <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option> -->
-        </select>
-        <small class="text-error">Campo obligatorio.</small>
-      </div>
-
-      <!-- Convención -->
-      <div>
-        <label class="label">Convención</label>
-        <select formControlName="eventoId" class="select select-bordered w-full">
-          <option value="" selected>Selecciona una convención</option>
-          @for (convencion of convenciones(); track convencion.id) {
-          <option>{{convencion.nombreConvencion}}</option>
+        <!-- Clave -->
+        <div>
+          <label class="label">Clave</label>
+          <input type="text" formControlName="clave" class="input input-bordered w-full" />
+          @if (formUtils.isValidField(myForm, 'clave')){
+          <small class="text-error">
+            {{formUtils.getFieldError(myForm, 'clave')}}
+          </small>
           }
-        </select>
-        <small class="text-error">Campo obligatorio.</small>
+        </div>
+
+        <!-- Nombre completo -->
+        <div>
+          <label class="label">Nombre completo</label>
+          <input type="text" formControlName="nombreCompleto" class="input input-bordered w-full"
+            placeholder="Nombre y apellidos" />
+          @if (formUtils.isValidField(myForm, 'nombreCompleto')){
+          <small class="text-error">
+            {{formUtils.getFieldError(myForm, 'nombreCompleto')}}
+          </small>
+          }
+        </div>
+
+        <!-- Puesto -->
+        <div>
+          <label class="label">Puesto</label>
+          <input type="text" formControlName="puesto" class="input input-bordered w-full" />
+          @if (formUtils.isValidField(myForm, 'puesto')){
+          <small class="text-error">
+            {{formUtils.getFieldError(myForm, 'puesto')}}
+          </small>
+          }
+        </div>
+
+        <!-- Teléfono -->
+        <div>
+          <label class="label">Teléfono</label>
+          <input type="tel" formControlName="telefono" class="input input-bordered w-full" />
+        </div>
+
+        <!-- Perfil -->
+        <div>
+          <label class="label">Perfil</label>
+          <select formControlName="perfilConvencionistaId" class="select select-bordered w-full">
+            <option value="" disabled selected>Selecciona un perfil</option>
+            <!-- <option *ngFor="let perfil of perfiles" [value]="perfil">{{ perfil }}</option> -->
+          </select>
+          <small class="text-error">Campo obligatorio.</small>
+        </div>
+
+        <!-- Categoría -->
+        <div>
+          <label class="label">Categoría</label>
+          <select formControlName="categoriaUsuarioId" class="select select-bordered w-full">
+            <option value="" disabled selected>Selecciona una categoría</option>
+            <!-- <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option> -->
+          </select>
+          <small class="text-error">Campo obligatorio.</small>
+        </div>
+
+        <!-- Convención -->
+        <div>
+          <label class="label">Convención</label>
+          <select formControlName="eventoId" class="select select-bordered w-full">
+            <option value="" selected>Selecciona una convención</option>
+            @for (convencion of convenciones(); track convencion.id) {
+            <option>{{convencion.nombreEvento}}</option>
+            }
+          </select>
+          <small class="text-error">Campo obligatorio.</small>
+        </div>
+
+        <!-- Foto -->
+        <div>
+          <label class="label">Foto</label>
+          <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
+            accept="image/*" />
+          @if(imagePreview) {
+          <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
+          <button (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
+          }
+        </div>
       </div>
 
-      <!-- Foto -->
-      <div>
-        <label class="label">Foto</label>
-        <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
-          accept="image/*" />
-        @if(imagePreview) {
-        <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
-        <button (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
-        }
+      <!-- Botones -->
+      <div class="flex justify-end mt-8 gap-4">
+        <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
       </div>
-    </div>
-
-    <!-- Botones -->
-    <div class="flex justify-end mt-8 gap-4">
-      <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
-      <button type="submit" class="btn btn-primary">Guardar</button>
-    </div>
-    <h3>
-      {{myForm.valid}}
-    </h3>
-    <h2>
-      {{myForm.value | json}}
-    </h2>
-  </form>
-</div>
+      <h3>
+        {{myForm.valid}}
+      </h3>
+      <h2>
+        {{myForm.value | json}}
+      </h2>
+    </form>
+  </div>
+<!-- } -->
