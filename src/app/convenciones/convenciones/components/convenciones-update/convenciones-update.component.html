@@ -3,10 +3,23 @@
     <h2 class="text-3xl font-bold mb-6">Datos de la convención</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <label class="label">ID</label>
-        <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
-      </div>
+      @if (isEditMode) {
+        <div>
+          <label class="label">ID</label>
+          <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
+        </div>
+
+        <!-- Estatus -->
+        <div>
+          <label class="label w-full">Estatus</label>
+          <input type="checkbox" formControlName="activo" class="toggle toggle-primary " />
+          @if (formUtils.isValidField(myForm, 'activo')){
+          <small class="text-error">
+            {{formUtils.getFieldError(myForm, 'activo')}}
+          </small>
+          }
+        </div>
+      }
 
       <!-- Nombre -->
       <div>
@@ -26,17 +39,6 @@
         @if (formUtils.isValidField(myForm, 'lugarDestino')){
         <small class="text-error">
           {{formUtils.getFieldError(myForm, 'lugarDestino')}}
-        </small>
-        }
-      </div>
-
-      <!-- Estatus -->
-      <div>
-        <label class="label w-full">Estatus</label>
-        <input type="checkbox" formControlName="activo" class="toggle toggle-primary " />
-        @if (formUtils.isValidField(myForm, 'activo')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'activo')}}
         </small>
         }
       </div>

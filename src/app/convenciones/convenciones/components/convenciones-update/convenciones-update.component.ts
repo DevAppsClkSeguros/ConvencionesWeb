@@ -72,7 +72,7 @@ export class ConvencionesUpdateComponent {
 
   private llenaFormulario(convencion: any) {
     this.myForm.patchValue({
-      id: 0,
+      id: convencion.id,
       nombreEvento: convencion.nombreEvento,
       subtitulo: convencion.subtitulo,
       activo: convencion.activo,
@@ -134,7 +134,7 @@ export class ConvencionesUpdateComponent {
       return;
     }
     console.log('Formulario441: ');
-    if (this.myForm.get('imagen')?.value) {
+    if (this.myForm.get('imagen')?.value && this.myForm.get('url')?.value) {
       const file: File = this.myForm.controls['imagen'].value;
       this.cdnService.uploadFile('convencionista', 'imagen', file).subscribe({
         next: (data) => {
@@ -169,6 +169,8 @@ export class ConvencionesUpdateComponent {
             'success'
           );
           this.location.back();
+        } else {
+          this.notificacion.show(`Error ${data.message[0]}`, 'error');
         }
       },
       error: (e) => {

@@ -51,7 +51,7 @@ export class ConvencionesService {
 
   actualizaConvencion(convencion: Convencion): Observable<ConvencionResponse> {
     return this.http
-      .post<ConvencionResponse>(
+      .put<ConvencionResponse>(
         `${AppConfig.APIREST_URL}/api/Eventos/ActualizarEvento/${convencion.id}`,
         {
           NombreEvento: convencion.nombreEvento,

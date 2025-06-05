@@ -15,6 +15,9 @@ import { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenc
 import { ActivatedRoute } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
+import { map, tap } from 'rxjs';
+import { CategoriasConvensionistaService } from 'src/app/convenciones/configuracion/categoriaConvencionista/services/categoriasConvencionista.service';
+import { PerfilesConvensionistaService } from 'src/app/convenciones/configuracion/perfilConvencionista/services/perfilesConvencionista.service';
 
 @Component({
   selector: 'convencionistas-update',
@@ -28,6 +31,8 @@ export class ConvencionistasUpdateComponent {
   cdnService = inject(CdnService);
   notificacion = inject(NotificacionService);
   convencionesService = inject(ConvencionesService);
+  categoriasConvencionistaService = inject(CategoriasConvensionistaService);
+  perfilesConvencionistaService = inject(PerfilesConvensionistaService);
   convenciones = signal<Convencion[]>([]);
   convencionistasService = inject(ConvencionistasService);
   convencionistaId = this.route.snapshot.params['id'];
@@ -38,6 +43,7 @@ export class ConvencionistasUpdateComponent {
 
   myForm: FormGroup = this.fb.group({
     id: [0],
+    activo: [true],
     clave: ['', [Validators.required, Validators.minLength(5)]],
     nombreCompleto: ['', Validators.required],
     puesto: ['', Validators.required],
@@ -54,12 +60,45 @@ export class ConvencionistasUpdateComponent {
     ? rxResource({
         request: () => ({ id: this.convencionistaId }),
         loader: ({ request }) =>
-          this.convencionistasService.obtieneConvencionista(this.convencionistaId),
+          this.convencionistasService.obtieneConvencionista(
+            this.convencionistaId
+          ).
+          pipe(tap((resp) => {
+            console.log('resp: ', resp);
+            if (!resp.status) {
+              throw new Error(resp.message?.[0] || 'Error desconocido');
+            }
+          })),
       })
     : null;
 
+  convencionesResource = rxResource({
+    loader: ({}) => {
+      return this.convencionesService
+        .obtieneConvenciones()
+        .pipe(map((resp) => resp.response));
+    },
+  });
+
+  categoriasResource = rxResource({
+    loader: ({}) => {
+      return this.categoriasConvencionistaService
+        .obtieneCategoriasConvencionista()
+        .pipe(map((resp: any) => resp.response));
+    },
+  });
+
+  perfilesResouce = rxResource({
+    loader: ({}) => {
+      return this.perfilesConvencionistaService
+        .obtienePerfilesConvencionista()
+        .pipe(map((resp: any) => resp.response));
+    },
+  });
+
   constructor() {
-    console.log('convencionistaResource: ', this.convencionistaResource);
+    console.log('convencionistaResourceError: ', this.convencionistaResource?.error());
+    console.log('convencionistaResourceValue: ', this.convencionistaResource?.value());
     console.log('this.convencionistaId: ', this.convencionistaId);
     if (this.isEditMode && this.convencionistaResource) {
       effect(() => {
@@ -88,21 +127,21 @@ export class ConvencionistasUpdateComponent {
     this.imagePreview = convencionista.imagen;
   }
 
-  getConvenciones() {
-    this.convencionesService.obtieneConvenciones().subscribe({
-      next: (data) => {
-        if (data.status) {
-          this.convenciones.set(data.response);
-        }
-      },
-      error: (e) => {
-        this.notificacion.show(
-          'Ocurrio un error al recuperar lista de convenciones',
-          'error'
-        );
-      },
-    });
-  }
+  // getConvenciones() {
+  //   this.convencionesService.obtieneConvenciones().subscribe({
+  //     next: (data) => {
+  //       if (data.status) {
+  //         this.convenciones.set(data.response);
+  //       }
+  //     },
+  //     error: (e) => {
+  //       this.notificacion.show(
+  //         'Ocurrio un error al recuperar lista de convenciones',
+  //         'error'
+  //       );
+  //     },
+  //   });
+  // }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -144,7 +183,7 @@ export class ConvencionistasUpdateComponent {
       this.myForm.markAllAsTouched();
       return;
     }
-    if (this.myForm.get('imagen')?.value) {
+    if (this.myForm.get('imagen')?.value && this.myForm.get('url')?.value) {
       const file: File = this.myForm.controls['imagen'].value;
       this.cdnService.uploadFile('convencionista', 'imagen', file).subscribe({
         next: (data) => {

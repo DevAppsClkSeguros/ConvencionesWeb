@@ -1,14 +1,13 @@
 import { Location } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 
 @Component({
   selector: 'shared-not-found',
-  imports: [],
   templateUrl: './not-found.component.html',
 })
 export class NotFoundComponent {
   location = inject(Location);
-
+  mensaje = input.required<string>()
   goBack() {
     this.location.back();
   }
