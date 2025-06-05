@@ -55,7 +55,7 @@ export class ConvencionistasService {
     convencionista: Convencionista
   ): Observable<ConvencionistasResponse> {
     return this.http
-      .post<ConvencionistasResponse>(
+      .put<ConvencionistasResponse>(
         `${AppConfig.APIREST_URL}/api/Convencionistas/ActualizarConvencionista/${convencionista.id}`,
         {
           id: convencionista.id,

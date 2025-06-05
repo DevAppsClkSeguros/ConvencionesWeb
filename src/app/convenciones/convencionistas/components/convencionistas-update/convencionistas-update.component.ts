@@ -118,8 +118,8 @@ export class ConvencionistasUpdateComponent {
       nombreCompleto: convencionista.nombreCompleto,
       puesto: convencionista.puesto,
       telefono: convencionista.telefono,
-      imagen: convencionista.imagen,
-      url: convencionista.url,
+      imagen: '',
+      url: convencionista.imagen,
       perfilConvencionistaId: convencionista.perfilConvencionistaId,
       categoriaUsuarioId: convencionista.categoriaUsuarioId,
       eventoId: convencionista.eventoId,
@@ -155,6 +155,7 @@ export class ConvencionistasUpdateComponent {
       }
       this.myForm.patchValue({
         imagen: this.selectedFile,
+        url: '',
       });
       this.myForm.get('imagen')?.markAsTouched();
       this.myForm.get('imagen')?.updateValueAndValidity();
@@ -174,7 +175,12 @@ export class ConvencionistasUpdateComponent {
     this.imagePreview = null;
     inputRef.value = '';
     this.selectedFile = null;
-    this.myForm.patchValue({ imagen: null });
+    this.myForm.patchValue(
+      {
+        imagen: null,
+        url: ''
+      }
+    );
     this.myForm.get('imagen')?.updateValueAndValidity();
   }
 
@@ -183,7 +189,7 @@ export class ConvencionistasUpdateComponent {
       this.myForm.markAllAsTouched();
       return;
     }
-    if (this.myForm.get('imagen')?.value && this.myForm.get('url')?.value) {
+    if (this.myForm.get('imagen')?.value && !this.myForm.get('url')?.value) {
       const file: File = this.myForm.controls['imagen'].value;
       this.cdnService.uploadFile('convencionista', 'imagen', file).subscribe({
         next: (data) => {

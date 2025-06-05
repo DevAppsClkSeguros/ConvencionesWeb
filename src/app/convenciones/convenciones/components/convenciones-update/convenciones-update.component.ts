@@ -85,8 +85,8 @@ export class ConvencionesUpdateComponent {
         'yyyy-MM-dd'
       ),
       direccion: convencion.direccion,
-      imagen: convencion.imagen,
-      url: convencion.url,
+      imagen: '',
+      url: convencion.imagen,
       latitud: convencion.latitud,
       longitud: convencion.longitud,
       lugarDestino: convencion.lugarDestino,
@@ -104,6 +104,7 @@ export class ConvencionesUpdateComponent {
       }
       this.myForm.patchValue({
         imagen: this.selectedFile,
+        url: '',
       });
       this.myForm.get('imagen')?.markAsTouched();
       this.myForm.get('imagen')?.updateValueAndValidity();
@@ -123,7 +124,11 @@ export class ConvencionesUpdateComponent {
     this.imagePreview = null;
     inputRef.value = '';
     this.selectedFile = null;
-    this.myForm.patchValue({ imagen: null });
+    this.myForm.patchValue(
+      {
+        imagen: null,
+        url: ''
+      });
     this.myForm.get('imagen')?.updateValueAndValidity();
   }
 
@@ -134,7 +139,7 @@ export class ConvencionesUpdateComponent {
       return;
     }
     console.log('Formulario441: ');
-    if (this.myForm.get('imagen')?.value && this.myForm.get('url')?.value) {
+    if (this.myForm.get('imagen')?.value && !this.myForm.get('url')?.value) {
       const file: File = this.myForm.controls['imagen'].value;
       this.cdnService.uploadFile('convencionista', 'imagen', file).subscribe({
         next: (data) => {

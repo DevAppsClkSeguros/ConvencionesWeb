@@ -96,7 +96,7 @@
           accept="image/*" />
         @if(imagePreview) {
         <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
-        <button (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
+        <button type="button" (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
         }
       </div>
 
