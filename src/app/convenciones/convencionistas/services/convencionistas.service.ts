@@ -43,8 +43,8 @@ export class ConvencionistasService {
           telefono: convencionista.telefono,
           imagen: convencionista.url,
           documento: convencionista.documento,
-          perfilConvencionistaId: convencionista.perfilConvencionistaId,
-          categoriaUsuarioId: convencionista.categoriaUsuarioId,
+          perfilConvencionistaId: convencionista.perfilNombreId,
+          categoriaUsuarioId: convencionista.categoriaNombreId,
           eventoId: convencionista.eventoId,
         }
       )
@@ -59,14 +59,15 @@ export class ConvencionistasService {
         `${AppConfig.APIREST_URL}/api/Convencionistas/ActualizarConvencionista/${convencionista.id}`,
         {
           id: convencionista.id,
+          activo: convencionista.activo,
           clave: convencionista.clave,
           nombreCompleto: convencionista.nombreCompleto,
           puesto: convencionista.puesto,
           telefono: convencionista.telefono,
           imagen: convencionista.url,
           documento: convencionista.documento,
-          perfilConvencionistaId: convencionista.perfilConvencionistaId,
-          categoriaUsuarioId: convencionista.categoriaUsuarioId,
+          perfilConvencionistaId: convencionista.perfilNombreId,
+          categoriaUsuarioId: convencionista.categoriaNombreId,
           eventoId: convencionista.eventoId,
         }
       )

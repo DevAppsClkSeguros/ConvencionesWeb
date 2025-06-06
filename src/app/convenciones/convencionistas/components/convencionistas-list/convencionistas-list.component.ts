@@ -18,6 +18,7 @@ import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.co
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
 import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
+import { Convencionista } from '../../interfaces/convencionistas.interface';
 
 @Component({
   selector: 'convencionistas-list',
@@ -106,6 +107,28 @@ export class ConvencionistasListComponent implements OnInit {
     this.query.set('');
     this.convencionSeleccionada.set('');
     this.convencionistaResource.reload();
+  }
+
+  actualizaConvencionista(convencionista: Convencionista, Convencion: any) {
+    setTimeout(() => {
+      console.log('Valor de la convencion seleccionada: ', convencionista);
+      convencionista.eventoId = 1012;
+      console.log('Valor de la convencion modificada: ', convencionista);
+
+    }, 200);
+
+    convencionista.eventoId = Convencion.id;
+    // this.convencionistasService
+    //   .actualizaConvencionista(convencionista)
+    //   .subscribe({
+    //     next: (data) => {
+
+    //     },
+    //   });
+    this.notificacion.show(
+      `El convencionista ${convencionista.nombreCompleto} ha sido actualizado correctamente`,
+      'success'
+    );
   }
 
   abrirModal(convencionId: number) {

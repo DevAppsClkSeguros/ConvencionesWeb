@@ -85,7 +85,7 @@ export class ConvencionesUpdateComponent {
         'yyyy-MM-dd'
       ),
       direccion: convencion.direccion,
-      imagen: '',
+      imagen: convencion.imagen,
       url: convencion.imagen,
       latitud: convencion.latitud,
       longitud: convencion.longitud,
@@ -127,40 +127,40 @@ export class ConvencionesUpdateComponent {
     this.myForm.patchValue(
       {
         imagen: null,
-        url: ''
+        url: null
       });
     this.myForm.get('imagen')?.updateValueAndValidity();
   }
 
   onSubmit() {
-    console.log('Formulariorr1: ');
     if (this.myForm.invalid) {
       this.myForm.markAllAsTouched();
       return;
     }
-    console.log('Formulario441: ');
     if (this.myForm.get('imagen')?.value && !this.myForm.get('url')?.value) {
+      const nombreImagen = `${this.myForm.get('id')?.value}-${String(
+        Date.now()
+      ).substring(0, 3)}`;
       const file: File = this.myForm.controls['imagen'].value;
-      this.cdnService.uploadFile('convencionista', 'imagen', file).subscribe({
-        next: (data) => {
-          this.myForm.patchValue({
-            url: data.response,
-          });
-        },
-        error: (e) => {},
-        complete: () => {
-          console.log('Formulario61: ');
-          this.registraConvencion();
-        },
-      });
+      this.cdnService
+        .uploadFile('convencionista', nombreImagen, file)
+        .subscribe({
+          next: (data) => {
+            this.myForm.patchValue({
+              url: data.response,
+            });
+          },
+          error: (e) => {},
+          complete: () => {
+            this.registraConvencion();
+          },
+        });
     } else {
-      console.log('Formulario31: ');
       this.registraConvencion();
     }
   }
 
   registraConvencion() {
-    console.log('Formulario11: ');
     const request$ = this.isEditMode
       ? this.convencionesService.actualizaConvencion(this.myForm.value)
       : this.convencionesService.nuevaConvencion(this.myForm.value);

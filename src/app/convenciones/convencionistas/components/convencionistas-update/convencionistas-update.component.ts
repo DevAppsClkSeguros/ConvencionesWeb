@@ -51,8 +51,8 @@ export class ConvencionistasUpdateComponent {
     imagen: [null],
     url: [''],
     documento: [''],
-    perfilConvencionistaId: 2,
-    categoriaUsuarioId: 1,
+    perfilNombreId: 2,
+    categoriaNombreId: 1,
     eventoId: 2,
   });
 
@@ -60,15 +60,16 @@ export class ConvencionistasUpdateComponent {
     ? rxResource({
         request: () => ({ id: this.convencionistaId }),
         loader: ({ request }) =>
-          this.convencionistasService.obtieneConvencionista(
-            this.convencionistaId
-          ).
-          pipe(tap((resp) => {
-            console.log('resp: ', resp);
-            if (!resp.status) {
-              throw new Error(resp.message?.[0] || 'Error desconocido');
-            }
-          })),
+          this.convencionistasService
+            .obtieneConvencionista(this.convencionistaId)
+            .pipe(
+              tap((resp) => {
+                console.log('resp: ', resp);
+                if (!resp.status) {
+                  throw new Error(resp.message?.[0] || 'Error desconocido');
+                }
+              })
+            ),
       })
     : null;
 
@@ -97,8 +98,14 @@ export class ConvencionistasUpdateComponent {
   });
 
   constructor() {
-    console.log('convencionistaResourceError: ', this.convencionistaResource?.error());
-    console.log('convencionistaResourceValue: ', this.convencionistaResource?.value());
+    console.log(
+      'convencionistaResourceError: ',
+      this.convencionistaResource?.error()
+    );
+    console.log(
+      'convencionistaResourceValue: ',
+      this.convencionistaResource?.value()
+    );
     console.log('this.convencionistaId: ', this.convencionistaId);
     if (this.isEditMode && this.convencionistaResource) {
       effect(() => {
@@ -114,14 +121,15 @@ export class ConvencionistasUpdateComponent {
     console.log('Convencionista a llenar el formulario: ', convencionista);
     this.myForm.patchValue({
       id: convencionista.id,
+      activo: convencionista.activo,
       clave: convencionista.clave,
       nombreCompleto: convencionista.nombreCompleto,
       puesto: convencionista.puesto,
       telefono: convencionista.telefono,
-      imagen: '',
+      imagen: convencionista.imagen,
       url: convencionista.imagen,
-      perfilConvencionistaId: convencionista.perfilConvencionistaId,
-      categoriaUsuarioId: convencionista.categoriaUsuarioId,
+      perfilNombreId: convencionista.perfilNombreId,
+      categoriaNombreId: convencionista.categoriaNombreId,
       eventoId: convencionista.eventoId,
     });
     this.imagePreview = convencionista.imagen;
@@ -175,12 +183,10 @@ export class ConvencionistasUpdateComponent {
     this.imagePreview = null;
     inputRef.value = '';
     this.selectedFile = null;
-    this.myForm.patchValue(
-      {
-        imagen: null,
-        url: ''
-      }
-    );
+    this.myForm.patchValue({
+      imagen: null,
+      url: '',
+    });
     this.myForm.get('imagen')?.updateValueAndValidity();
   }
 
@@ -191,17 +197,22 @@ export class ConvencionistasUpdateComponent {
     }
     if (this.myForm.get('imagen')?.value && !this.myForm.get('url')?.value) {
       const file: File = this.myForm.controls['imagen'].value;
-      this.cdnService.uploadFile('convencionista', 'imagen', file).subscribe({
-        next: (data) => {
-          this.myForm.patchValue({
-            url: data.response,
-          });
-        },
-        error: (e) => {},
-        complete: () => {
-          this.registraConvencionista();
-        },
-      });
+      const nombreImagen = `${this.myForm.get('clave')?.value}-${String(
+        Date.now()
+      ).substring(0, 3)}`;
+      this.cdnService
+        .uploadFile('convencionista', nombreImagen, file)
+        .subscribe({
+          next: (data) => {
+            this.myForm.patchValue({
+              url: data.response,
+            });
+          },
+          error: (e) => {},
+          complete: () => {
+            this.registraConvencionista();
+          },
+        });
     } else {
       this.registraConvencionista();
     }
@@ -221,6 +232,8 @@ export class ConvencionistasUpdateComponent {
             'success'
           );
           this.location.back();
+        } else {
+          this.notificacion.show(data.message?.[0], 'error');
         }
       },
       error: (e) => {

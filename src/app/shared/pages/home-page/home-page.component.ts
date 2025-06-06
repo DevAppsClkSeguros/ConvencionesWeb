@@ -20,7 +20,7 @@ export class HomePageComponent implements OnInit {
       redirectTo: '/evento',
       visible: true,
       subMenu: [
-        { title: 'Convención', route: '/convenciones' },
+        { title: 'Convenciones', route: '/convenciones' },
         { title: 'Encuesta', route: '/dashboard' },
         { title: 'Convencionistas', route: '/convencionistas' },
       ],

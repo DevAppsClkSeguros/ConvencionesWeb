@@ -68,7 +68,7 @@
       <!-- Perfil -->
       <div>
         <label class="label">Perfil</label>
-        <select formControlName="perfilConvencionistaId" class="select select-bordered w-full">
+        <select formControlName="perfilNombreId" class="select select-bordered w-full">
           <option value="" selected>Selecciona un perfil</option>
           @for (perfil of perfilesResouce.value(); track perfil.id) {
           <option [value]="perfil.id">{{perfil.nombre}}</option>
@@ -80,7 +80,7 @@
       <!-- Categoría -->
       <div>
         <label class="label">Categoría</label>
-        <select formControlName="categoriaUsuarioId" class="select select-bordered w-full">
+        <select formControlName="categoriaNombreId" class="select select-bordered w-full">
           <option value="" selected>Selecciona una categoria</option>
           @for (categoria of categoriasResource.value(); track categoria.id) {
           <option [value]="categoria.id">{{categoria.nombre}}</option>

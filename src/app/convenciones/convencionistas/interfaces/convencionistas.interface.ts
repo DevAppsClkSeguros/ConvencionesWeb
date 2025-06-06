@@ -13,9 +13,12 @@ export interface Convencionista {
   imagen: string;
   url: string;
   documento: string;
-  perfilConvencionistaId: number;
-  categoriaUsuarioId: number;
   eventoId: number;
   nombreEvento: string;
+  perfilNombreId?: number;
+  perfilNombre: string;
+  categoriaNombreId?: number;
+  categoriaNombre: string;
+  activo: boolean;
 }
 

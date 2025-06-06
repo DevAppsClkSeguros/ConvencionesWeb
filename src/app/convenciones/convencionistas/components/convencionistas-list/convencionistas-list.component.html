@@ -58,14 +58,22 @@
               </div>
             </div>
           </td>
-          <td>
-            {{convencionista.clave}}
-            <br />
-            <span class="badge badge-ghost badge-sm">{{convencionista.clave}}</span>
-          </td>
+          <td>{{convencionista.clave}}</td>
           <td>{{convencionista.telefono}}</td>
-          <td>Admin</td>
-          <td>{{convencionista.nombreEvento}}</td>
+          <td>
+            {{convencionista.categoriaNombre}}
+            <br />
+            <span class="badge badge-ghost badge-sm">{{convencionista.perfilNombre}}</span>
+          </td>
+          <td>
+            <select #convencionistaSelect class="select select-accent" [(ngModel)]="convencionista.nombreEvento"
+              (change)="actualizaConvencionista(convencionista, convencionistaSelect.value)">
+              <option value="" selected>Selecciona una convención</option>
+              @for (convencion of convenciones(); track convencion.id) {
+              <option [value]="convencion.nombreEvento">{{convencion.nombreEvento}}</option>
+              }
+              </select>
+          </td>
           <th>
             <button class="btn btn-primary btn-xs"
               [routerLink]="[`/convencionistas/${convencionista.id}/edit`]">Editar</button>
