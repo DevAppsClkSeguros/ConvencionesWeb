@@ -109,26 +109,26 @@ export class ConvencionistasListComponent implements OnInit {
     this.convencionistaResource.reload();
   }
 
+
+
   actualizaConvencionista(convencionista: Convencionista, Convencion: any) {
     setTimeout(() => {
       console.log('Valor de la convencion seleccionada: ', convencionista);
       convencionista.eventoId = 1012;
       console.log('Valor de la convencion modificada: ', convencionista);
-
+      this.convencionistasService
+        .actualizaConvencionista(convencionista)
+        .subscribe({
+          next: (data) => {
+            if (data.status) {
+              this.notificacion.show(
+                `El convencionista ${convencionista.nombreCompleto} ha sido actualizado correctamente`,
+                'success'
+              );
+            }
+          },
+        });
     }, 200);
-
-    convencionista.eventoId = Convencion.id;
-    // this.convencionistasService
-    //   .actualizaConvencionista(convencionista)
-    //   .subscribe({
-    //     next: (data) => {
-
-    //     },
-    //   });
-    this.notificacion.show(
-      `El convencionista ${convencionista.nombreCompleto} ha sido actualizado correctamente`,
-      'success'
-    );
   }
 
   abrirModal(convencionId: number) {
