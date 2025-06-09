@@ -1,4 +1,8 @@
-<div class="min-h-screen flex items-center justify-center bg-base-200">
+@if (convencionResource?.error()) {
+<shared-not-found mensaje="{{convencionResource?.error()}}" />
+}
+@if (!convencionResource?.error()) {
+  <div class="min-h-screen flex items-center justify-center bg-base-200">
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
     <h2 class="text-3xl font-bold mb-6">Datos de la convención</h2>
 
@@ -109,11 +113,6 @@
       <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
       <button type="submit" class="btn btn-primary">Guardar</button>
     </div>
-    <h3>
-      {{myForm.valid}}
-    </h3>
-    <h2>
-      {{myForm.value | json}}
-    </h2>
   </form>
 </div>
+}

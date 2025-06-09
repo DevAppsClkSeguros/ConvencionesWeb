@@ -25,14 +25,14 @@ export class ConvencionesListComponent {
   router = inject(Router);
   notificacion = inject(NotificacionService);
   mensajeEliminar = '';
-  query = signal('');
 
   @ViewChild('deleteModal') deleteModal!: ConfirmModalComponent;
   convencionId: number = 0;
 
   convencionesResource = rxResource({
-    request: () => ({ query: this.query() }),
-    loader: ({ request }) => {
+    request: () => ({}),
+    loader: () => {
+      console.log('rxresourceeeee');
       return this.convencionesService
         .obtieneConvenciones()
         .pipe(map((resp) => resp.response));
@@ -57,13 +57,13 @@ export class ConvencionesListComponent {
             'Convención eliminada correctamente',
             'success'
           );
+          this.convencionesResource.update((convenciones) => {
+            return convenciones?.filter((convencion) => convencion.id !== this.convencionId)
+          })
         }
       },
       error: (e) => {
         this.notificacion.show('Error al eliminar la convención', 'error');
-      },
-      complete: () => {
-        this.refrescaDatos();
       },
     });
   }

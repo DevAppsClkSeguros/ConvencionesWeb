@@ -13,10 +13,12 @@ import { NotificacionService } from '@shared/services/notificacion.service';
 import { ActivatedRoute } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Convencion } from '../../interfaces/convenciones.interface';
+import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'evento-update',
-  imports: [ReactiveFormsModule, JsonPipe],
+  imports: [ReactiveFormsModule, NotFoundComponent],
   providers: [DatePipe],
   templateUrl: './convenciones-update.component.html',
 })
@@ -54,7 +56,13 @@ export class ConvencionesUpdateComponent {
     ? rxResource({
         request: () => ({}),
         loader: () =>
-          this.convencionesService.obtieneConvencion(this.convencionId),
+          this.convencionesService.obtieneConvencion(this.convencionId).pipe(
+            tap((resp) => {
+              if (!resp.status) {
+                throw new Error(resp.message?.[0] || 'Error desconocido');
+              }
+            })
+          ),
       })
     : null;
 
@@ -124,11 +132,10 @@ export class ConvencionesUpdateComponent {
     this.imagePreview = null;
     inputRef.value = '';
     this.selectedFile = null;
-    this.myForm.patchValue(
-      {
-        imagen: null,
-        url: null
-      });
+    this.myForm.patchValue({
+      imagen: null,
+      url: null,
+    });
     this.myForm.get('imagen')?.updateValueAndValidity();
   }
 

@@ -109,8 +109,6 @@ export class ConvencionistasListComponent implements OnInit {
     this.convencionistaResource.reload();
   }
 
-
-
   actualizaConvencionista(convencionista: Convencionista, Convencion: any) {
     setTimeout(() => {
       console.log('Valor de la convencion seleccionada: ', convencionista);
@@ -147,6 +145,11 @@ export class ConvencionistasListComponent implements OnInit {
               'Convencionista eliminado correctamente',
               'success'
             );
+            this.convencionistaResource.update((convencionistas) => {
+              return convencionistas?.filter(
+                (convencionista) => convencionista.id !== this.convencionistaId
+              );
+            });
           }
         },
         error: (e) => {
@@ -154,9 +157,6 @@ export class ConvencionistasListComponent implements OnInit {
             'Error al eliminar la convencionista',
             'error'
           );
-        },
-        complete: () => {
-          this.refrescaDatos();
         },
       });
   }

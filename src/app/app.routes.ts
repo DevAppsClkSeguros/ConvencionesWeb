@@ -14,16 +14,20 @@ export const routes: Routes = [
     component: HomePageComponent,
   },
   {
+    path: 'convencionistas',
+    loadChildren: () => import('./convenciones/convencionistas/convencionistas.routes'),
+  },
+  {
     path: 'convenciones',
     loadChildren: () => import('./convenciones/convenciones/convenciones.routes'),
   },
   {
-    path: 'hotel',
-    loadChildren: () => import('./convenciones/hotel/hotel.routes'),
+    path: 'preguntas',
+    loadChildren: () => import('./convenciones/preguntas/preguntas.routes'),
   },
   {
-    path: 'convencionistas',
-    loadChildren: () => import('./convenciones/convencionistas/convencionistas.routes'),
+    path: 'hotel',
+    loadChildren: () => import('./convenciones/hotel/hotel.routes'),
   },
   {
     path: 'cuenta',

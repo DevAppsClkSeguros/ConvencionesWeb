@@ -26,7 +26,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (convencion of convencionesResource.value(); track convencion.subtitulo; let i = $index) {
+        @for (convencion of convencionesResource.value(); track convencion.id) {
         <tr>
           <td>{{convencion.id}}</td>
           <td>

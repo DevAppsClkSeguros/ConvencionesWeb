@@ -64,7 +64,6 @@ export class ConvencionistasUpdateComponent {
             .obtieneConvencionista(this.convencionistaId)
             .pipe(
               tap((resp) => {
-                console.log('resp: ', resp);
                 if (!resp.status) {
                   throw new Error(resp.message?.[0] || 'Error desconocido');
                 }

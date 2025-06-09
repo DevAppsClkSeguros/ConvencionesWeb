@@ -1,0 +1,36 @@
+@if (preguntaResource?.error()) {
+<shared-not-found mensaje="No se encontro la pregunta solicitada" />
+}
+@if (!preguntaResource?.error()) {
+<div class="min-h-screen flex items-center justify-center bg-base-200">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
+    <h2 class="text-3xl font-bold mb-6">Datos de la pregunta</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @if (isEditMode) {
+      <div>
+        <label class="label w-full">ID</label>
+        <input type="text" formControlName="id" class="input input-bordered w-auto" readonly />
+      </div>
+      }
+
+      <!-- Pregunta -->
+      <div>
+        <label class="label">Pregunta</label>
+        <input type="text" formControlName="texto" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'texto')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'texto')}}
+        </small>
+        }
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end mt-8 gap-4">
+      <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+</div>
+}

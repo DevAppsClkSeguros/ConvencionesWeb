@@ -9,7 +9,6 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class ConvencionesService {
-  constructor() {}
 
   private http = inject(HttpClient);
 
