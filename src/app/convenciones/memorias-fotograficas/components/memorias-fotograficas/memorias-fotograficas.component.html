@@ -1,0 +1,19 @@
+<!-- <section class="py-5">
+  <imagen-list [imagenes]="microsoftGraphService.trendingImagen()"/>
+</section> -->
+<section class="py-5">
+  <imagen-list [imagenes]="microsoftGraphService.trendingImagenGroup()"/>
+</section>
+<!-- <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-5">
+
+  @for (group of microsoftGraphService.trendingImagenGroup(); track $index) {
+    <div class="grid gap-4">
+      @for (imagen of group; track imagen.id) {
+        <div>
+          <img class="h-full w-full rounded-lg object-cover" [src]="imagen.url"
+            [alt]="imagen.title">
+          </div>
+      }
+    </div>
+  }
+</div> -->

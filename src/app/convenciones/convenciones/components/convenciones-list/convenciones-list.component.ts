@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import { ConvencionesService } from '../../services/convenciones.service';
 import { DatePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
@@ -32,7 +32,6 @@ export class ConvencionesListComponent {
   convencionesResource = rxResource({
     request: () => ({}),
     loader: () => {
-      console.log('rxresourceeeee');
       return this.convencionesService
         .obtieneConvenciones()
         .pipe(map((resp) => resp.response));

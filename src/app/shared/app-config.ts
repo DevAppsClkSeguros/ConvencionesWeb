@@ -5,6 +5,11 @@ export class AppConfig {
   public static APIREST_URL: string =
     'https://dev.developmentservices.com.mx/ApisConvenciones';
 
+  public static APIREST_MICROSOFT: string =
+    'https://graph.microsoft.com/v1.0/users/';
+
+  public static idTokenMS: string = '';
+
   public static getCommonHeadersRest() {
     return {
       'Content-Type': 'application/json',

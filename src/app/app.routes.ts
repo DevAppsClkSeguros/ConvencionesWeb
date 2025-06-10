@@ -26,6 +26,10 @@ export const routes: Routes = [
     loadChildren: () => import('./convenciones/preguntas/preguntas.routes'),
   },
   {
+    path: 'memorias-fotograficas',
+    loadChildren: () => import('./convenciones/memorias-fotograficas/memorias-fotograficas.routes'),
+  },
+  {
     path: 'hotel',
     loadChildren: () => import('./convenciones/hotel/hotel.routes'),
   },

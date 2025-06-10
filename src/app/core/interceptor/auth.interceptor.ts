@@ -7,7 +7,11 @@ import { AuthService } from './auth.service';
 export const authInterceptorFn: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   // Evitar interceptar la solicitud de renovación de token
-  if (req.url.includes('/Usuarios/renovar-token')) {
+  if (
+    req.url.includes('/Usuarios/renovar-token') ||
+    req.url.includes('microsoftonline') ||
+    req.url.includes('microsof')
+  ) {
     return next(req);
   }
   const auth = inject(AuthService);
