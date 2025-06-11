@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Card } from '../../interfaces/card.interface';
+import type { Card } from '../../interfaces/card.interface';
 import { NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
 

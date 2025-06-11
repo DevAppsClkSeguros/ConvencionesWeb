@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { catchError, map, of } from 'rxjs';
-import { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
+import type { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
 import { ConvencionistasService } from '../../services/convencionistas.service';
 import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
 import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
@@ -18,7 +18,7 @@ import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.co
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
 import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
-import { Convencionista } from '../../interfaces/convencionistas.interface';
+import type { Convencionista } from '../../interfaces/convencionistas.interface';
 
 @Component({
   selector: 'convencionistas-list',

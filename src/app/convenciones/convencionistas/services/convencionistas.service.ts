@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
 import { AppConfig } from '@shared/app-config';
 import { HttpClient } from '@angular/common/http';
-import {
+import type {
   Convencionista,
   ConvencionistasResponse,
 } from '../interfaces/convencionistas.interface';

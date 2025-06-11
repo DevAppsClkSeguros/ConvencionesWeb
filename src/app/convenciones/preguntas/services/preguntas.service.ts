@@ -2,7 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
 import { AppConfig } from '@shared/app-config';
 import { HttpClient } from '@angular/common/http';
-import { Pregunta, PreguntasResponse } from '../interfaces/preguntas.interface';
+import type {
+  Pregunta,
+  PreguntasResponse,
+} from '../interfaces/preguntas.interface';
 
 @Injectable({ providedIn: 'root' })
 export class PreguntasService {

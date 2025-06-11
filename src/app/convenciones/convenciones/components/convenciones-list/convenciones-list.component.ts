@@ -1,7 +1,7 @@
 import { Component, inject, ViewChild } from '@angular/core';
 import { ConvencionesService } from '../../services/convenciones.service';
 import { DatePipe } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
@@ -22,7 +22,6 @@ import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-
 })
 export class ConvencionesListComponent {
   convencionesService = inject(ConvencionesService);
-  router = inject(Router);
   notificacion = inject(NotificacionService);
   mensajeEliminar = '';
 

@@ -12,7 +12,7 @@ import { FormUtils } from '@core/utils/form-utils';
 import { PreguntasService } from '../../services/preguntas.service';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { tap } from 'rxjs';
-import { Pregunta } from '../../interfaces/preguntas.interface';
+import type { Pregunta } from '../../interfaces/preguntas.interface';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
 @Component({

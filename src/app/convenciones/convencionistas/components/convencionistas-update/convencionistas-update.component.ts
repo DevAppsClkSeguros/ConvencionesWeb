@@ -11,7 +11,7 @@ import { FormUtils } from '@core/utils/form-utils';
 import { CdnService } from '@shared/services/cdn.service';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
-import { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
+import type { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
 import { ActivatedRoute } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
@@ -207,7 +207,12 @@ export class ConvencionistasUpdateComponent {
               url: data.response,
             });
           },
-          error: (e) => {},
+          error: (e) => {
+            this.notificacion.show(
+              'Ocurrio un error al cargar la foto del convencionista, favor de intentarlo nuevamente',
+              'error'
+            );
+          },
           complete: () => {
             this.registraConvencionista();
           },

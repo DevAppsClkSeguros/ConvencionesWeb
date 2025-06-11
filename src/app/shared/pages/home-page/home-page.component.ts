@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CardComponent } from "../../components/card/card.component";
-import { Card } from '../../interfaces/card.interface';
+import type { Card } from '../../interfaces/card.interface';
 
 @Component({
   selector: 'app-home-page',
@@ -32,7 +32,7 @@ export class HomePageComponent implements OnInit {
       buttonText: 'Contratar',
       redirectTo: '',
       visible: true,
-      subMenu: [{ title: 'Hotel', route: 'cs-dat-evn-hotel' }],
+      subMenu: [{ title: 'Hotel', route: '/hoteles' }],
     },
     {
       title: 'Vuelos',

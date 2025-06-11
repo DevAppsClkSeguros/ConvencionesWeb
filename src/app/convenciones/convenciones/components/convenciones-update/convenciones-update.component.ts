@@ -1,4 +1,4 @@
-import { DatePipe, JsonPipe, Location } from '@angular/common';
+import { DatePipe, Location } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
 import {
   FormBuilder,
@@ -12,7 +12,6 @@ import { ConvencionesService } from '../../services/convenciones.service';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { ActivatedRoute } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Convencion } from '../../interfaces/convenciones.interface';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { tap } from 'rxjs';
 
@@ -157,7 +156,12 @@ export class ConvencionesUpdateComponent {
               url: data.response,
             });
           },
-          error: (e) => {},
+          error: (e) => {
+            this.notificacion.show(
+              'Ocurrio un error al cargar la foto de la convención, favor de intentarlo nuevamente',
+              'error'
+            );
+          },
           complete: () => {
             this.registraConvencion();
           },

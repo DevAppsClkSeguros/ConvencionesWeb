@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, tap, throwError } from 'rxjs';
-import { Login } from './auth.interface';
+import type { Login } from './auth.interface';
 import { AppConfig } from '@shared/app-config';
 
 @Injectable({ providedIn: 'root' })

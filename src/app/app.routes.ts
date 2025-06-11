@@ -30,8 +30,8 @@ export const routes: Routes = [
     loadChildren: () => import('./convenciones/memorias-fotograficas/memorias-fotograficas.routes'),
   },
   {
-    path: 'hotel',
-    loadChildren: () => import('./convenciones/hotel/hotel.routes'),
+    path: 'hoteles',
+    loadChildren: () => import('./convenciones/hoteles/hoteles.routes'),
   },
   {
     path: 'cuenta',

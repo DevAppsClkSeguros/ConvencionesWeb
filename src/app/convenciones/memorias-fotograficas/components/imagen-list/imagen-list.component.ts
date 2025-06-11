@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { ImagenListItemComponent } from "./imagen-list-item/imagen-list-item.component";
-import { Imagen } from '../../interfaces/imagen.interface';
+import type { Imagen } from '../../interfaces/imagen.interface';
 
 @Component({
   selector: 'imagen-list',

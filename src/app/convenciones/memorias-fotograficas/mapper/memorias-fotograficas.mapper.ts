@@ -1,5 +1,5 @@
-import { Imagen } from '../interfaces/imagen.interface';
-import { MicrosoftItem } from '../interfaces/microsoftGraph.interface';
+import type { Imagen } from '../interfaces/imagen.interface';
+import type { MicrosoftItem } from '../interfaces/microsoftGraph.interface';
 
 export class ImageMapper {
   static mapMicrosoftItemToImage(item: MicrosoftItem): Imagen {

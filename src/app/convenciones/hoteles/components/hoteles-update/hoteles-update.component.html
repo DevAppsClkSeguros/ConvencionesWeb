@@ -1,48 +1,38 @@
-@if (convencionResource?.error()) {
-<shared-not-found mensaje="{{convencionResource?.error()}}" />
+@if (hotelResource?.error()) {
+<shared-not-found mensaje="{{hotelResource?.error()}}" />
 }
-@if (!convencionResource?.error()) {
-  <div class="min-h-screen flex items-center justify-center bg-base-200">
+@if (!hotelResource?.error()) {
+<div class="min-h-screen flex items-center justify-center bg-base-200">
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
-    <h2 class="text-3xl font-bold mb-6">Datos de la convención</h2>
+    <h2 class="text-3xl font-bold mb-6">Datos del Hotel</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       @if (isEditMode) {
-        <div>
-          <label class="label">ID</label>
-          <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
-        </div>
-
-        <!-- Estatus -->
-        <div>
-          <label class="label w-full">Estatus</label>
-          <input type="checkbox" formControlName="activo" class="toggle toggle-primary " />
-          @if (formUtils.isValidField(myForm, 'activo')){
-          <small class="text-error">
-            {{formUtils.getFieldError(myForm, 'activo')}}
-          </small>
-          }
-        </div>
+      <div>
+        <label class="label">ID</label>
+        <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
+      </div>
+      <div></div>
       }
 
       <!-- Nombre -->
       <div>
-        <label class="label">Nombre</label>
-        <input type="text" formControlName="nombreEvento" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'nombreEvento')){
+        <label class="label">Hotel</label>
+        <input type="text" formControlName="nombreHotel" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'nombreHotel')){
         <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'nombreEvento')}}
+          {{formUtils.getFieldError(myForm, 'nombreHotel')}}
         </small>
         }
       </div>
 
-      <!-- Lugar destino -->
+      <!-- Dirección -->
       <div>
-        <label class="label">Lugar destino</label>
-        <input type="text" formControlName="lugarDestino" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'lugarDestino')){
+        <label class="label">Dirección</label>
+        <input type="text" formControlName="direccion" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'direccion')){
         <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'lugarDestino')}}
+          {{formUtils.getFieldError(myForm, 'direccion')}}
         </small>
         }
       </div>
@@ -69,26 +59,27 @@
         }
       </div>
 
-      <!-- Fecha inicio -->
+      <!-- Teléfono -->
       <div>
-        <label class="label">Fecha inicio</label>
-        <input type="date" formControlName="fecha_inicio" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'fecha_inicio')){
+        <label class="label">Telefono</label>
+        <input type="number" formControlName="telefono" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'telefono')){
         <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'fecha_inicio')}}
+          {{formUtils.getFieldError(myForm, 'telefono')}}
         </small>
         }
       </div>
 
-      <!-- Fecha fin -->
+      <!-- Convención -->
       <div>
-        <label class="label">Fecha fin</label>
-        <input type="date" formControlName="fecha_fin" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'fecha_fin')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'fecha_fin')}}
-        </small>
-        }
+        <label class="label">Convención</label>
+        <select formControlName="eventoId" class="select select-bordered w-full">
+          <option value="" selected>Selecciona una convención</option>
+          @for (convencion of convencionesResource.value(); track convencion.id) {
+          <option [value]="convencion.id">{{convencion.nombreEvento}}</option>
+          }
+        </select>
+        <small class="text-error">Campo obligatorio.</small>
       </div>
 
       <!-- Foto -->

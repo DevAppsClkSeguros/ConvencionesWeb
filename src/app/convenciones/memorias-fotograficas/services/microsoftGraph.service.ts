@@ -3,7 +3,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { AppConfig } from '@shared/app-config';
 import type { MicrosoftResponse } from '../interfaces/microsoftGraph.interface';
-import { Imagen } from '../interfaces/imagen.interface';
+import type { Imagen } from '../interfaces/imagen.interface';
 import { ImageMapper } from '../mapper/memorias-fotograficas.mapper';
 
 
