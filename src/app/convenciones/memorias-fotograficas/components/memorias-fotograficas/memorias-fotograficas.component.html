@@ -1,10 +1,10 @@
 <!-- <section class="py-5">
   <imagen-list [imagenes]="microsoftGraphService.trendingImagen()"/>
 </section> -->
-<section class="py-5">
+<!-- <section class="py-5">
   <imagen-list [imagenes]="microsoftGraphService.trendingImagenGroup()"/>
-</section>
-<!-- <div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-5">
+</section> -->
+<div class="h-screen overflow-y-scroll grid grid-cols-2 md:grid-cols-4 gap-4 pt-5" (scroll)="onScroll($event)" #groupDiv>
 
   @for (group of microsoftGraphService.trendingImagenGroup(); track $index) {
     <div class="grid gap-4">
@@ -16,4 +16,4 @@
       }
     </div>
   }
-</div> -->
+</div>

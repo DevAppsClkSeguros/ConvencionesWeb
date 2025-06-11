@@ -1,6 +1,7 @@
 export interface MicrosoftResponse {
-  "@odata.context": string;
-  value:            MicrosoftItem[];
+  '@odata.context': string;
+  '@odata.nextLink': string;
+  value: MicrosoftItem[];
 }
 
 export interface MicrosoftItem {

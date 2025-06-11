@@ -7,7 +7,7 @@ import { PasswordResetInitComponent } from './account/password-reset/init/passwo
 export const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent,
+    loadComponent: () => import('./login/login.component').then(m => m.LoginComponent)
   },
   {
     path: 'dashboard',
