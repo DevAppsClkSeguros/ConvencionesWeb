@@ -73,7 +73,7 @@ export class HomePageComponent implements OnInit {
       subMenu: [
         {
           title: 'Recomendaciones',
-          route: 'cs-dat-evn-recomendaciones',
+          route: '/recomendaciones',
         },
       ],
     },
