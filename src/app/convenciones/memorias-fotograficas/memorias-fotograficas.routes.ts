@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { MemoriasFotograficasComponent } from './components/memorias-fotograficas/memorias-fotograficas.component';
 
-export const ConvencionistasRoutes: Routes = [
+export const MemoriasFotograficasRoutes: Routes = [
   {
     path: '',
     component: MemoriasFotograficasComponent,
@@ -12,4 +12,4 @@ export const ConvencionistasRoutes: Routes = [
   },
 ];
 
-export default ConvencionistasRoutes;
+export default MemoriasFotograficasRoutes;

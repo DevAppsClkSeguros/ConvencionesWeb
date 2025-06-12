@@ -40,7 +40,7 @@ export class HotelesUpdateComponent {
     longitud: ['', Validators.required],
     imagen: [null, Validators.required],
     url: [''],
-    eventoId: [0],
+    eventoId: ['', Validators.required],
   });
 
   hotelResource = this.isEditMode

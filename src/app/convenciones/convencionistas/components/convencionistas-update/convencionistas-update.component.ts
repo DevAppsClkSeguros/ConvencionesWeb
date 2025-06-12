@@ -51,9 +51,9 @@ export class ConvencionistasUpdateComponent {
     imagen: [null],
     url: [''],
     documento: [''],
-    perfilNombreId: 2,
-    categoriaNombreId: 1,
-    eventoId: 2,
+    perfilNombreId: ['', Validators.required],
+    categoriaNombreId: ['', Validators.required],
+    eventoId: ['', Validators.required],
   });
 
   convencionistaResource = this.isEditMode

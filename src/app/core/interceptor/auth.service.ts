@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap, throwError } from 'rxjs';
-import type { Login } from './auth.interface';
+import { jwtDecode } from 'jwt-decode';
 import { AppConfig } from '@shared/app-config';
+import type { Login } from './auth.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -33,7 +34,8 @@ export class AuthService {
     token: string,
     thresholdSeconds: number = 60
   ): boolean {
-    const decoded = decodeToken(token);
+    // const decoded = decodeToken(token);
+    const decoded = jwtDecode(token);
     if (!decoded || !decoded.exp) return true;
 
     const now = new Date().getTime() / 1000;
@@ -63,25 +65,37 @@ export class AuthService {
     return this.tokenSub.value ?? '';
   }
 
+  getUserData(): any | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.error('Error al decodificar el token:', error);
+      return null;
+    }
+  }
+
   logOut() {
     localStorage.removeItem('authToken');
     this.tokenSub.next(null);
   }
 }
 
-const decodeToken = (token: string): any => {
-  try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split('')
-        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-        .join('')
-    );
-    return JSON.parse(jsonPayload);
-  } catch (e) {
-    console.error('Error al decodificar el token', e);
-    return null;
-  }
-};
+// const decodeToken = (token: string): any => {
+//   try {
+//     const base64Url = token.split('.')[1];
+//     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+//     const jsonPayload = decodeURIComponent(
+//       atob(base64)
+//         .split('')
+//         .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+//         .join('')
+//     );
+//     return JSON.parse(jsonPayload);
+//   } catch (e) {
+//     console.error('Error al decodificar el token', e);
+//     return null;
+//   }
+// };

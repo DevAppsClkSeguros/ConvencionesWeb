@@ -5,6 +5,17 @@ import {
   ValidationErrors,
 } from '@angular/forms';
 
+async function sleep() {
+  /****
+   Este código no deberia de existir, en su lugar deberia consumir un api para
+  consultar un email y mostrar al usuario si es que se esta duplicando
+  ****/
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(true);
+    }, 2500);
+  });
+}
 export class FormUtils {
   //Expresiones regulares
   static namePattern = '([a-zA-Z]+) ([a-zA-Z]+)';
@@ -22,6 +33,10 @@ export class FormUtils {
           return `Mínimo de ${errors['min'].min}`;
         case 'email':
           return 'Correo electrónico invalido';
+        case 'emailTaken':
+          return 'El correo eletrónico ya está siendo utilizado por otro usuario';
+        case 'noStrider':
+          return 'El nombre de usuario ya existe, no lo puedes usar';
         case 'pattern':
           if (errors['pattern'].requiredPattern === FormUtils.emailPattern) {
             return 'El valor ingresado no luce como un correo electrónico';
@@ -71,5 +86,23 @@ export class FormUtils {
 
       return field1Value === field2Value ? null : { passwordsNotEqual: true };
     };
+  }
+
+  static async checkingServerResponse(
+    control: AbstractControl
+  ): Promise<ValidationErrors | null> {
+    await sleep();
+    const formValue = control.value;
+    if (formValue === 'hola@mundo.com') {
+      return {
+        emailTaken: true,
+      };
+    }
+    return null;
+  }
+
+  static notStrider(control: AbstractControl): ValidationErrors | null {
+    const value = control.value;
+    return value === 'strider' ? { noStrider: true } : null;
   }
 }

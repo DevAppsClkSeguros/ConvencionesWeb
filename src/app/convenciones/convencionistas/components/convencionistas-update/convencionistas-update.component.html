@@ -62,7 +62,7 @@
       <!-- Teléfono -->
       <div>
         <label class="label">Teléfono</label>
-        <input type="tel" formControlName="telefono" class="input input-bordered w-full" />
+        <input type="number" formControlName="telefono" class="input input-bordered w-full" />
       </div>
 
       <!-- Perfil -->
@@ -74,7 +74,10 @@
           <option [value]="perfil.id">{{perfil.nombre}}</option>
           }
         </select>
-        <small class="text-error">Campo obligatorio.</small>
+        @if (formUtils.isValidField(myForm, 'perfilNombreId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'perfilNombreId')}}
+        </small> }
       </div>
 
       <!-- Categoría -->
@@ -86,7 +89,10 @@
           <option [value]="categoria.id">{{categoria.nombre}}</option>
           }
         </select>
-        <small class="text-error">Campo obligatorio.</small>
+        @if (formUtils.isValidField(myForm, 'categoriaNombreId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'categoriaNombreId')}}
+        </small> }
       </div>
 
       <!-- Foto -->
@@ -109,7 +115,11 @@
           <option [value]="convencion.id">{{convencion.nombreEvento}}</option>
           }
         </select>
-        <small class="text-error">Campo obligatorio.</small>
+        @if (formUtils.isValidField(myForm, 'eventoId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'eventoId')}}
+        </small>
+        }
       </div>
     </div>
 
