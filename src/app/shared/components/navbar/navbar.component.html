@@ -1,14 +1,37 @@
 <div class="navbar bg-base-100 shadow-sm">
-  <!-- Izquierda -->
-  <div class="flex-1">
-    <a class="btn btn-ghost text-xl gap-2" [routerLink]="['/dashboard']">
-      <img src="assets/images/logos/logoConvencionesClick.webp" alt="Logo" class="h-12 w-auto" />
+
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+        </svg>
+      </div>
+      <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+        <li>
+          <a>Administración</a>
+          <ul class="p-2">
+            <li><a [routerLink]="['/admin']">Gestión de usuarios</a></li>
+            <li><a>Configuración</a></li>
+            <li><a (click)="abrirLinkApis()">Apis</a></li>
+          </ul>
+        </li>
+        <li><a>{{ nombreUsuario }}</a>
+          <ul class="p-2">
+            <li><a [routerLink]="['/cuenta/configuracion']">Ajustes</a></li>
+            <li><a (click)="logOut()">Cerrar sesión</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <a class="btn btn-ghost text-xl" [routerLink]="['/dashboard']">
       <span class="hidden md:inline">Convenciones Click</span>
+      <img src="assets/images/logos/logoConvencionesClick.webp" alt="Logo" class="h-12 w-auto" />
     </a>
   </div>
 
   <!-- Derecha -->
-  <div class="flex-none">
+  <div class="navbar-end hidden lg:flex">
     <ul class="menu menu-horizontal px-2 md:px-6">
 
       <!-- Dropdown Administración -->

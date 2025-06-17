@@ -56,8 +56,10 @@ export class ConvencionesListComponent {
             'success'
           );
           this.convencionesResource.update((convenciones) => {
-            return convenciones?.filter((convencion) => convencion.id !== this.convencionId)
-          })
+            return convenciones?.filter(
+              (convencion) => convencion.id !== this.convencionId
+            );
+          });
         }
       },
       error: (e) => {

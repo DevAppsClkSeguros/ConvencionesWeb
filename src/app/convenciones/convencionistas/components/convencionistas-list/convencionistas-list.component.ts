@@ -111,9 +111,6 @@ export class ConvencionistasListComponent implements OnInit {
 
   actualizaConvencionista(convencionista: Convencionista, Convencion: any) {
     setTimeout(() => {
-      console.log('Valor de la convencion seleccionada: ', convencionista);
-      convencionista.eventoId = 1012;
-      console.log('Valor de la convencion modificada: ', convencionista);
       this.convencionistasService
         .actualizaConvencionista(convencionista)
         .subscribe({

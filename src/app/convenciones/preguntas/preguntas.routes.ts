@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { PreguntasListComponent } from './components/preguntas-list/preguntas-list.component';
 import { PreguntasUpdateComponent } from './components/preguntas-update/preguntas-update.component';
 
-export const ConvencionistasRoutes: Routes = [
+export const PreguntasRoutes: Routes = [
   {
     path: '',
     component: PreguntasListComponent,
@@ -21,4 +21,4 @@ export const ConvencionistasRoutes: Routes = [
   },
 ];
 
-export default ConvencionistasRoutes;
+export default PreguntasRoutes;

@@ -38,6 +38,10 @@ export const routes: Routes = [
     loadChildren: () => import('./convenciones/recomendaciones/recomendaciones.routes'),
   },
   {
+    path: 'vuelos',
+    loadChildren: () => import('./convenciones/vuelos/vuelos.routes'),
+  },
+  {
     path: 'cuenta',
     loadChildren: () => import('./account/account.routes')
   },

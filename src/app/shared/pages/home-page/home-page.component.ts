@@ -44,7 +44,7 @@ export class HomePageComponent implements OnInit {
       subMenu: [
         {
           title: 'Vuelos',
-          route: 'cs-dat-evn-vuelos',
+          route: '/vuelos',
         },
       ],
     },
