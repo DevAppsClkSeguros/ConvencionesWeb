@@ -16,7 +16,7 @@ import { ActivatedRoute } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { map, tap } from 'rxjs';
-import { CategoriasConvensionistaService } from 'src/app/convenciones/configuracion/categoriaConvencionista/services/categoriasConvencionista.service';
+import { CategoriasConvensionistaService } from 'src/app/convenciones/configuracion/categorias-convencionista/services/categorias-convencionista.service';
 import { PerfilesConvensionistaService } from 'src/app/convenciones/configuracion/perfilConvencionista/services/perfilesConvencionista.service';
 
 @Component({
