@@ -3,7 +3,7 @@ import { RouterLink } from '@angular/router';
 import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
 import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
 import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
-import { PreguntasService } from '../../services/preguntas.service';
+import { EncuestaService } from '../../../services/encuesta.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { NotificacionService } from '@shared/services/notificacion.service';
@@ -19,7 +19,7 @@ import { NotificacionService } from '@shared/services/notificacion.service';
   templateUrl: './preguntas-list.component.html',
 })
 export class PreguntasListComponent {
-  preguntasService = inject(PreguntasService);
+  encuestaService = inject(EncuestaService);
   notificacion = inject(NotificacionService);
   preguntaId: number = 0;
   mensajeEliminar = '';
@@ -28,7 +28,7 @@ export class PreguntasListComponent {
   preguntasResource = rxResource({
     request: () => ({}),
     loader: () => {
-      return this.preguntasService
+      return this.encuestaService
         .obtienePreguntas()
         .pipe(map((resp) => resp.response));
     },
@@ -45,7 +45,7 @@ export class PreguntasListComponent {
   }
 
   eliminaPregunta() {
-    this.preguntasService.eliminaPregunta(this.preguntaId).subscribe({
+    this.encuestaService.eliminaPregunta(this.preguntaId).subscribe({
       next: (data) => {
         if (data.status) {
           this.preguntasResource.update((preguntas) => {

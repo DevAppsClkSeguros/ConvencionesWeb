@@ -9,10 +9,10 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormUtils } from '@core/utils/form-utils';
-import { PreguntasService } from '../../services/preguntas.service';
+import { EncuestaService } from '../../../services/encuesta.service';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { tap } from 'rxjs';
-import type { Pregunta } from '../../interfaces/preguntas.interface';
+import type { Pregunta } from '../../../interfaces/encuesta.interface';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 
 @Component({
@@ -24,7 +24,7 @@ export class PreguntasUpdateComponent {
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
   location = inject(Location);
-  preguntasService = inject(PreguntasService);
+  EncuestaService = inject(EncuestaService);
   notificacion = inject(NotificacionService);
 
   preguntaId = this.route.snapshot.params['id'];
@@ -40,9 +40,10 @@ export class PreguntasUpdateComponent {
     ? rxResource({
         request: () => ({}),
         loader: () => {
-          return this.preguntasService.obtienePregunta(this.preguntaId).pipe(
+          return this.EncuestaService.obtienePregunta(this.preguntaId).pipe(
             tap((resp) => {
-              if (resp.status) {
+              console.log('Resp preguntas: ', resp);
+              if (!resp.status) {
                 throw new Error(resp.message?.[0] || 'Error desconocido');
               }
             })
@@ -56,13 +57,13 @@ export class PreguntasUpdateComponent {
       effect(() => {
         const data = this.preguntaResource!.value();
         if (data?.status) {
-          this.llenaFormulario(data.response[0]);
+          this.llenaFormulario(data.response);
         }
       });
     }
   }
 
-  private llenaFormulario(pregunta: Pregunta) {
+  private llenaFormulario(pregunta: any) {
     this.myForm.patchValue({
       id: pregunta.id,
       texto: pregunta.texto,
@@ -79,8 +80,8 @@ export class PreguntasUpdateComponent {
 
   registraPregunta() {
     const request$ = this.isEditMode
-      ? this.preguntasService.actualizaPregunta(this.myForm.value)
-      : this.preguntasService.nuevaPregunta(this.myForm.value);
+      ? this.EncuestaService.actualizaPregunta(this.myForm.value)
+      : this.EncuestaService.nuevaPregunta(this.myForm.value);
     request$.subscribe({
       next: (data) => {
         if (data.status) {

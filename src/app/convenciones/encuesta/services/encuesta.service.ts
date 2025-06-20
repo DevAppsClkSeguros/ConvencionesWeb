@@ -5,10 +5,11 @@ import { HttpClient } from '@angular/common/http';
 import type {
   Pregunta,
   PreguntasResponse,
-} from '../interfaces/preguntas.interface';
+  RespuestasResponse,
+} from '../interfaces/encuesta.interface';
 
 @Injectable({ providedIn: 'root' })
-export class PreguntasService {
+export class EncuestaService {
   private http = inject(HttpClient);
 
   obtienePreguntas(): Observable<PreguntasResponse> {
@@ -22,7 +23,7 @@ export class PreguntasService {
   obtienePregunta(preguntaId: number): Observable<PreguntasResponse> {
     return this.http
       .get<PreguntasResponse>(
-        `${AppConfig.APIREST_URL}/api/Preguntas/DetallesPregunta${preguntaId}`
+        `${AppConfig.APIREST_URL}/api/Preguntas/Detalles/${preguntaId}`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
@@ -41,8 +42,8 @@ export class PreguntasService {
 
   actualizaPregunta(pregunta: Pregunta): Observable<PreguntasResponse> {
     return this.http
-      .post<PreguntasResponse>(
-        `${AppConfig.APIREST_URL}/api/Preguntas/ActualizarPregunta${pregunta.id}`,
+      .put<PreguntasResponse>(
+        `${AppConfig.APIREST_URL}/api/Preguntas/ActualizarPregunta/${pregunta.id}`,
         {
           id: pregunta.id,
           texto: pregunta.texto,
@@ -57,5 +58,16 @@ export class PreguntasService {
         `${AppConfig.APIREST_URL}/api/Preguntas/${preguntaId}`
       )
       .pipe(catchError(AppConfig.handleErrors));
+  }
+
+  obtieneRespuestas(eventoId: number): Observable<RespuestasResponse[]> {
+    return this.http
+      .get<RespuestasResponse[]>(
+        `${AppConfig.APIREST_URL}/api/Preguntas/evento/${eventoId}/preguntas-respuestas`
+      )
+      .pipe(catchError(AppConfig.handleErrors));
+  }
+
+  eliminaRespuesta(respuestaId: number) {
   }
 }

@@ -21,7 +21,7 @@ export class HomePageComponent implements OnInit {
       visible: true,
       subMenu: [
         { title: 'Convenciones', route: '/convenciones' },
-        { title: 'Encuesta', route: '/preguntas' },
+        { title: 'Encuesta', route: '/encuesta' },
         { title: 'Convencionistas', route: '/convencionistas' },
       ],
     },

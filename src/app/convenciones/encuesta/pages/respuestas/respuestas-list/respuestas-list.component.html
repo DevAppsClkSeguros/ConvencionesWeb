@@ -1,0 +1,58 @@
+<div>
+  <section class="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
+    <div class="w-full sm:w-auto">
+      <fieldset class="fieldset h-10">
+        <select #convencionSelect class="select" [value]="convencionSeleccionada()"
+          (change)="convencionSeleccionada.set(convencionSelect.value)">
+          @for (convencion of convenciones(); track convencion.id) {
+          <option [value]="convencion.nombreEvento">{{convencion.nombreEvento}}</option>
+          }
+        </select>
+      </fieldset>
+    </div>
+    <div class="flex flex-col sm:flex-row items-center justify-end gap-4 w-full md:w-auto">
+      <a (click)="refrescaDatos()" routerLink="by-country" class="btn btn-info">
+        <shared-icon-refresh />
+        Refrescar
+      </a>
+    </div>
+  </section>
+  <div class="overflow-x-auto">
+    <table class="table ml-5">
+      <!-- head -->
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Pregunta</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (pregunta of respuestasResource.value(); track pregunta.preguntaId) {
+        <tr>
+          <td>{{pregunta.preguntaId}}</td>
+          <td>
+            <div class="flex items-center gap-3">
+              <div>
+                <div class="font-bold">{{pregunta.texto}}</div>
+              </div>
+            </div>
+          </td>
+        </tr>
+
+        @for (respuesta of pregunta.respuestas; track respuesta.preguntaId) {
+        <tr>
+          <td></td>
+          <td class="pl-6 text-sm text-base-content">
+            {{respuesta.nombreConvencionista}}
+          </td>
+          <td class="pl-6 text-sm text-base-content">
+            {{respuesta.comentario}}
+          </td>
+        </tr>
+        }
+
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
