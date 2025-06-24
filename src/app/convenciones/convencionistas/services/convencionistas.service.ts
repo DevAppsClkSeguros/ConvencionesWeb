@@ -14,7 +14,7 @@ export class ConvencionistasService {
   GetConvencionistas(): Observable<ConvencionistasResponse> {
     return this.http
       .get<ConvencionistasResponse>(
-        `${AppConfig.APIREST_URL}/api/Convencionistas/ListadoConvencionistas`
+        `${AppConfig.APIREST_URL}/api/Convencionistas/Listado`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
@@ -24,7 +24,7 @@ export class ConvencionistasService {
   ): Observable<ConvencionistasResponse> {
     return this.http
       .get<ConvencionistasResponse>(
-        `${AppConfig.APIREST_URL}/api/Convencionistas/DetallesConvencionista/${idConvencionista}`
+        `${AppConfig.APIREST_URL}/api/Convencionistas/Detalles/${idConvencionista}`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
@@ -34,7 +34,7 @@ export class ConvencionistasService {
   ): Observable<ConvencionistasResponse> {
     return this.http
       .post<ConvencionistasResponse>(
-        `${AppConfig.APIREST_URL}/api/Convencionistas/NuevoConvencionista`,
+        `${AppConfig.APIREST_URL}/api/Convencionistas/Nuevo`,
         {
           id: 0,
           clave: convencionista.clave,
@@ -56,7 +56,7 @@ export class ConvencionistasService {
   ): Observable<ConvencionistasResponse> {
     return this.http
       .put<ConvencionistasResponse>(
-        `${AppConfig.APIREST_URL}/api/Convencionistas/ActualizarConvencionista/${convencionista.id}`,
+        `${AppConfig.APIREST_URL}/api/Convencionistas/Actualizar/${convencionista.id}`,
         {
           id: convencionista.id,
           activo: convencionista.activo,

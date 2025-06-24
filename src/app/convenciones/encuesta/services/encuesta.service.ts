@@ -31,7 +31,7 @@ export class EncuestaService {
   nuevaPregunta(pregunta: Pregunta): Observable<PreguntasResponse> {
     return this.http
       .post<PreguntasResponse>(
-        `${AppConfig.APIREST_URL}/api/Preguntas/NuevaPregunta`,
+        `${AppConfig.APIREST_URL}/api/Preguntas/Nueva`,
         {
           id: pregunta.id,
           texto: pregunta.texto,
@@ -43,7 +43,7 @@ export class EncuestaService {
   actualizaPregunta(pregunta: Pregunta): Observable<PreguntasResponse> {
     return this.http
       .put<PreguntasResponse>(
-        `${AppConfig.APIREST_URL}/api/Preguntas/ActualizarPregunta/${pregunta.id}`,
+        `${AppConfig.APIREST_URL}/api/Preguntas/Actualizar/${pregunta.id}`,
         {
           id: pregunta.id,
           texto: pregunta.texto,

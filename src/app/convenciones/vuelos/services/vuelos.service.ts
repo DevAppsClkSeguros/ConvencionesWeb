@@ -10,21 +10,21 @@ export class VuelosService {
 
   obtieneVuelos(): Observable<VuelosResponse> {
     return this.http
-      .get<VuelosResponse>(`${AppConfig.APIREST_URL}/api/Vuelos/ListadoVuelos`)
+      .get<VuelosResponse>(`${AppConfig.APIREST_URL}/api/Vuelos/Listado`)
       .pipe(catchError(AppConfig.handleErrors));
   }
 
   obtieneVuelo(vueloId: number): Observable<VuelosResponse> {
     return this.http
       .get<VuelosResponse>(
-        `${AppConfig.APIREST_URL}/api/Vuelos/DetallesVuelo${vueloId}`
+        `${AppConfig.APIREST_URL}/api/Vuelos/Detalles/${vueloId}`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
 
   nuevoVuelo(vuelo: Vuelo): Observable<VuelosResponse> {
     return this.http
-      .post<VuelosResponse>(`${AppConfig.APIREST_URL}/api/Vuelos/NuevoVuelo`, {
+      .post<VuelosResponse>(`${AppConfig.APIREST_URL}/api/Vuelos/Nuevo`, {
         id: vuelo.id,
         fecha_Vuelo: vuelo.fecha_Vuelo,
         reservacion: vuelo.reservacion,
@@ -45,8 +45,8 @@ export class VuelosService {
 
   actualizaVuelo(vuelo: Vuelo): Observable<VuelosResponse> {
     return this.http
-      .post<VuelosResponse>(
-        `${AppConfig.APIREST_URL}/api/Vuelos/ActualizarVuelo${vuelo.id}`,
+      .put<VuelosResponse>(
+        `${AppConfig.APIREST_URL}/api/Vuelos/Actualizar/${vuelo.id}`,
         {
           id: vuelo.id,
           fecha_Vuelo: vuelo.fecha_Vuelo,

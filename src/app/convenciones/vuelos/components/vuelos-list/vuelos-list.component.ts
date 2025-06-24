@@ -8,6 +8,7 @@ import { map } from 'rxjs';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { VuelosService } from '../../services/vuelos.service';
 import { Vuelo } from '../../interfaces/vuelos.interface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-vuelos-list',
@@ -16,6 +17,7 @@ import { Vuelo } from '../../interfaces/vuelos.interface';
     IconAddComponent,
     ConfirmModalComponent,
     RouterLink,
+    DatePipe
   ],
   templateUrl: './vuelos-list.component.html',
 })

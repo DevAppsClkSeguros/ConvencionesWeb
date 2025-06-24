@@ -19,4 +19,5 @@ export interface Vuelo {
   detalle:            string;
   eventoId:           number;
   convencionistasIds: number[];
+  nombreEvento:      string;
 }

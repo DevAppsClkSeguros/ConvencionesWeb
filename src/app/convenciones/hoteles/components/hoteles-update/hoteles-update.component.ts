@@ -70,13 +70,13 @@ export class HotelesUpdateComponent {
       effect(() => {
         const data = this.hotelResource!.value();
         if (data?.status) {
-          this.llenaFormulario(data.response[0]);
+          this.llenaFormulario(data.response);
         }
       });
     }
   }
 
-  private llenaFormulario(hotel: Hotel): void {
+  private llenaFormulario(hotel: any): void {
     console.log('Convencionista a llenar el formulario: ', hotel);
     this.myForm.patchValue({
       id: hotel.id,

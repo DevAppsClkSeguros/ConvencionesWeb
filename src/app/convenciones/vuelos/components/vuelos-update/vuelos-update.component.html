@@ -1,1 +1,156 @@
-<p>vuelos-update works!</p>,
+@if (vueloResource?.error()) {
+<shared-not-found mensaje="No se encontro el vuelo solicitado" />
+}
+@if (!vueloResource?.error()) {
+<div class="min-h-screen flex items-center justify-center bg-base-200">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
+    <h2 class="text-3xl font-bold mb-6">Datos del vuelo</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      @if (isEditMode) {
+      <div>
+        <label class="label">ID</label>
+        <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
+      </div>
+      } @else {
+      <div></div>
+      }
+
+      <!-- Fecha -->
+      <div>
+        <label class="label">Fecha</label>
+        <input type="date" formControlName="fecha_Vuelo" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'fecha_Vuelo')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'fecha_Vuelo')}}
+        </small>
+        }
+      </div>
+
+      <!-- Numero de vuelo -->
+      <div>
+        <label class="label">Vuelo</label>
+        <input type="text" formControlName="numero_Vuelo" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'numero_Vuelo')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'numero_Vuelo')}}
+        </small>
+        }
+      </div>
+
+      <!-- Reservación -->
+      <div>
+        <label class="label">Reservación</label>
+        <input type="text" formControlName="reservacion" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'reservacion')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'reservacion')}}
+        </small>
+        }
+      </div>
+
+      <!-- Asiento -->
+      <div>
+        <label class="label">Asiento</label>
+        <input type="text" formControlName="asiento" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'asiento')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'asiento')}}
+        </small> }
+      </div>
+
+      <!-- Convención -->
+      <div>
+        <label class="label">Convención</label>
+        <select formControlName="eventoId" class="select select-bordered w-full">
+          <option value="" selected>Selecciona una convención</option>
+          @for (convencion of convencionesResource.value(); track convencion.id) {
+          <option [value]="convencion.id">{{convencion.nombreEvento}}</option>
+          }
+        </select>
+        @if (formUtils.isValidField(myForm, 'eventoId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'eventoId')}}
+        </small>
+        }
+      </div>
+
+      <!-- Origen -->
+      <div>
+        <label class="label">Origen</label>
+        <input type="text" formControlName="origen" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'origen')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'origen')}}
+        </small> }
+      </div>
+
+      <!-- Lugar Origen -->
+      <div>
+        <label class="label">Lugar Origen</label>
+        <input type="text" formControlName="lugar_Origen" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'lugar_Origen')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'lugar_Origen')}}
+        </small> }
+      </div>
+
+      <!-- Hora salida -->
+      <div>
+        <label class="label">Hora Salida</label>
+        <input type="time" formControlName="hora_Salida" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'hora_Salida')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'hora_Salida')}}
+        </small> }
+      </div>
+
+      <!-- Destino -->
+      <div>
+        <label class="label">Destino</label>
+        <input type="text" formControlName="destino" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'destino')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'destino')}}
+        </small> }
+      </div>
+
+      <!-- Lugar Destino -->
+      <div>
+        <label class="label">Lugar Destino</label>
+        <input type="text" formControlName="lugar_Destino" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'lugar_Destino')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'lugar_Destino')}}
+        </small> }
+      </div>
+
+      <!-- Hora llegada -->
+      <div>
+        <label class="label">Hora Llegada</label>
+        <input type="time" formControlName="hora_Llegada" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'hora_Llegada')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'hora_Llegada')}}
+        </small> }
+      </div>
+
+      <div class="md:col-span-3">
+        <label class="label">Detalles</label>
+        <textarea class="textarea w-full min-h-[150px]" formControlName="detalle"></textarea>
+        @if (formUtils.isValidField(myForm, 'detalle')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'detalle')}}
+        </small>
+        }
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end mt-8 gap-4">
+      <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+</div>
+}

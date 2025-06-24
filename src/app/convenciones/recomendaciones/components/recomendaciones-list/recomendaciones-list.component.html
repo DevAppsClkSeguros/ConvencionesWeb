@@ -46,8 +46,8 @@
             <br />
             <span class="badge badge-ghost badge-sm">{{recomendacion.latitud}} {{recomendacion.longitud}}</span>
           </td>
-          <td>{{recomendacion.eventoId}}</td>
-          <td>{{recomendacion.categoria_RecomendacionId}}</td>
+          <td>{{recomendacion.nombreEvento}}</td>
+          <td>{{recomendacion.nombreCategoriaReco}}</td>
           <th>
             <button class="btn btn-primary btn-xs"
               [routerLink]="[`/recomendaciones/${recomendacion.id}/edit`]">Editar</button>

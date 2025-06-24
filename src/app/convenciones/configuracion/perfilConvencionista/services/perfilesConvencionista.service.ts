@@ -9,7 +9,7 @@ export class PerfilesConvensionistaService {
 
   obtienePerfilesConvencionista() {
     return this.http
-      .get(`${AppConfig.APIREST_URL}/api/Perfiles/GetPerfiles`)
+      .get(`${AppConfig.APIREST_URL}/api/Perfiles/listado`)
       .pipe(catchError(AppConfig.handleErrors));
   }
 

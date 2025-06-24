@@ -15,7 +15,7 @@ export class ConvencionesService {
   obtieneConvenciones(): Observable<ConvencionResponse> {
     return this.http
       .get<ConvencionResponse>(
-        `${AppConfig.APIREST_URL}/api/Eventos/GetEventos`
+        `${AppConfig.APIREST_URL}/api/Eventos/listado`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
@@ -23,7 +23,7 @@ export class ConvencionesService {
   obtieneConvencion(convencionId: number): Observable<ConvencionResponse> {
     return this.http
       .get<ConvencionResponse>(
-        `${AppConfig.APIREST_URL}/api/Eventos/EventoXId/${convencionId}`
+        `${AppConfig.APIREST_URL}/api/Eventos/Detalles/${convencionId}`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
@@ -31,7 +31,7 @@ export class ConvencionesService {
   nuevaConvencion(convencion: Convencion): Observable<ConvencionResponse> {
     return this.http
       .post<ConvencionResponse>(
-        `${AppConfig.APIREST_URL}/api/Eventos/CrearEvento`,
+        `${AppConfig.APIREST_URL}/api/Eventos/Nuevo`,
         {
           NombreEvento: convencion.nombreEvento,
           Subtitulo: convencion.subtitulo,
@@ -51,7 +51,7 @@ export class ConvencionesService {
   actualizaConvencion(convencion: Convencion): Observable<ConvencionResponse> {
     return this.http
       .put<ConvencionResponse>(
-        `${AppConfig.APIREST_URL}/api/Eventos/ActualizarEvento/${convencion.id}`,
+        `${AppConfig.APIREST_URL}/api/Eventos/Actualizar/${convencion.id}`,
         {
           NombreEvento: convencion.nombreEvento,
           Subtitulo: convencion.subtitulo,
@@ -71,7 +71,7 @@ export class ConvencionesService {
   eliminaConvencion(convencionId: number): Observable<ConvencionResponse> {
     return this.http
       .delete<ConvencionResponse>(
-        `${AppConfig.APIREST_URL}/api/Eventos/${convencionId}`
+        `${AppConfig.APIREST_URL}/api/Eventos/EliminarEvento/${convencionId}`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }

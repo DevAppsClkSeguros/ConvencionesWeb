@@ -14,7 +14,7 @@ export class RecomendacionesService {
   obtieneRecomendaciones(): Observable<RecomendacionesResponse> {
     return this.http
       .get<RecomendacionesResponse>(
-        `${AppConfig.APIREST_URL}/api/Recomendacion/ListadoRecomendaciones`
+        `${AppConfig.APIREST_URL}/api/Recomendacion/Listado`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
@@ -32,7 +32,7 @@ export class RecomendacionesService {
   ): Observable<RecomendacionesResponse> {
     return this.http
       .post<RecomendacionesResponse>(
-        `${AppConfig.APIREST_URL}/api/Recomendacion/NuevaRecomendacion`,
+        `${AppConfig.APIREST_URL}/api/Recomendacion/Nueva`,
         {
           titulo: recomendacion.titulo,
           informacion: recomendacion.informacion,
@@ -50,8 +50,8 @@ export class RecomendacionesService {
     recomendacion: Recomendacion
   ): Observable<RecomendacionesResponse> {
     return this.http
-      .post<RecomendacionesResponse>(
-        `${AppConfig.APIREST_URL}/api/Recomendacion/ActualizarRecomendacion/${recomendacion.id}`,
+      .put<RecomendacionesResponse>(
+        `${AppConfig.APIREST_URL}/api/Recomendacion/Actualizar/${recomendacion.id}`,
         {
           titulo: recomendacion.titulo,
           informacion: recomendacion.informacion,

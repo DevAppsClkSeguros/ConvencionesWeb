@@ -60,6 +60,11 @@ export class ConvencionesListComponent {
               (convencion) => convencion.id !== this.convencionId
             );
           });
+        } else {
+          this.notificacion.show(
+            `${data.message?.[0] || 'Error desconocido'}`,
+            'error'
+          );
         }
       },
       error: (e) => {

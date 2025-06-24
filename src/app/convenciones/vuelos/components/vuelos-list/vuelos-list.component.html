@@ -18,6 +18,7 @@
       <thead>
         <tr>
           <th>Id</th>
+          <th>Fecha</th>
           <th>Vuelo</th>
           <th>Origen</th>
           <th>Destino</th>
@@ -30,6 +31,7 @@
         @for (vuelo of vuelosResource.value(); track vuelo.id) {
         <tr>
           <td>{{vuelo.id}}</td>
+          <td>{{vuelo.fecha_Vuelo | date: "dd-MM-yyyy"}}</td>
           <td>
             {{vuelo.reservacion}}
             <br />
@@ -38,14 +40,14 @@
           <td>
             {{vuelo.origen}}
             <br />
-            <span class="badge badge-ghost badge-sm">{{vuelo.hora_Salida}}</span>
+            <span class="badge badge-ghost badge-sm">{{vuelo.hora_Salida}} hrs.</span>
           </td>
           <td>
             {{vuelo.destino}}
             <br />
-            <span class="badge badge-ghost badge-sm">{{vuelo.hora_Llegada}}</span>
+            <span class="badge badge-ghost badge-sm">{{vuelo.hora_Llegada}} hrs.</span>
           </td>
-          <td>{{vuelo.eventoId}}
+          <td>{{vuelo.nombreEvento}}
           </td>
           <th>
             <button class="btn btn-primary btn-xs" [routerLink]="[`/vuelos/${vuelo.id}/edit`]">Editar</button>

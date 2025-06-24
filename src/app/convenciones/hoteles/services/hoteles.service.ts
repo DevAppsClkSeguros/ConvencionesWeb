@@ -10,21 +10,21 @@ export class HotelesService {
 
   obtieneHoteles(): Observable<HotelesResponse> {
     return this.http
-      .get<HotelesResponse>(`${AppConfig.APIREST_URL}/api/Hotel/GetHoteles`)
+      .get<HotelesResponse>(`${AppConfig.APIREST_URL}/api/Hotel/listado`)
       .pipe(catchError(AppConfig.handleErrors));
   }
 
   obtieneHotel(hotelId: number): Observable<HotelesResponse> {
     return this.http
       .get<HotelesResponse>(
-        `${AppConfig.APIREST_URL}/api/Hotel/GetHotelXEvento/${hotelId}`
+        `${AppConfig.APIREST_URL}/api/Hotel/Detalles/${hotelId}`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
 
   nuevoHotel(hotel: Hotel): Observable<HotelesResponse> {
     return this.http
-      .post<HotelesResponse>(`${AppConfig.APIREST_URL}/api/Hotel/NuevoHotel`, {
+      .post<HotelesResponse>(`${AppConfig.APIREST_URL}/api/Hotel/Nuevo`, {
         nombreHotel: hotel.nombreHotel,
         telefono: hotel.telefono,
         direccion: hotel.direccion,
@@ -39,7 +39,7 @@ export class HotelesService {
   actualizaHotel(hotel: Hotel): Observable<HotelesResponse> {
     return this.http
       .put<HotelesResponse>(
-        `${AppConfig.APIREST_URL}/api/Hotel/ActualizarHotel/${hotel.id}`,
+        `${AppConfig.APIREST_URL}/api/Hotel/Actualizar/${hotel.id}`,
         {
           nombreHotel: hotel.nombreHotel,
           telefono: hotel.telefono,

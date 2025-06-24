@@ -147,6 +147,11 @@ export class ConvencionistasListComponent implements OnInit {
                 (convencionista) => convencionista.id !== this.convencionistaId
               );
             });
+          } else {
+            this.notificacion.show(
+              `${data.message?.[0] || 'Error desconocido'}`,
+              'error'
+            );
           }
         },
         error: (e) => {
