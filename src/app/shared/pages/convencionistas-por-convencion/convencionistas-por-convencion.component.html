@@ -1,0 +1,24 @@
+<!-- <div *ngIf="convencionistasResource.value()?.length > 0" class="overflow-x-auto mt-6"> -->
+<table class="table table-zebra w-full">
+  <thead>
+    <tr>
+      <th>
+        <input type="checkbox" [checked]="todosSeleccionados" (change)="toggleTodos()" class="checkbox" />
+      </th>
+      <th>Clave</th>
+      <th>Convencionista</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (convencionista of convencionistasResource.value(); track convencionista.id) {
+    <tr>
+      <td>
+        <input type="checkbox" class="checkbox" [checked]="estaSeleccionado(convencionista.id)"
+          (change)="toggleSeleccion(convencionista.id)" />
+      </td>
+      <td>{{ convencionista.clave }}</td>
+      <td>{{ convencionista.nombreCompleto }}</td>
+    </tr>
+    }
+  </tbody>
+</table>

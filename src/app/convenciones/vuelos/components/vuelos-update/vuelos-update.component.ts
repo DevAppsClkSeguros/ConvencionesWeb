@@ -16,10 +16,16 @@ import { VuelosService } from '../../services/vuelos.service';
 import { DatePipe, Location } from '@angular/common';
 import { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
 import { CommonModule } from '@angular/common';
+import { ConvencionistasPorConvencionComponent } from "../../../../shared/pages/convencionistas-por-convencion/convencionistas-por-convencion.component";
 
 @Component({
   selector: 'app-vuelos-update',
-  imports: [ReactiveFormsModule, NotFoundComponent, CommonModule],
+  imports: [
+    ReactiveFormsModule,
+    NotFoundComponent,
+    CommonModule,
+    ConvencionistasPorConvencionComponent,
+  ],
   templateUrl: './vuelos-update.component.html',
   providers: [DatePipe],
 })
@@ -30,12 +36,11 @@ export class VuelosUpdateComponent {
   notificacion = inject(NotificacionService);
   convencionesService = inject(ConvencionesService);
   convenciones = signal<Convencion[]>([]);
+  convencionId = signal<number | null>(null);
   vuelosService = inject(VuelosService);
   vueloId = this.route.snapshot.params['id'];
   isEditMode = !!this.vueloId;
   formUtils = FormUtils;
-  selectedFile: File | null = null;
-  imagePreview: string | ArrayBuffer | null = null;
   datePipe = inject(DatePipe);
 
   myForm: FormGroup = this.fb.group({
@@ -86,6 +91,10 @@ export class VuelosUpdateComponent {
         }
       });
     }
+    this.myForm.get('eventoId')?.valueChanges.subscribe((eventoId) => {
+      console.log('Evento seleccionado: ', eventoId);
+      this.convencionId.set(eventoId)
+    })
   }
 
   private llenaFormulario(vuelo: any): void {
