@@ -16,7 +16,7 @@ import { FormUtils } from '@core/utils/form-utils';
 import { map, tap } from 'rxjs';
 import { RecomendacionesService } from '../../services/recomendaciones.service';
 import type { Recomendacion } from '../../interfaces/recomendaciones.interface';
-import { CategoriasRecomendacionService } from 'src/app/convenciones/configuracion/categorias-recomendacion/services/categorias-recomendacion.service';
+import { CategoriasService } from '../../services/categorias.service';
 
 @Component({
   selector: 'app-recomendaciones-update',
@@ -25,7 +25,7 @@ import { CategoriasRecomendacionService } from 'src/app/convenciones/configuraci
 })
 export class RecomendacionesUpdateComponent {
   convencionesService = inject(ConvencionesService);
-  categoriaRecomendacionService = inject(CategoriasRecomendacionService);
+  categoriasService = inject(CategoriasService);
   recomendacionesService = inject(RecomendacionesService);
   notificacion = inject(NotificacionService);
   private fb = inject(FormBuilder);
@@ -76,8 +76,8 @@ export class RecomendacionesUpdateComponent {
 
   categoriasResource = rxResource({
     loader: ({}) => {
-      return this.categoriaRecomendacionService
-        .obtieneCategoriasRecomendacion()
+      return this.categoriasService
+        .obtieneCategorias()
         .pipe(map((resp) => resp.response));
     },
   });

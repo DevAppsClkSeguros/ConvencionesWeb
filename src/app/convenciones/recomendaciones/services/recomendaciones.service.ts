@@ -19,7 +19,9 @@ export class RecomendacionesService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  obtieneRecomendacion(recomendacionId: number): Observable<RecomendacionesResponse> {
+  obtieneRecomendacion(
+    recomendacionId: number
+  ): Observable<RecomendacionesResponse> {
     return this.http
       .get<RecomendacionesResponse>(
         `${AppConfig.APIREST_URL}/api/Recomendacion/Detalles/${recomendacionId}`

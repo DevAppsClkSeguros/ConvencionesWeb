@@ -9,7 +9,7 @@ export class CategoriasConvensionistaService {
 
   obtieneCategoriasConvencionista() {
     return this.http
-      .get(`${AppConfig.APIREST_URL}/api/Categoria/listado`)
+      .get(`${AppConfig.APIREST_URL}/api/CategoriaUsuario/listado`)
       .pipe(catchError(AppConfig.handleErrors));
   }
 
