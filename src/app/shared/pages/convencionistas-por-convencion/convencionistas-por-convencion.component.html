@@ -3,8 +3,10 @@
   <thead>
     <tr>
       <th>
-        <input type="checkbox" [checked]="todosSeleccionados" (change)="toggleTodos()" class="checkbox" />
+        <input #selectAll type="checkbox" (change)="seleccionaTodos(selectAll.checked)"
+          class="checkbox" />
       </th>
+      <th>Id</th>
       <th>Clave</th>
       <th>Convencionista</th>
     </tr>
@@ -13,9 +15,10 @@
     @for (convencionista of convencionistasResource.value(); track convencionista.id) {
     <tr>
       <td>
-        <input type="checkbox" class="checkbox" [checked]="estaSeleccionado(convencionista.id)"
-          (change)="toggleSeleccion(convencionista.id)" />
+        <input type="checkbox" class="checkbox" [checked]="convencionista.seleccionado"
+          (change)="seleccionaConvencionista(convencionista)" />
       </td>
+      <td>{{ convencionista.id }}</td>
       <td>{{ convencionista.clave }}</td>
       <td>{{ convencionista.nombreCompleto }}</td>
     </tr>

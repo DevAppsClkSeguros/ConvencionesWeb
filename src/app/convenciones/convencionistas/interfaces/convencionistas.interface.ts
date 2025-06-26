@@ -20,5 +20,6 @@ export interface Convencionista {
   categoriaNombreId?: number;
   categoriaNombre: string;
   activo: boolean;
+  seleccionado?: boolean;
 }
 

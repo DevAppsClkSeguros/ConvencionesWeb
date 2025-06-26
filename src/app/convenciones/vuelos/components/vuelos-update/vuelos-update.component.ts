@@ -1,5 +1,5 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { NotFoundComponent } from '../../../../shared/components/not-found/not-found.component';
+import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import {
   FormBuilder,
   FormGroup,
@@ -16,7 +16,7 @@ import { VuelosService } from '../../services/vuelos.service';
 import { DatePipe, Location } from '@angular/common';
 import { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
 import { CommonModule } from '@angular/common';
-import { ConvencionistasPorConvencionComponent } from "../../../../shared/pages/convencionistas-por-convencion/convencionistas-por-convencion.component";
+import { ConvencionistasPorConvencionComponent } from "@shared/pages/convencionistas-por-convencion/convencionistas-por-convencion.component";
 
 @Component({
   selector: 'app-vuelos-update',
@@ -93,8 +93,8 @@ export class VuelosUpdateComponent {
     }
     this.myForm.get('eventoId')?.valueChanges.subscribe((eventoId) => {
       console.log('Evento seleccionado: ', eventoId);
-      this.convencionId.set(eventoId)
-    })
+      this.convencionId.set(eventoId);
+    });
   }
 
   private llenaFormulario(vuelo: any): void {
@@ -154,6 +154,13 @@ export class VuelosUpdateComponent {
           'error'
         );
       },
+    });
+  }
+
+  seleccionaConvencionista(convencionistas: number[]) {
+    console.log('Seleccionando desde padre, ', convencionistas);
+    this.myForm.patchValue({
+      convencionistasIds: convencionistas
     });
   }
 

@@ -1,4 +1,10 @@
-import { Component, computed, effect, inject, input, output } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  output,
+} from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
 import { Convencionista } from 'src/app/convenciones/convencionistas/interfaces/convencionistas.interface';
@@ -10,19 +16,23 @@ import { ConvencionistasService } from 'src/app/convenciones/convencionistas/ser
   templateUrl: './convencionistas-por-convencion.component.html',
 })
 export class ConvencionistasPorConvencionComponent {
-  convencionistaSeleccionado: Convencionista | null = null;
-  convencionistasSeleccionados: number[] = [];
   convencionistasService = inject(ConvencionistasService);
-
   convencionId = input.required<number | null>();
-  convencionistas = output<number[]>();
-
+  convencionistasPorVuelo = input<number[]>([]);
+  convencionistasSeleccionados2 = output<number[]>();
+  seleccionados: number[] = [];
 
   convencionistasResource = rxResource({
     loader: ({}) => {
-      return this.convencionistasService
-        .GetConvencionistas()
-        .pipe(map((resp) => resp.response));
+      return this.convencionistasService.GetConvencionistas().pipe(
+        map((resp) => {
+          const agregados = this.convencionistasPorVuelo() || [];
+          return resp.response.map((convencionista) => ({
+            ...convencionista,
+            seleccionado: agregados.includes(convencionista.id) ? true : false,
+          }));
+        })
+      );
     },
   });
 
@@ -31,33 +41,29 @@ export class ConvencionistasPorConvencionComponent {
       const id = this.convencionId();
       console.log('Recargando desde hijo: ', id);
       this.convencionistasResource.reload();
-    })
+    });
   }
 
-  get todosSeleccionados(): boolean {
-    const total = this.convencionistasResource.value()?.length || 0;
-    return this.convencionistasSeleccionados.length === total && total > 0;
+  seleccionaConvencionista(convencionista: Convencionista) {
+    console.log('Seleccionando desde hijo: ', convencionista);
+    convencionista.seleccionado = !convencionista.seleccionado;
+    this.seleccionados = [];
+    this.convencionistasResource.value()?.forEach((c) => {
+      if (c.seleccionado) {
+        this.seleccionados.push(convencionista.id);
+      }
+    });
+    this.convencionistasSeleccionados2.emit(this.seleccionados);
   }
 
-  estaSeleccionado(id: number): boolean {
-    return this.convencionistasSeleccionados.includes(id);
-  }
-
-  toggleSeleccion(id: number): void {
-    if (this.estaSeleccionado(id)) {
-      this.convencionistasSeleccionados =
-        this.convencionistasSeleccionados.filter((x) => x !== id);
-    } else {
-      this.convencionistasSeleccionados.push(id);
-    }
-  }
-
-  toggleTodos(): void {
-    const todos = this.convencionistasResource.value()?.map((c) => c.id) || [];
-    if (this.todosSeleccionados) {
-      this.convencionistasSeleccionados = [];
-    } else {
-      this.convencionistasSeleccionados = [...todos];
-    }
+  seleccionaTodos(check: any): void {
+    this.seleccionados = [];
+    this.convencionistasResource.value()?.forEach((convencionista) => {
+      convencionista.seleccionado = check;
+      if (convencionista.seleccionado) {
+        this.seleccionados.push(convencionista.id);
+      }
+    });
+    this.convencionistasSeleccionados2.emit(this.seleccionados);
   }
 }
