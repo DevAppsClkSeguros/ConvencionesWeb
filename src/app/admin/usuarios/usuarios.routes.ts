@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { UsuariosListComponent } from './components/usuarios-list/usuarios-list.component';
 import { UsuariosUpdateComponent } from './components/usuarios-update/usuarios-update.component';
 
-export const AdministrarUsuariosRoutes: Routes = [
+export const UsuariosRoutes: Routes = [
   {
     path: '',
     component: UsuariosListComponent,
@@ -21,4 +21,4 @@ export const AdministrarUsuariosRoutes: Routes = [
   },
 ];
 
-export default AdministrarUsuariosRoutes;
+export default UsuariosRoutes;

@@ -92,7 +92,10 @@ export class HomePageComponent implements OnInit {
         { title: 'Perfil de usuario', route: 'cs-cat-evn-perfil' },
         { title: 'Tipo usuario', route: 'cat-tipo-usuario' },
         { title: 'Categoría de actividades', route: 'cat-eventos' },
-        { title: 'Categoría de recomendaciones', route: 'cat-recomendaciones' },
+        {
+          title: 'Categoría de recomendaciones',
+          route: '/recomendaciones/categorias',
+        },
       ],
     },
   ];

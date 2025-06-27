@@ -70,6 +70,7 @@ export class AuthService {
     if (!token) return null;
 
     try {
+      console.log('Token decodificado:', jwtDecode(token));
       return jwtDecode(token);
     } catch (error) {
       console.error('Error al decodificar el token:', error);

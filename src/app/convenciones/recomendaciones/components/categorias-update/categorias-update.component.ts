@@ -8,14 +8,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { ActivatedRoute } from '@angular/router';
 import { CdnService } from '@shared/services/cdn.service';
 import { FormUtils } from '@core/utils/form-utils';
-import { map, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { RecomendacionesService } from '../../services/recomendaciones.service';
-import type { Recomendacion } from '../../interfaces/recomendaciones.interface';
 import { CategoriasService } from '../../services/categorias.service';
 
 @Component({
@@ -69,7 +67,6 @@ export class CategoriasUpdateComponent {
   }
 
   private llenaFormulario(categoria: any): void {
-    console.log('Convencionista a llenar el formulario: ', categoria);
     this.myForm.patchValue({
       id: categoria.id,
       nombre: categoria.nombre,
@@ -95,8 +92,8 @@ export class CategoriasUpdateComponent {
         if (data.status) {
           this.notificacion.show(
             this.isEditMode
-              ? 'Recomendación actualizada correctamente.'
-              : 'Recomendación guardada correctamente.',
+              ? 'Categoría actualizada correctamente.'
+              : 'Categoría guardada correctamente.',
             'success'
           );
           this.location.back();
@@ -107,8 +104,8 @@ export class CategoriasUpdateComponent {
       error: (e) => {
         this.notificacion.show(
           this.isEditMode
-            ? 'Ocurrio un error al actualizar la recomendación, favor de intentarlo nuevamente'
-            : 'Ocurrio un error a guardar la recomendación, favor de intentarlo nuevamente',
+            ? 'Ocurrio un error al actualizar la categoría, favor de intentarlo nuevamente'
+            : 'Ocurrio un error a guardar la categoría, favor de intentarlo nuevamente',
           'error'
         );
       },
