@@ -27,7 +27,6 @@ export class CategoriasUpdateComponent {
   notificacion = inject(NotificacionService);
   private fb = inject(FormBuilder);
   private route = inject(ActivatedRoute);
-  cdnService = inject(CdnService);
   location = inject(Location);
   formUtils = FormUtils;
   selectedFile: File | null = null;

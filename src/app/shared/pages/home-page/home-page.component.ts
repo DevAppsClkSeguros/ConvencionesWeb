@@ -57,8 +57,8 @@ export class HomePageComponent implements OnInit {
       visible: true,
       subMenu: [
         {
-          title: '',
-          route: '',
+          title: 'Actividades',
+          route: '/actividades',
         },
       ],
     },

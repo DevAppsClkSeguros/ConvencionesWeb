@@ -1,5 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
-@plugin "daisyui" {
+@plugin "daisyui";
+/* @plugin "daisyui" {
   themes: light --default, corporate --prefersdark;
+} */
+
+@plugin "daisyui/theme" {
+  name: "corporate";
+  default: true;
+  prefersdark: true;
+  /* --color-primary-content: #5e9496; */
+  /* --color-base-100: #f0f4f8; */
+  --color-primary: #e62800;
 }

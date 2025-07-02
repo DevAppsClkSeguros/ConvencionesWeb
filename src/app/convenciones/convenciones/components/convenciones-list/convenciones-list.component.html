@@ -48,7 +48,7 @@
             <span class="badge badge-ghost badge-sm">{{convencion.latitud}} {{convencion.longitud}}</span>
           </td>
           <td>{{convencion.fecha_inicio | date: 'YYYY/MM/dd'}} - {{convencion.fecha_fin | date: 'YYYY/MM/dd'}}</td>
-          <td>Activo</td>
+          <td>{{convencion.activo ? 'Activo' : 'Inactivo'}}</td>
           <th>
             <button class="btn btn-primary btn-xs"
               [routerLink]="[`/convenciones/${convencion.id}/edit`]">Editar</button>

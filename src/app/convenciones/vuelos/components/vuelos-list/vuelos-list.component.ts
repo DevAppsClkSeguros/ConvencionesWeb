@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal, ViewChild } from '@angular/core';
-import { IconRefreshComponent } from '../../../../shared/icons/icon-refresh/icon-refresh.component';
-import { IconAddComponent } from '../../../../shared/icons/icon-add/icon-add.component';
-import { ConfirmModalComponent } from '../../../../shared/components/confirm-modal/confirm-modal.component';
+import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
+import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
+import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
 import { Router, RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';

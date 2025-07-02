@@ -67,6 +67,12 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'actividades',
+    loadChildren: () =>
+      import('./convenciones/actividades/actividades.routes'),
+    canActivate: [AuthGuard],
+  },
+  {
     path: '**',
     redirectTo: 'login',
   },
