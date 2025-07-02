@@ -47,12 +47,10 @@ export class MicrosoftGraphService {
 
     const url = this.nextLink
       ? this.nextLink
-      : `${AppConfig.APIREST_MICROSOFT}b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/items/01GH2CWJUGGJRHLBPKIVGYYLKTAJKLPYB7/children?$top=25&$expand=thumbnails&$orderby=lastModifiedDateTime desc`;
+      : `${AppConfig.APIREST_MICROSOFT}b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/items/01GH2CWJQXC7FNT7ETSVGI7CPPO5NHI4WE/children?$top=25&$expand=thumbnails&$orderby=lastModifiedDateTime desc`;
 
     this.http
-      .get<MicrosoftResponse>(
-        // `${AppConfig.APIREST_MICROSOFT}b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/items/01GH2CWJUGGJRHLBPKIVGYYLKTAJKLPYB7/children?$top=1000&$expand=thumbnails&$orderby=lastModifiedDateTime desc`,
-        `${url}`
+      .get<MicrosoftResponse>(`${url}`
       )
       .subscribe((resp) => {
         const imagenes = ImageMapper.mapMicrosoftItemToImageArray(resp.value);
