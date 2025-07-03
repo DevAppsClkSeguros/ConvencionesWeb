@@ -1,0 +1,18 @@
+<!-- <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+  @for (imagen of imagenes(); track imagen.id) {
+    <imagen-list-item [imagenUrl]="imagen.url"/>
+  }
+</div> -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 py-5">
+
+  @for (group of imagenes(); track $index) {
+  <div class="grid gap-4">
+    @for (imagen of group; track imagen.id) {
+    <div>
+      <!-- <img class="h-full w-full rounded-lg object-cover" [src]="imagen.url" [alt]="imagen.title"> -->
+      <imagen-list-item [imagenUrl]="imagen.url"/>
+    </div>
+    }
+  </div>
+  }
+</div>

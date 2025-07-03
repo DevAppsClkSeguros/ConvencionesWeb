@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,46 +10,148 @@ import { ConvencionistasService } from '../../services/convencionistas.service';
 import { FormUtils } from '@core/utils/form-utils';
 import { CdnService } from '@shared/services/cdn.service';
 import { NotificacionService } from '@shared/services/notificacion.service';
+import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
+import type { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
+import { ActivatedRoute } from '@angular/router';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
+import { map, tap } from 'rxjs';
+import { CategoriasConvensionistaService } from 'src/app/convenciones/configuracion/categoriaConvencionista/services/categoriasConvencionista.service';
+import { PerfilesConvensionistaService } from 'src/app/convenciones/configuracion/perfilConvencionista/services/perfilesConvencionista.service';
 
 @Component({
   selector: 'convencionistas-update',
-  imports: [ReactiveFormsModule, JsonPipe],
+  imports: [ReactiveFormsModule, JsonPipe, NotFoundComponent],
   templateUrl: './convencionistas-update.component.html',
 })
-export class ConvencionistasUpdateComponent implements OnInit {
+export class ConvencionistasUpdateComponent {
   private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
   location = inject(Location);
   cdnService = inject(CdnService);
   notificacion = inject(NotificacionService);
-  formUtils = FormUtils;
+  convencionesService = inject(ConvencionesService);
+  categoriasConvencionistaService = inject(CategoriasConvensionistaService);
+  perfilesConvencionistaService = inject(PerfilesConvensionistaService);
+  convenciones = signal<Convencion[]>([]);
   convencionistasService = inject(ConvencionistasService);
+  convencionistaId = this.route.snapshot.params['id'];
+  isEditMode = !!this.convencionistaId;
+  formUtils = FormUtils;
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
 
   myForm: FormGroup = this.fb.group({
     id: [0],
+    activo: [true],
     clave: ['', [Validators.required, Validators.minLength(5)]],
     nombreCompleto: ['', Validators.required],
     puesto: ['', Validators.required],
     telefono: [''],
-    imagen: [null, Validators.required],
+    imagen: [null],
     url: [''],
-    perfilConvencionistaId: 0,
-    categoriaUsuarioId: 0,
-    eventoId: 0,
+    documento: [''],
+    perfilNombreId: ['', Validators.required],
+    categoriaNombreId: ['', Validators.required],
+    eventoId: ['', Validators.required],
   });
 
-  ngOnInit(): void {}
+  convencionistaResource = this.isEditMode
+    ? rxResource({
+        request: () => ({ id: this.convencionistaId }),
+        loader: ({ request }) =>
+          this.convencionistasService
+            .obtieneConvencionista(this.convencionistaId)
+            .pipe(
+              tap((resp) => {
+                if (!resp.status) {
+                  throw new Error(resp.message?.[0] || 'Error desconocido');
+                }
+              })
+            ),
+      })
+    : null;
 
-  getPerfiles() {}
+  convencionesResource = rxResource({
+    loader: ({}) => {
+      return this.convencionesService
+        .obtieneConvenciones()
+        .pipe(map((resp) => resp.response));
+    },
+  });
 
-  getCategorias() {}
+  categoriasResource = rxResource({
+    loader: ({}) => {
+      return this.categoriasConvencionistaService
+        .obtieneCategoriasConvencionista()
+        .pipe(map((resp: any) => resp.response));
+    },
+  });
 
-  getConvenciones() {}
+  perfilesResouce = rxResource({
+    loader: ({}) => {
+      return this.perfilesConvencionistaService
+        .obtienePerfilesConvencionista()
+        .pipe(map((resp: any) => resp.response));
+    },
+  });
+
+  constructor() {
+    console.log(
+      'convencionistaResourceError: ',
+      this.convencionistaResource?.error()
+    );
+    console.log(
+      'convencionistaResourceValue: ',
+      this.convencionistaResource?.value()
+    );
+    console.log('this.convencionistaId: ', this.convencionistaId);
+    if (this.isEditMode && this.convencionistaResource) {
+      effect(() => {
+        const data = this.convencionistaResource!.value();
+        if (data?.status) {
+          this.llenaFormulario(data.response);
+        }
+      });
+    }
+  }
+
+  private llenaFormulario(convencionista: any): void {
+    console.log('Convencionista a llenar el formulario: ', convencionista);
+    this.myForm.patchValue({
+      id: convencionista.id,
+      activo: convencionista.activo,
+      clave: convencionista.clave,
+      nombreCompleto: convencionista.nombreCompleto,
+      puesto: convencionista.puesto,
+      telefono: convencionista.telefono,
+      imagen: convencionista.imagen,
+      url: convencionista.imagen,
+      perfilNombreId: convencionista.perfilNombreId,
+      categoriaNombreId: convencionista.categoriaNombreId,
+      eventoId: convencionista.eventoId,
+    });
+    this.imagePreview = convencionista.imagen;
+  }
+
+  // getConvenciones() {
+  //   this.convencionesService.obtieneConvenciones().subscribe({
+  //     next: (data) => {
+  //       if (data.status) {
+  //         this.convenciones.set(data.response);
+  //       }
+  //     },
+  //     error: (e) => {
+  //       this.notificacion.show(
+  //         'Ocurrio un error al recuperar lista de convenciones',
+  //         'error'
+  //       );
+  //     },
+  //   });
+  // }
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
-
     if (input.files && input.files.length > 0) {
       this.selectedFile = input.files[0];
 
@@ -58,15 +160,12 @@ export class ConvencionistasUpdateComponent implements OnInit {
         alert('Solo se permiten imágenes');
         return;
       }
-
-      // Actualizar el formulario
       this.myForm.patchValue({
         imagen: this.selectedFile,
+        url: '',
       });
       this.myForm.get('imagen')?.markAsTouched();
       this.myForm.get('imagen')?.updateValueAndValidity();
-
-      // Opcional: Mostrar previsualización
       this.previewImage(this.selectedFile);
     }
   }
@@ -74,8 +173,6 @@ export class ConvencionistasUpdateComponent implements OnInit {
   private previewImage(file: File): void {
     const reader = new FileReader();
     reader.onload = (e: any) => {
-      // Aquí puedes asignar la imagen previsualizada a una propiedad
-      // para mostrarla en el template si lo deseas
       this.imagePreview = e.target.result;
     };
     reader.readAsDataURL(file);
@@ -85,7 +182,10 @@ export class ConvencionistasUpdateComponent implements OnInit {
     this.imagePreview = null;
     inputRef.value = '';
     this.selectedFile = null;
-    this.myForm.patchValue({ imagen: null });
+    this.myForm.patchValue({
+      imagen: null,
+      url: '',
+    });
     this.myForm.get('imagen')?.updateValueAndValidity();
   }
 
@@ -94,35 +194,59 @@ export class ConvencionistasUpdateComponent implements OnInit {
       this.myForm.markAllAsTouched();
       return;
     }
-    const file: File = this.myForm.controls['imagen'].value;
-    this.cdnService.uploadFile('convencionista', 'imagen', file).subscribe({
-      next: (data) => {
-        this.myForm.patchValue({
-          url: data.response,
+    if (this.myForm.get('imagen')?.value && !this.myForm.get('url')?.value) {
+      const file: File = this.myForm.controls['imagen'].value;
+      const nombreImagen = `${this.myForm.get('clave')?.value}-${String(
+        Date.now()
+      ).substring(0, 3)}`;
+      this.cdnService
+        .uploadFile('convencionista', nombreImagen, file)
+        .subscribe({
+          next: (data) => {
+            this.myForm.patchValue({
+              url: data.response,
+            });
+          },
+          error: (e) => {
+            this.notificacion.show(
+              'Ocurrio un error al cargar la foto del convencionista, favor de intentarlo nuevamente',
+              'error'
+            );
+          },
+          complete: () => {
+            this.registraConvencionista();
+          },
         });
-        console.log('Data de la imagen: ', data);
+    } else {
+      this.registraConvencionista();
+    }
+  }
+
+  registraConvencionista() {
+    const request$ = this.isEditMode
+      ? this.convencionistasService.actualizaConvencionista(this.myForm.value)
+      : this.convencionistasService.nuevoConvencionista(this.myForm.value);
+    request$.subscribe({
+      next: (data) => {
+        if (data.status) {
+          this.notificacion.show(
+            this.isEditMode
+              ? 'Convencionista actualizado correctamente.'
+              : 'Convencionista guardado correctamente.',
+            'success'
+          );
+          this.location.back();
+        } else {
+          this.notificacion.show(data.message?.[0], 'error');
+        }
       },
-      error: (e) => {},
-      complete: () => {
-        this.convencionistasService
-          .NuevoConvencionista(this.myForm.value)
-          .subscribe({
-            next: (data) => {
-              if (data.status) {
-                this.notificacion.show(
-                  'Convencionista guardado correctamente.',
-                  'success'
-                );
-                this.location.back();
-              }
-            },
-            error: (e) => {
-              this.notificacion.show(
-                'Ocurrio un error a guardar al convencionista, favor de intentarlo nuevamente',
-                'error'
-              );
-            },
-          });
+      error: (e) => {
+        this.notificacion.show(
+          this.isEditMode
+            ? 'Ocurrio un error al actualizar el convencionista, favor de intentarlo nuevamente'
+            : 'Ocurrio un error a guardar el convencionista, favor de intentarlo nuevamente',
+          'error'
+        );
       },
     });
   }

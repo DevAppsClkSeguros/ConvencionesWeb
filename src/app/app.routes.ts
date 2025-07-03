@@ -7,24 +7,35 @@ import { PasswordResetInitComponent } from './account/password-reset/init/passwo
 export const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent,
+    loadComponent: () => import('./login/login.component').then(m => m.LoginComponent)
   },
   {
     path: 'dashboard',
     component: HomePageComponent,
   },
   {
-    path: 'evento',
-    loadChildren: () => import('./convenciones/evento/evento.routes'),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'hotel',
-    loadChildren: () => import('./convenciones/hotel/hotel.routes'),
-  },
-  {
     path: 'convencionistas',
     loadChildren: () => import('./convenciones/convencionistas/convencionistas.routes'),
+  },
+  {
+    path: 'convenciones',
+    loadChildren: () => import('./convenciones/convenciones/convenciones.routes'),
+  },
+  {
+    path: 'preguntas',
+    loadChildren: () => import('./convenciones/preguntas/preguntas.routes'),
+  },
+  {
+    path: 'memorias-fotograficas',
+    loadChildren: () => import('./convenciones/memorias-fotograficas/memorias-fotograficas.routes'),
+  },
+  {
+    path: 'hoteles',
+    loadChildren: () => import('./convenciones/hoteles/hoteles.routes'),
+  },
+  {
+    path: 'recomendaciones',
+    loadChildren: () => import('./convenciones/recomendaciones/recomendaciones.routes'),
   },
   {
     path: 'cuenta',

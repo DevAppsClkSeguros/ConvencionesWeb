@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../core/interceptor/auth.service';
 import { FormUtils } from '../core/utils/form-utils';
 import { NotificacionService } from '../shared/services/notificacion.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -14,6 +15,7 @@ export class LoginComponent {
   authService = inject(AuthService);
   router = inject(Router);
   fb = inject(FormBuilder);
+  route = inject(ActivatedRoute);
   notificacion = inject(NotificacionService);
   loginError = false;
   loading = false;
@@ -21,8 +23,26 @@ export class LoginComponent {
   formUtils = FormUtils;
   myForm = this.fb.group({
     email: ['', Validators.required],
-    password: ['', Validators.required]
+    password: ['', Validators.required],
   });
+
+  constructor() {
+    this.route.queryParams.subscribe((params) => {
+      if (params['sessionExpired']) {
+        this.notificacion.show(
+          'Tu sesión expiró, vuelve a iniciar sesión',
+          'warning'
+        );
+        this.router.navigate([], {
+          queryParams: {
+            sessionExpired: null,
+          },
+          queryParamsHandling: 'merge',
+          replaceUrl: true,
+        });
+      }
+    });
+  }
 
   onSubmit() {
     if (this.myForm.invalid) {
@@ -30,26 +50,22 @@ export class LoginComponent {
       return;
     }
     this.loading = true;
-    this.authService
-      .login(this.myForm.value)
-      .subscribe({
-        next: (data) => {
-          if (data.status) {
-            this.router.navigateByUrl('/dashboard');
-          } else {
-            this.loginError = false;
-            this.credencialesInvalidas = true;
-          }
-        },
-        error: (e) => {
-          console.log('El error del login: ', e);
-          this.loading = false;
-          this.notificacion.show('Ocurrio un error...', 'error');
-        },
-        complete: () => {
-          console.log('mi complete');
-          this.loading=false;
+    this.authService.login(this.myForm.value).subscribe({
+      next: (data) => {
+        if (data.status) {
+          this.router.navigateByUrl('/dashboard');
+        } else {
+          this.loginError = false;
+          this.credencialesInvalidas = true;
         }
-      });
+      },
+      error: (e) => {
+        this.loading = false;
+        this.notificacion.show('Ocurrio un error al iniciar sesión, inténtelo nuevamente', 'error');
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
   }
 }

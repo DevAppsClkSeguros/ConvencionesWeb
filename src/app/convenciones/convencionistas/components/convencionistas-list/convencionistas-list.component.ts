@@ -1,97 +1,163 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { SearchInputComponent } from '../../../../shared/components/search-input/search-input.component';
+import {
+  Component,
+  computed,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+} from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
+import type { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
 import { ConvencionistasService } from '../../services/convencionistas.service';
-import {
-  ConvencionistasResponse,
-  Convencionista,
-} from '../../interfaces/convencionistas.interface';
+import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
+import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
+import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
+import { NotificacionService } from '@shared/services/notificacion.service';
+import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
+import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
+import type { Convencionista } from '../../interfaces/convencionistas.interface';
 
 @Component({
   selector: 'convencionistas-list',
-  imports: [SearchInputComponent, RouterLink],
+  imports: [
+    SearchInputComponent,
+    RouterLink,
+    FormsModule,
+    IconAddComponent,
+    IconRefreshComponent,
+    ConfirmModalComponent,
+  ],
   templateUrl: './convencionistas-list.component.html',
 })
 export class ConvencionistasListComponent implements OnInit {
   convencionistasService = inject(ConvencionistasService);
+  eventosService = inject(ConvencionesService);
+  notificacion = inject(NotificacionService);
   router = inject(Router);
   query = signal('');
+  convencionSeleccionada = signal<string>('');
+  mensajeEliminar = '';
 
-  convenciones: any = [];
+  convenciones = signal<Convencion[]>([]);
 
-  // convencionistaResource = rxResource({
-  //   request: () => ({ query: this.query() }),
-  //   loader: ({ request }) => {
-  //     return this.convencionistasService
-  //       .GetConvencionistas()
-  //       .pipe(map((resp) => resp.response));
-  //   },
-  // });
+  @ViewChild('deleteModal') deleteModal!: ConfirmModalComponent;
+  convencionistaId: number = 0;
 
   ngOnInit(): void {
-    this.cargaConvenciones();
+    this.getConvenciones();
   }
   convencionistaResource = rxResource({
     request: () => ({}), // sin dependencias reactivas
     loader: () => {
-      return this.convencionistasService
-        .GetConvencionistas()
-        .pipe(map((resp) => resp.response));
+      return this.convencionistasService.GetConvencionistas().pipe(
+        map((resp) => resp.response),
+        catchError((error) => {
+          this.notificacion.show(
+            'Ocurrio un error al cargar lista de convencionistas.',
+            'error'
+          );
+          return of([]);
+        })
+      );
     },
   });
 
-  // 🧠 Aquí sí usas query para filtrar localmente
   filteredConvencionistas = computed(() => {
-    const lista = this.convencionistaResource.value(); // <- aquí está el pedo
+    const listaConvenciones = this.convencionistaResource.value();
     const texto = this.query().toLowerCase().trim();
+    const nombreConvencion = this.convencionSeleccionada().toLowerCase().trim();
 
-    if (!lista) return [];
-    if (!texto) return lista;
+    if (!listaConvenciones) return [];
 
-    return lista.filter((conv) =>
-      conv.clave.toLocaleLowerCase().includes(texto) ||
-      conv.nombreCompleto.toLowerCase().includes(texto) ||
-    conv.telefono.includes(texto) ||
-    conv.puesto.toLocaleLowerCase().includes(texto)
-    );
+    return listaConvenciones.filter((conv) => {
+      const coincideTexto =
+        !texto ||
+        conv.clave.toLowerCase().includes(texto) ||
+        conv.nombreCompleto.toLowerCase().includes(texto) ||
+        conv.telefono.includes(texto) ||
+        conv.puesto.toLowerCase().includes(texto);
+
+      const coincideConvencion =
+        !nombreConvencion ||
+        conv.nombreEvento?.toLowerCase().trim() == nombreConvencion;
+      return coincideTexto && coincideConvencion;
+    });
   });
 
-  cargaConvenciones() {
-    this.convenciones = [
-      {
-        id: 1,
-        nombre: 'Los Cabos'
+  getConvenciones() {
+    this.eventosService.obtieneConvenciones().subscribe({
+      next: (data) => {
+        if (data.status) {
+          this.convenciones.set(data.response);
+        }
       },
-      {
-        id: 1,
-        nombre: 'Costa rica'
+      error: (e) => {
+        this.notificacion.show(
+          'Ocurrio un error al recuperar lista de convenciones',
+          'error'
+        );
       },
-      {
-        id: 1,
-        nombre: 'Punta cana'
-      }
-    ];
+    });
   }
 
   refrescaDatos() {
     this.query.set('');
+    this.convencionSeleccionada.set('');
     this.convencionistaResource.reload();
   }
 
-  eliminarConvencionista(id: number) {
-    const confirmed = window.confirm(
-      '¿Estás seguro de que quieres eliminar este elemento? Esta acción no se puede deshacer.'
-    );
-    if (confirmed) {
-      this.convencionistasService.eliminarConvencionista(id).subscribe({
+  actualizaConvencionista(convencionista: Convencionista, Convencion: any) {
+    setTimeout(() => {
+      console.log('Valor de la convencion seleccionada: ', convencionista);
+      convencionista.eventoId = 1012;
+      console.log('Valor de la convencion modificada: ', convencionista);
+      this.convencionistasService
+        .actualizaConvencionista(convencionista)
+        .subscribe({
+          next: (data) => {
+            if (data.status) {
+              this.notificacion.show(
+                `El convencionista ${convencionista.nombreCompleto} ha sido actualizado correctamente`,
+                'success'
+              );
+            }
+          },
+        });
+    }, 200);
+  }
+
+  abrirModal(convencionId: number) {
+    this.convencionistaId = convencionId;
+    this.mensajeEliminar = `¿Está seguro de eliminar el registro ${convencionId}? Esta acción no se puede deshacer.`;
+    this.deleteModal.show();
+  }
+
+  eliminaConvencionista() {
+    this.convencionistasService
+      .eliminaConvencionista(this.convencionistaId)
+      .subscribe({
         next: (data) => {
           if (data.status) {
-            this.convencionistaResource.reload();
+            this.notificacion.show(
+              'Convencionista eliminado correctamente',
+              'success'
+            );
+            this.convencionistaResource.update((convencionistas) => {
+              return convencionistas?.filter(
+                (convencionista) => convencionista.id !== this.convencionistaId
+              );
+            });
           }
         },
+        error: (e) => {
+          this.notificacion.show(
+            'Error al eliminar la convencionista',
+            'error'
+          );
+        },
       });
-    }
   }
 }

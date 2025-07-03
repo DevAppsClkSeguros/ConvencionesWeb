@@ -5,14 +5,10 @@
     <p>{{ card.description }}</p>
     @if (card.buttonText) {
     <div class="card-actions justify-end">
-      <!-- <button class="btn" [ngClass]="card.buttonClass || 'btn-primary'"
-      [routerLink]="[card.redirectTo]" >
-        {{ card.buttonText }}
-      </button> -->
       <div class="dropdown">
         <div tabindex="0" role="button" class="btn m-1" [ngClass]="card.buttonClass || 'btn-primary'">Módulos</div>
         <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-        @for (module of card.subMenu; track card.subMenu) {
+        @for (module of card.subMenu; track module.title) {
             <li><a [routerLink]="[module.route]">{{module.title}}</a></li>
           }
         </ul>

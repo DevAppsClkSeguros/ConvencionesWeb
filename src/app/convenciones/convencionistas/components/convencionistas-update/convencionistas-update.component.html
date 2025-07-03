@@ -1,23 +1,38 @@
+@if (convencionistaResource?.error()) {
+<shared-not-found mensaje="No se encontro el convencionista solicitado" />
+}
+@if (!convencionistaResource?.error()) {
 <div class="min-h-screen flex items-center justify-center bg-base-200">
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
-    <h2 class="text-3xl font-bold mb-6">Datos de Usuario</h2>
+    <h2 class="text-3xl font-bold mb-6">Datos del convencionista</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <!-- ID -->
+      @if (isEditMode) {
       <div>
         <label class="label">ID</label>
-        <input type="text" formControlName="id" class="input input-bordered w-full"
-        />
+        <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
       </div>
+
+      <!-- Estatus -->
+      <div>
+        <label class="label w-full">Estatus</label>
+        <input type="checkbox" formControlName="activo" class="toggle toggle-primary " />
+        @if (formUtils.isValidField(myForm, 'activo')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'activo')}}
+        </small>
+        }
+      </div>
+      }
 
       <!-- Clave -->
       <div>
         <label class="label">Clave</label>
         <input type="text" formControlName="clave" class="input input-bordered w-full" />
         @if (formUtils.isValidField(myForm, 'clave')){
-          <small class="text-error">
-            {{formUtils.getFieldError(myForm, 'clave')}}
-          </small>
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'clave')}}
+        </small>
         }
       </div>
 
@@ -25,7 +40,7 @@
       <div>
         <label class="label">Nombre completo</label>
         <input type="text" formControlName="nombreCompleto" class="input input-bordered w-full"
-        placeholder="Nombre y apellidos"/>
+          placeholder="Nombre y apellidos" />
         @if (formUtils.isValidField(myForm, 'nombreCompleto')){
         <small class="text-error">
           {{formUtils.getFieldError(myForm, 'nombreCompleto')}}
@@ -47,52 +62,63 @@
       <!-- Teléfono -->
       <div>
         <label class="label">Teléfono</label>
-        <input type="tel" formControlName="telefono" class="input input-bordered w-full" />
+        <input type="number" formControlName="telefono" class="input input-bordered w-full" />
       </div>
 
       <!-- Perfil -->
       <div>
         <label class="label">Perfil</label>
-        <select formControlName="perfil" class="select select-bordered w-full">
-          <option value="" disabled selected>Selecciona un perfil</option>
-          <!-- <option *ngFor="let perfil of perfiles" [value]="perfil">{{ perfil }}</option> -->
+        <select formControlName="perfilNombreId" class="select select-bordered w-full">
+          <option value="" selected>Selecciona un perfil</option>
+          @for (perfil of perfilesResouce.value(); track perfil.id) {
+          <option [value]="perfil.id">{{perfil.nombre}}</option>
+          }
         </select>
-        <small class="text-error">Campo obligatorio.</small>
+        @if (formUtils.isValidField(myForm, 'perfilNombreId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'perfilNombreId')}}
+        </small> }
       </div>
 
       <!-- Categoría -->
       <div>
         <label class="label">Categoría</label>
-        <select formControlName="categoria" class="select select-bordered w-full">
-          <option value="" disabled selected>Selecciona una categoría</option>
-          <!-- <option *ngFor="let cat of categorias" [value]="cat">{{ cat }}</option> -->
+        <select formControlName="categoriaNombreId" class="select select-bordered w-full">
+          <option value="" selected>Selecciona una categoria</option>
+          @for (categoria of categoriasResource.value(); track categoria.id) {
+          <option [value]="categoria.id">{{categoria.nombre}}</option>
+          }
         </select>
-        <small class="text-error">Campo obligatorio.</small>
+        @if (formUtils.isValidField(myForm, 'categoriaNombreId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'categoriaNombreId')}}
+        </small> }
+      </div>
+
+      <!-- Foto -->
+      <div>
+        <label class="label">Foto</label>
+        <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
+          accept="image/*" />
+        @if(imagePreview) {
+        <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
+        <button type="button" (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
+        }
       </div>
 
       <!-- Convención -->
       <div>
         <label class="label">Convención</label>
-        <select formControlName="convencion" class="select select-bordered w-full">
-          <option value="" disabled selected>Selecciona una convención</option>
-          <!-- <option *ngFor="let conv of convenciones" [value]="conv">{{ conv }}</option> -->
-        </select>
-        <small class="text-error">Campo obligatorio.</small>
-      </div>
-
-      <!-- Foto -->
-      <div>
-        <label class="label">Fotooo</label>
-        <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
-          accept="image/*" />
-          @if(myForm.get('imagen')?.invalid && myForm.get('imagen')?.touched) {
-            <div class="text-error text-sm mt-1">
-              📸 La imagen es obligatoria
-            </div>
+        <select formControlName="eventoId" class="select select-bordered w-full">
+          <option value="" selected>Selecciona una convención</option>
+          @for (convencion of convencionesResource.value(); track convencion.id) {
+          <option [value]="convencion.id">{{convencion.nombreEvento}}</option>
           }
-        @if(imagePreview) {
-          <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
-          <button (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
+        </select>
+        @if (formUtils.isValidField(myForm, 'eventoId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'eventoId')}}
+        </small>
         }
       </div>
     </div>
@@ -110,3 +136,4 @@
     </h2>
   </form>
 </div>
+}

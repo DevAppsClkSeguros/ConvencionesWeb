@@ -1,6 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CardComponent } from "../../components/card/card.component";
-import { Card } from '../../interfaces/card.interface';
+import type { Card } from '../../interfaces/card.interface';
 
 @Component({
   selector: 'app-home-page',
@@ -20,9 +20,9 @@ export class HomePageComponent implements OnInit {
       redirectTo: '/evento',
       visible: true,
       subMenu: [
-        { title: 'Convención', route: '/evento' },
-        { title: 'Encuesta', route: '/dashboard' },
-        { title: 'Usuarios', route: '/convencionistas' },
+        { title: 'Convenciones', route: '/convenciones' },
+        { title: 'Encuesta', route: '/preguntas' },
+        { title: 'Convencionistas', route: '/convencionistas' },
       ],
     },
     {
@@ -32,10 +32,7 @@ export class HomePageComponent implements OnInit {
       buttonText: 'Contratar',
       redirectTo: '',
       visible: true,
-      subMenu: [
-        { title: 'Nuestro destino', route: 'cs-dat-evn-nuestro-dest' },
-        { title: 'Hotel', route: 'cs-dat-evn-hotel' },
-      ],
+      subMenu: [{ title: 'Hotel', route: '/hoteles' }],
     },
     {
       title: 'Vuelos',
@@ -76,7 +73,7 @@ export class HomePageComponent implements OnInit {
       subMenu: [
         {
           title: 'Recomendaciones',
-          route: 'cs-dat-evn-recomendaciones',
+          route: '/recomendaciones',
         },
       ],
     },

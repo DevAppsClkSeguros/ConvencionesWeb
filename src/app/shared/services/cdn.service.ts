@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { AppConfig } from '../app-config';
 import { catchError, Observable } from 'rxjs';
-import { CDNResponse } from '../interfaces/cdn.interface';
+import type { CDNResponse } from '../interfaces/cdn.interface';
 
 @Injectable({ providedIn: 'root' })
 export class CdnService {

@@ -1,0 +1,112 @@
+@if (hotelResource?.error()) {
+<shared-not-found mensaje="{{hotelResource?.error()}}" />
+}
+@if (!hotelResource?.error()) {
+<div class="min-h-screen flex items-center justify-center bg-base-200">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
+    <h2 class="text-3xl font-bold mb-6">Datos del Hotel</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @if (isEditMode) {
+      <div>
+        <label class="label">ID</label>
+        <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
+      </div>
+      <div></div>
+      }
+
+      <!-- Nombre -->
+      <div>
+        <label class="label">Hotel</label>
+        <input type="text" formControlName="nombreHotel" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'nombreHotel')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'nombreHotel')}}
+        </small>
+        }
+      </div>
+
+      <!-- Dirección -->
+      <div>
+        <label class="label">Dirección</label>
+        <input type="text" formControlName="direccion" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'direccion')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'direccion')}}
+        </small>
+        }
+      </div>
+
+      <!-- Latitud -->
+      <div>
+        <label class="label">Latitud</label>
+        <input type="number" formControlName="latitud" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'latitud')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'latitud')}}
+        </small>
+        }
+      </div>
+
+      <!-- Longitud -->
+      <div>
+        <label class="label">Longitud</label>
+        <input type="number" formControlName="longitud" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'longitud')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'longitud')}}
+        </small>
+        }
+      </div>
+
+      <!-- Teléfono -->
+      <div>
+        <label class="label">Telefono</label>
+        <input type="number" formControlName="telefono" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'telefono')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'telefono')}}
+        </small>
+        }
+      </div>
+
+      <!-- Convención -->
+      <div>
+        <label class="label">Convención</label>
+        <select formControlName="eventoId" class="select select-bordered w-full">
+          <option value="" selected>Selecciona una convención</option>
+          @for (convencion of convencionesResource.value(); track convencion.id) {
+          <option [value]="convencion.id">{{convencion.nombreEvento}}</option>
+          }
+        </select>
+        @if (formUtils.isValidField(myForm, 'eventoId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'eventoId')}}
+        </small> }
+      </div>
+
+      <!-- Foto -->
+      <div>
+        <label class="label">Foto</label>
+        <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
+          accept="image/*" />
+        @if(imagePreview) {
+        <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
+        <button type="button" (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
+        }
+        @if (formUtils.isValidField(myForm, 'imagen')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'imagen')}}
+        </small>
+        }
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end mt-8 gap-4">
+      <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+</div>
+}

@@ -1,0 +1,17 @@
+<dialog #dialogRef class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg text-red-500">{{titulo()}}</h3>
+    <p class="py-4">
+      {{mensaje()}}
+    </p>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn" (click)="onCancel()">Cancelar</button>
+      </form>
+      <button class="btn btn-error" (click)="onConfirm()">{{mensajeAceptar()}}</button>
+    </div>
+  </div>
+  <form method="dialog" class="modal-backdrop">
+    <button>close</button>
+  </form>
+</dialog>

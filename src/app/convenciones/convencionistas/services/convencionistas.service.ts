@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { catchError, Observable } from 'rxjs';
-import { AppConfig } from '../../../shared/app-config';
+import { AppConfig } from '@shared/app-config';
 import { HttpClient } from '@angular/common/http';
-import {
+import type {
   Convencionista,
   ConvencionistasResponse,
 } from '../interfaces/convencionistas.interface';
@@ -19,7 +19,17 @@ export class ConvencionistasService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  NuevoConvencionista(
+  obtieneConvencionista(
+    idConvencionista: number
+  ): Observable<ConvencionistasResponse> {
+    return this.http
+      .get<ConvencionistasResponse>(
+        `${AppConfig.APIREST_URL}/api/Convencionistas/DetallesConvencionista/${idConvencionista}`
+      )
+      .pipe(catchError(AppConfig.handleErrors));
+  }
+
+  nuevoConvencionista(
     convencionista: Convencionista
   ): Observable<ConvencionistasResponse> {
     return this.http
@@ -32,15 +42,39 @@ export class ConvencionistasService {
           puesto: convencionista.puesto,
           telefono: convencionista.telefono,
           imagen: convencionista.url,
-          perfilConvencionistaId: convencionista.perfilConvencionistaId,
-          categoriaUsuarioId: convencionista.categoriaUsuarioId,
+          documento: convencionista.documento,
+          perfilConvencionistaId: convencionista.perfilNombreId,
+          categoriaUsuarioId: convencionista.categoriaNombreId,
           eventoId: convencionista.eventoId,
         }
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  DetallesConvencionista(id: number): Observable<ConvencionistasResponse> {
+  actualizaConvencionista(
+    convencionista: Convencionista
+  ): Observable<ConvencionistasResponse> {
+    return this.http
+      .put<ConvencionistasResponse>(
+        `${AppConfig.APIREST_URL}/api/Convencionistas/ActualizarConvencionista/${convencionista.id}`,
+        {
+          id: convencionista.id,
+          activo: convencionista.activo,
+          clave: convencionista.clave,
+          nombreCompleto: convencionista.nombreCompleto,
+          puesto: convencionista.puesto,
+          telefono: convencionista.telefono,
+          imagen: convencionista.url,
+          documento: convencionista.documento,
+          perfilConvencionistaId: convencionista.perfilNombreId,
+          categoriaUsuarioId: convencionista.categoriaNombreId,
+          eventoId: convencionista.eventoId,
+        }
+      )
+      .pipe(catchError(AppConfig.handleErrors));
+  }
+
+  detallesConvencionista(id: number): Observable<ConvencionistasResponse> {
     return this.http
       .get<ConvencionistasResponse>(
         `${AppConfig.APIREST_URL}/api/Convencionistas/DetallesConvencionista/${id}`
@@ -48,15 +82,7 @@ export class ConvencionistasService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  ActualizarConvencionista(id: number): Observable<ConvencionistasResponse> {
-    return this.http
-      .get<ConvencionistasResponse>(
-        `${AppConfig.APIREST_URL}/api/Convencionistas/ActualizarConvencionista/${id}`
-      )
-      .pipe(catchError(AppConfig.handleErrors));
-  }
-
-  eliminarConvencionista(id: number): Observable<ConvencionistasResponse> {
+  eliminaConvencionista(id: number): Observable<ConvencionistasResponse> {
     return this.http
       .delete<ConvencionistasResponse>(
         `${AppConfig.APIREST_URL}/api/Convencionistas/${id}`
