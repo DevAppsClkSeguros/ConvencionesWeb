@@ -32,16 +32,14 @@ export class ActividadesService {
       .post<ActividadesResponse>(
         `${AppConfig.APIREST_URL}/api/Actividades/Nueva`,
         {
-          id: actividad.id,
           titulo: actividad.titulo,
           subtitulo: actividad.subtitulo,
           especificaciones: actividad.especificaciones,
-          imagen: actividad.imagen,
+          imagen: actividad.url,
           fecha: actividad.fecha,
           eventoId: actividad.eventoId,
-          nombreEvento: actividad.nombreEvento,
           categoria_ActividadesId: actividad.categoria_ActividadesId,
-          nombreCategoriaAct: actividad.nombreCategoriaAct,
+          convencionistasIds: actividad.convencionistasIds,
         }
       )
       .pipe(catchError(AppConfig.handleErrors));
@@ -58,12 +56,10 @@ export class ActividadesService {
           titulo: actividad.titulo,
           subtitulo: actividad.subtitulo,
           especificaciones: actividad.especificaciones,
-          imagen: actividad.imagen,
+          imagen: actividad.url,
           fecha: actividad.fecha,
           eventoId: actividad.eventoId,
-          nombreEvento: actividad.nombreEvento,
           categoria_ActividadesId: actividad.categoria_ActividadesId,
-          nombreCategoriaAct: actividad.nombreCategoriaAct,
           convencionistasIds: actividad.convencionistasIds,
         }
       )

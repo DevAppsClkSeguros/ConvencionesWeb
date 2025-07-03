@@ -144,7 +144,7 @@
         </small>
         }
       </div>
-      <shared-convencionistas-por-convencion class="md:col-span-2" [convencionId]="convencionId()"
+      <shared-convencionistas-por-convencion class="md:col-span-3" [convencionId]="convencionId()"
         (convencionistasSeleccionados2)="seleccionaConvencionista($event)"
         [convencionistasPorVuelo]="myForm.get('convencionistasIds')?.value || []" />
       @if (formUtils.isValidField(myForm, 'convencionistasIds')) {

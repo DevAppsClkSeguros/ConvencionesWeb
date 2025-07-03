@@ -1,4 +1,4 @@
-import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, OnInit, signal, viewChild } from '@angular/core';
 import { MicrosoftGraphService } from '../../services/microsoftGraph.service';
 import { ScrollStateService } from '../../services/scroll-state.service';
 import { ImagenListComponent } from "../imagen-list/imagen-list.component";
@@ -8,7 +8,6 @@ import { ImagenListComponent } from "../imagen-list/imagen-list.component";
   selector: 'app-memorias-fotograficas',
   imports: [ImagenListComponent],
   templateUrl: './memorias-fotograficas.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MemoriasFotograficasComponent implements AfterViewInit {
   microsoftGraphService = inject(MicrosoftGraphService);

@@ -91,7 +91,10 @@ export class HomePageComponent implements OnInit {
         { title: 'Log de eventos', route: 'log-eventos' },
         { title: 'Perfil de usuario', route: 'cs-cat-evn-perfil' },
         { title: 'Tipo usuario', route: 'cat-tipo-usuario' },
-        { title: 'Categoría de actividades', route: 'cat-eventos' },
+        {
+          title: 'Categoría de actividades',
+          route: '/actividades/categorias',
+        },
         {
           title: 'Categoría de recomendaciones',
           route: '/recomendaciones/categorias',

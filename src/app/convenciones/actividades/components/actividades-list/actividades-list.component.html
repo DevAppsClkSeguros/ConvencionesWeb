@@ -44,12 +44,13 @@
           </td>
           <td>
             {{actividad.fecha| date: "dd-MM-yyyy"}}
+            <br />
+            <span class="badge badge-ghost badge-sm">{{actividad.fecha | date: 'HH:mm' }}</span>
           </td>
           <td>{{actividad.nombreEvento}}</td>
           <td>{{actividad.nombreCategoriaAct}}</td>
           <th>
-            <button class="btn btn-primary btn-xs"
-              [routerLink]="[`/actividades/${actividad.id}/edit`]">Editar</button>
+            <button class="btn btn-primary btn-xs" [routerLink]="[`/actividades/${actividad.id}/edit`]">Editar</button>
           </th>
           <th>
             <button class="btn btn-secondary btn-xs" (click)="abrirModal(actividad.id)">Eliminar</button>

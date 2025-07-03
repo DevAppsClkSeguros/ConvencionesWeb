@@ -19,7 +19,7 @@ export class ConvencionistasService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  GetConvencionistasPorConvencion(eventoId: number): Observable<ConvencionistasResponse> {
+  obtieneConvencionistasPorConvencion(eventoId: number): Observable<ConvencionistasResponse> {
     return this.http
       .get<ConvencionistasResponse>(
         `${AppConfig.APIREST_URL}/api/Convencionistas/ListadoXEvento/${eventoId}`

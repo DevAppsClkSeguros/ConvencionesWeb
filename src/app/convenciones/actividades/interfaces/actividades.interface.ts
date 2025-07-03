@@ -10,6 +10,7 @@ export interface Actividad {
   subtitulo: string;
   especificaciones: string;
   imagen: string;
+  url: string;
   fecha: Date;
   eventoId: number;
   nombreEvento: null;

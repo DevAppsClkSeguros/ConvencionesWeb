@@ -30,7 +30,7 @@ export class ConvencionistasPorConvencionComponent {
         return of([]);
       }
       return this.convencionistasService
-        .GetConvencionistasPorConvencion(Number(this.convencionId()))
+        .obtieneConvencionistasPorConvencion(Number(this.convencionId()))
         .pipe(
           map((resp) => {
             const agregados = this.convencionistasPorVuelo() || [];

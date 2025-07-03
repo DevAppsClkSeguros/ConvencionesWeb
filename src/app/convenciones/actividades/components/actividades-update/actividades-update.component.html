@@ -7,7 +7,7 @@
     class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl mt-5 mb-5">
     <h2 class="text-3xl font-bold mb-6">Datos de la actividad</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       @if (isEditMode) {
       <div>
         <label class="label">ID</label>
@@ -71,8 +71,8 @@
         <label class="label">Categoría</label>
         <select formControlName="categoria_ActividadesId" class="select select-bordered w-full">
           <option value="" selected>Selecciona una categoría</option>
-          @for (convencion of convencionesResource.value(); track convencion.id) {
-          <option [value]="convencion.id">{{convencion.nombreEvento}}</option>
+          @for (categoria of categoriasResource.value(); track categoria.id) {
+          <option [value]="categoria.id">{{categoria.nombre}}</option>
           }
         </select>
         @if (formUtils.isValidField(myForm, 'categoria_ActividadesId')){
@@ -98,7 +98,7 @@
         }
       </div>
 
-      <div class="md:col-span-3">
+      <div class="md:col-span-2">
         <label class="label">Especificaciones</label>
         <textarea class="textarea w-full min-h-[150px]" formControlName="especificaciones"></textarea>
         @if (formUtils.isValidField(myForm, 'especificaciones')){
@@ -107,9 +107,14 @@
         </small>
         }
       </div>
-      <shared-convencionistas-por-convencion [convencionId]="convencionId()"
+      <shared-convencionistas-por-convencion class="md:col-span-2" [convencionId]="convencionId()"
         (convencionistasSeleccionados2)="seleccionaConvencionista($event)"
         [convencionistasPorVuelo]="myForm.get('convencionistasIds')?.value || []" />
+      @if (formUtils.isValidField(myForm, 'convencionistasIds')) {
+      <small class="text-error">
+        {{ formUtils.getFieldError(myForm, 'convencionistasIds') }}
+      </small>
+      }
     </div>
 
     <!-- Botones -->

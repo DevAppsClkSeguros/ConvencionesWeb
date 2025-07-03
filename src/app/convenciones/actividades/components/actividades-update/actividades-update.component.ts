@@ -17,6 +17,8 @@ import { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenc
 import { CommonModule } from '@angular/common';
 import { ConvencionistasPorConvencionComponent } from '@shared/pages/convencionistas-por-convencion/convencionistas-por-convencion.component';
 import { ActividadesService } from '../../services/actividades.service';
+import { CategoriasService } from '../../services/categorias.service';
+import { CdnService } from '@shared/services/cdn.service';
 
 @Component({
   selector: 'app-actividades-update',
@@ -35,8 +37,10 @@ export class ActividadesUpdateComponent {
   location = inject(Location);
   notificacion = inject(NotificacionService);
   convencionesService = inject(ConvencionesService);
+  categoriasService = inject(CategoriasService);
   convenciones = signal<Convencion[]>([]);
-  convencionId = signal<number | null>(null);
+  convencionId = signal<number>(0);
+  cdnService = inject(CdnService);
   actividadesService = inject(ActividadesService);
   actividadId = this.route.snapshot.params['id'];
   isEditMode = !!this.actividadId;
@@ -55,7 +59,7 @@ export class ActividadesUpdateComponent {
     eventoId: ['', Validators.required],
     categoria_ActividadesId: ['', Validators.required],
     especificaciones: ['', Validators.required],
-    convencionistasIds: [''],
+    convencionistasIds: [[], FormUtils.arrayRequired()],
   });
 
   actividadesResource = this.isEditMode
@@ -76,6 +80,14 @@ export class ActividadesUpdateComponent {
     loader: ({}) => {
       return this.convencionesService
         .obtieneConvenciones()
+        .pipe(map((resp) => resp.response));
+    },
+  });
+
+  categoriasResource = rxResource({
+    loader: ({}) => {
+      return this.categoriasService
+        .obtieneCategorias()
         .pipe(map((resp) => resp.response));
     },
   });
@@ -112,6 +124,7 @@ export class ActividadesUpdateComponent {
       especificaciones: actividad.especificaciones,
       convencionistasIds: actividad.convencionistasIds,
     });
+    this.imagePreview = actividad.imagen;
     this.convencionId.set(actividad.eventoId);
   }
 
@@ -158,10 +171,34 @@ export class ActividadesUpdateComponent {
       this.myForm.markAllAsTouched();
       return;
     }
-    this.registraVuelo();
+    console.log('Formulario enviado:', this.myForm.value);
+    if (this.myForm.get('imagen')?.value && !this.myForm.get('url')?.value) {
+      const nombreImagen = `${this.myForm.get('id')?.value}-${String(
+        Date.now()
+      ).substring(0, 3)}`;
+      const file: File = this.myForm.controls['imagen'].value;
+      this.cdnService.uploadFile('actividad', nombreImagen, file).subscribe({
+        next: (data) => {
+          this.myForm.patchValue({
+            url: data.response,
+          });
+        },
+        error: (e) => {
+          this.notificacion.show(
+            'Ocurrio un error al cargar la foto de la actividad, favor de intentarlo nuevamente',
+            'error'
+          );
+        },
+        complete: () => {
+          this.registraActividad();
+        },
+      });
+    } else {
+      this.registraActividad();
+    }
   }
 
-  registraVuelo() {
+  registraActividad() {
     const request$ = this.isEditMode
       ? this.actividadesService.actualizaActividad(this.myForm.value)
       : this.actividadesService.nuevaActividad(this.myForm.value);

@@ -13,7 +13,6 @@ import { ActivatedRoute } from '@angular/router';
 import { FormUtils } from '@core/utils/form-utils';
 import { tap } from 'rxjs';
 import { CategoriasService } from '../../services/categorias.service';
-
 @Component({
   selector: 'app-categorias-update',
   imports: [NotFoundComponent, ReactiveFormsModule],
