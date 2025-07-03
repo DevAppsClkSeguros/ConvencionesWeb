@@ -112,6 +112,7 @@ export class ActividadesUpdateComponent {
       especificaciones: actividad.especificaciones,
       convencionistasIds: actividad.convencionistasIds,
     });
+    this.convencionId.set(actividad.eventoId);
   }
 
   onFileSelected(event: Event): void {

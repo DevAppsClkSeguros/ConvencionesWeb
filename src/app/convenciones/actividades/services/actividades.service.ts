@@ -64,6 +64,7 @@ export class ActividadesService {
           nombreEvento: actividad.nombreEvento,
           categoria_ActividadesId: actividad.categoria_ActividadesId,
           nombreCategoriaAct: actividad.nombreCategoriaAct,
+          convencionistasIds: actividad.convencionistasIds,
         }
       )
       .pipe(catchError(AppConfig.handleErrors));

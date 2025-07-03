@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -11,10 +11,15 @@ import type { Hotel } from '../../interfaces/hoteles.interface';
 import { HotelesService } from '../../services/hoteles.service';
 import { NotFoundComponent } from "@shared/components/not-found/not-found.component";
 import { NotificacionService } from '@shared/services/notificacion.service';
+import { ConvencionistasPorConvencionComponent } from "../../../../shared/pages/convencionistas-por-convencion/convencionistas-por-convencion.component";
 
 @Component({
   selector: 'app-hoteles-update',
-  imports: [NotFoundComponent, ReactiveFormsModule],
+  imports: [
+    NotFoundComponent,
+    ReactiveFormsModule,
+    ConvencionistasPorConvencionComponent,
+  ],
   templateUrl: './hoteles-update.component.html',
 })
 export class HotelesUpdateComponent {
@@ -30,6 +35,7 @@ export class HotelesUpdateComponent {
   imagePreview: string | ArrayBuffer | null = null;
   hotelId = this.route.snapshot.params['id'];
   isEditMode = !!this.hotelId;
+  convencionId = signal<number>(0);
 
   myForm: FormGroup = this.fb.group({
     id: [0],
@@ -41,6 +47,7 @@ export class HotelesUpdateComponent {
     imagen: [null, Validators.required],
     url: [''],
     eventoId: ['', Validators.required],
+    convencionistasIds: [[], FormUtils.arrayRequired()],
   });
 
   hotelResource = this.isEditMode
@@ -74,6 +81,10 @@ export class HotelesUpdateComponent {
         }
       });
     }
+    this.myForm.get('eventoId')?.valueChanges.subscribe((eventoId) => {
+      console.log('Evento seleccionado: ', eventoId);
+      this.convencionId.set(eventoId);
+    });
   }
 
   private llenaFormulario(hotel: any): void {
@@ -88,8 +99,10 @@ export class HotelesUpdateComponent {
       imagen: hotel.imagen,
       url: hotel.imagen,
       eventoId: hotel.eventoId,
+      convencionistasIds: hotel.convencionistasIds,
     });
     this.imagePreview = hotel.imagen;
+    this.convencionId.set(hotel.eventoId);
   }
 
   onFileSelected(event: Event): void {
@@ -187,6 +200,13 @@ export class HotelesUpdateComponent {
           'error'
         );
       },
+    });
+  }
+
+  seleccionaConvencionista(convencionistas: number[]) {
+    console.log('Seleccionando desde padre, ', convencionistas);
+    this.myForm.patchValue({
+      convencionistasIds: convencionistas,
     });
   }
 

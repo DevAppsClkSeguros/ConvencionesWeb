@@ -36,7 +36,7 @@ export class VuelosUpdateComponent {
   notificacion = inject(NotificacionService);
   convencionesService = inject(ConvencionesService);
   convenciones = signal<Convencion[]>([]);
-  convencionId = signal<number | null>(null);
+  convencionId = signal<number>(0);
   vuelosService = inject(VuelosService);
   vueloId = this.route.snapshot.params['id'];
   isEditMode = !!this.vueloId;
@@ -57,7 +57,7 @@ export class VuelosUpdateComponent {
     hora_Llegada: ['', Validators.required],
     detalle: [''],
     eventoId: ['', Validators.required],
-    convencionistasIds: [],
+    convencionistasIds: [[], FormUtils.arrayRequired()],
   });
 
   vueloResource = this.isEditMode
@@ -118,6 +118,7 @@ export class VuelosUpdateComponent {
       eventoId: vuelo.eventoId,
       convencionistasIds: vuelo.convencionistasIds,
     });
+    this.convencionId.set(vuelo.eventoId);
   }
 
   onSubmit() {
@@ -160,7 +161,7 @@ export class VuelosUpdateComponent {
   seleccionaConvencionista(convencionistas: number[]) {
     console.log('Seleccionando desde padre, ', convencionistas);
     this.myForm.patchValue({
-      convencionistasIds: convencionistas
+      convencionistasIds: convencionistas,
     });
   }
 

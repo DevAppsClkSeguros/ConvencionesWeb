@@ -5,13 +5,16 @@ export interface HotelesResponse {
 }
 
 export interface Hotel {
-  id:          number;
-  nombreHotel: string;
-  telefono:    string;
-  direccion:   string;
-  latitud:     string;
-  longitud:    string;
-  imagen:      string;
-  eventoId:    number;
-  url:         string;
+  id:                 number;
+  nombreHotel:        string;
+  telefono:           string;
+  direccion:          string;
+  latitud:            string;
+  longitud:           string;
+  imagen:             string;
+  eventoId:           number;
+  nombreEvento:       string;
+  url:                string;
+  detalles:           string;
+  convencionistasIds: number[];
 }

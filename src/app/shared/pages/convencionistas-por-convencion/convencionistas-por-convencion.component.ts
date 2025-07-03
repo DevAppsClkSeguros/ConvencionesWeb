@@ -6,7 +6,7 @@ import {
   output,
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { map, of } from 'rxjs';
 import { Convencionista } from 'src/app/convenciones/convencionistas/interfaces/convencionistas.interface';
 import { ConvencionistasService } from 'src/app/convenciones/convencionistas/services/convencionistas.service';
 
@@ -17,30 +17,43 @@ import { ConvencionistasService } from 'src/app/convenciones/convencionistas/ser
 })
 export class ConvencionistasPorConvencionComponent {
   convencionistasService = inject(ConvencionistasService);
-  convencionId = input.required<number | null>();
-  convencionistasPorVuelo = input<number[]>([]);
+  convencionId = input.required<number>();
+  convencionistasPorVuelo = input<number[]>();
   convencionistasSeleccionados2 = output<number[]>();
   seleccionados: number[] = [];
 
   convencionistasResource = rxResource({
     loader: ({}) => {
-      return this.convencionistasService.GetConvencionistas().pipe(
-        map((resp) => {
-          const agregados = this.convencionistasPorVuelo() || [];
-          return resp.response.map((convencionista) => ({
-            ...convencionista,
-            seleccionado: agregados.includes(convencionista.id) ? true : false,
-          }));
-        })
-      );
+      const id = this.convencionId();
+      if (!id) {
+        console.warn('Convencion ID no proporcionado');
+        return of([]);
+      }
+      return this.convencionistasService
+        .GetConvencionistasPorConvencion(Number(this.convencionId()))
+        .pipe(
+          map((resp) => {
+            const agregados = this.convencionistasPorVuelo() || [];
+            return resp.response.map((convencionista) => ({
+              ...convencionista,
+              seleccionado: agregados.includes(convencionista.id)
+                ? true
+                : false,
+            }));
+          })
+        );
     },
   });
 
   constructor() {
     effect(() => {
       const id = this.convencionId();
-      console.log('Recargando desde hijo: ', id);
-      this.convencionistasResource.reload();
+      console.log('Id de la convencion recibida en el hijo: ', id);
+      // if (id) {
+        this.convencionistasResource!.reload();
+      // } else {
+        // console.log('No se ha proporcionado un ID de convencion');
+      // }
     });
   }
 
@@ -48,9 +61,9 @@ export class ConvencionistasPorConvencionComponent {
     console.log('Seleccionando desde hijo: ', convencionista);
     convencionista.seleccionado = !convencionista.seleccionado;
     this.seleccionados = [];
-    this.convencionistasResource.value()?.forEach((c) => {
+    this.convencionistasResource!.value()?.forEach((c) => {
       if (c.seleccionado) {
-        this.seleccionados.push(convencionista.id);
+        this.seleccionados.push(c.id);
       }
     });
     this.convencionistasSeleccionados2.emit(this.seleccionados);
@@ -58,7 +71,7 @@ export class ConvencionistasPorConvencionComponent {
 
   seleccionaTodos(check: any): void {
     this.seleccionados = [];
-    this.convencionistasResource.value()?.forEach((convencionista) => {
+    this.convencionistasResource!.value()?.forEach((convencionista) => {
       convencionista.seleccionado = check;
       if (convencionista.seleccionado) {
         this.seleccionados.push(convencionista.id);

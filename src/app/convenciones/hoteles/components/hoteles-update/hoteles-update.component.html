@@ -3,7 +3,8 @@
 }
 @if (!hotelResource?.error()) {
 <div class="min-h-screen flex items-center justify-center bg-base-200">
-  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()"
+    class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl mt-5 mb-5">
     <h2 class="text-3xl font-bold mb-6">Datos del Hotel</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -100,6 +101,15 @@
         </small>
         }
       </div>
+
+      <shared-convencionistas-por-convencion class="md:col-span-2" [convencionId]="convencionId()"
+        (convencionistasSeleccionados2)="seleccionaConvencionista($event)"
+        [convencionistasPorVuelo]="myForm.get('convencionistasIds')?.value || []" />
+      @if (formUtils.isValidField(myForm, 'convencionistasIds')) {
+      <small class="text-error">
+        {{ formUtils.getFieldError(myForm, 'convencionistasIds') }}
+      </small>
+      }
     </div>
 
     <!-- Botones -->

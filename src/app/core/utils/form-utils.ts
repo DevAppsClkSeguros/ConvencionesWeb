@@ -105,4 +105,16 @@ export class FormUtils {
     const value = control.value;
     return value === 'strider' ? { noStrider: true } : null;
   }
+
+  static arrayRequired(): (
+    control: AbstractControl
+  ) => ValidationErrors | null {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (Array.isArray(value) && value.length > 0) {
+        return null;
+      }
+      return { required: true };
+    };
+  }
 }

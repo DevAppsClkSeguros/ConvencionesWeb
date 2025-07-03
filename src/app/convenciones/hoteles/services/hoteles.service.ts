@@ -32,6 +32,7 @@ export class HotelesService {
         longitud: hotel.longitud,
         imagen: hotel.url,
         eventoId: hotel.eventoId,
+        convencionistasIds: hotel.convencionistasIds,
       })
       .pipe(catchError(AppConfig.handleErrors));
   }
@@ -48,6 +49,7 @@ export class HotelesService {
           longitud: hotel.longitud,
           imagen: hotel.url,
           eventoId: hotel.eventoId,
+          convencionistasIds: hotel.convencionistasIds,
         }
       )
       .pipe(catchError(AppConfig.handleErrors));

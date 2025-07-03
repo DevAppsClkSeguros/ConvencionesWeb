@@ -12,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-    @for (convencionista of convencionistasResource.value(); track convencionista.id) {
+    @for (convencionista of convencionistasResource!.value(); track convencionista.id) {
     <tr>
       <td>
         <input type="checkbox" class="checkbox" [checked]="convencionista.seleccionado"

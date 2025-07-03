@@ -5,15 +5,15 @@ export interface ActividadesResponse {
 }
 
 export interface Actividad {
-  id:                      number;
-  titulo:                  string;
-  subtitulo:               string;
-  especificaciones:        string;
-  imagen:                  string;
-  fecha:                   Date;
-  eventoId:                number;
-  nombreEvento:            null;
+  id: number;
+  titulo: string;
+  subtitulo: string;
+  especificaciones: string;
+  imagen: string;
+  fecha: Date;
+  eventoId: number;
+  nombreEvento: null;
   categoria_ActividadesId: number;
-  nombreCategoriaAct:      null;
-
+  nombreCategoriaAct: null;
+  convencionistasIds: number[];
 }
