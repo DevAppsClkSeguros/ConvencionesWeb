@@ -56,6 +56,11 @@ export class ActividadesListComponent {
           this.actividadesResource.update((hoteles) => {
             return hoteles?.filter((hotel) => hotel.id !== this.actividadId);
           });
+        } else {
+          this.notificacion.show(
+            `${data.message?.[0] || 'Error desconocido'}`,
+            'error'
+          );
         }
       },
       error: (e) => {

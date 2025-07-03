@@ -1,3 +1,4 @@
+import { Categoria } from '../../../../recomendaciones/interfaces/categorias.interface';
 import { Component, effect, inject, signal } from '@angular/core';
 import {
   FormBuilder,
@@ -6,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { JsonPipe, Location } from '@angular/common';
-import { ConvencionistasService } from '../../services/convencionistas.service';
+import { ConvencionistasService } from '../../../services/convencionistas.service';
 import { FormUtils } from '@core/utils/form-utils';
 import { CdnService } from '@shared/services/cdn.service';
 import { NotificacionService } from '@shared/services/notificacion.service';
@@ -16,7 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { map, tap } from 'rxjs';
-import { CategoriasConvensionistaService } from 'src/app/convenciones/configuracion/categorias-convencionista/services/categorias-convencionista.service';
+import { CategoriasService } from '../../../services/categorias.service';
 import { PerfilesConvensionistaService } from 'src/app/convenciones/configuracion/perfilConvencionista/services/perfilesConvencionista.service';
 
 @Component({
@@ -31,7 +32,7 @@ export class ConvencionistasUpdateComponent {
   cdnService = inject(CdnService);
   notificacion = inject(NotificacionService);
   convencionesService = inject(ConvencionesService);
-  categoriasConvencionistaService = inject(CategoriasConvensionistaService);
+  categoriasService = inject(CategoriasService);
   perfilesConvencionistaService = inject(PerfilesConvensionistaService);
   convenciones = signal<Convencion[]>([]);
   convencionistasService = inject(ConvencionistasService);
@@ -82,8 +83,8 @@ export class ConvencionistasUpdateComponent {
 
   categoriasResource = rxResource({
     loader: ({}) => {
-      return this.categoriasConvencionistaService
-        .obtieneCategoriasConvencionista()
+      return this.categoriasService
+        .obtieneCategorias()
         .pipe(map((resp: any) => resp.response));
     },
   });

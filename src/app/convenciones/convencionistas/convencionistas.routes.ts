@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
-import { ConvencionistasListComponent } from './components/convencionistas-list/convencionistas-list.component';
-import { ConvencionistasUpdateComponent } from './components/convencionistas-update/convencionistas-update.component';
+import { ConvencionistasListComponent } from './components/convencionistas/convencionistas-list/convencionistas-list.component';
+import { ConvencionistasUpdateComponent } from './components/convencionistas/convencionistas-update/convencionistas-update.component';
+import { CategoriasListComponent } from './components/categorias/categorias-list/categorias-list.component';
+import { CategoriasUpdateComponent } from './components/categorias/categorias-update/categorias-update.component';
 
 export const ConvencionistasRoutes: Routes = [
   {
@@ -15,6 +17,18 @@ export const ConvencionistasRoutes: Routes = [
     path: 'new',
     component: ConvencionistasUpdateComponent,
   },
+  {
+      path: 'categorias',
+      component: CategoriasListComponent,
+    },
+    {
+      path: 'categorias/:id/edit',
+      component: CategoriasUpdateComponent,
+    },
+    {
+      path: 'categorias/new',
+      component: CategoriasUpdateComponent,
+    },
   {
     path: '**',
     redirectTo: '',

@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { map } from 'rxjs';
-import { CategoriasService } from '../../services/categorias.service';
+import { CategoriasService } from '../../../services/categorias.service';
 
 @Component({
   selector: 'app-categorias-list',

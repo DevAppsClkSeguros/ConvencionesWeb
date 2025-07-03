@@ -89,8 +89,8 @@ export class HomePageComponent implements OnInit {
         { title: 'Version App', route: 'cs-evn-cat-version-app' },
         { title: 'Control de módulos', route: 'cs-cat-evn-modulos' },
         { title: 'Log de eventos', route: 'log-eventos' },
-        { title: 'Perfil de usuario', route: 'cs-cat-evn-perfil' },
-        { title: 'Tipo usuario', route: 'cat-tipo-usuario' },
+        { title: 'Perfil de convencionistas', route: '/convencionistas/perfil' },
+        { title: 'Categoría de convencionistas', route: '/convencionistas/categorias' },
         {
           title: 'Categoría de actividades',
           route: '/actividades/categorias',
