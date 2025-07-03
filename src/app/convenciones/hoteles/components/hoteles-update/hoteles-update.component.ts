@@ -47,6 +47,7 @@ export class HotelesUpdateComponent {
     imagen: [null, Validators.required],
     url: [''],
     eventoId: ['', Validators.required],
+    detalles: [''],
     convencionistasIds: [[], FormUtils.arrayRequired()],
   });
 
@@ -99,6 +100,7 @@ export class HotelesUpdateComponent {
       imagen: hotel.imagen,
       url: hotel.imagen,
       eventoId: hotel.eventoId,
+      detalles: hotel.detalles,
       convencionistasIds: hotel.convencionistasIds,
     });
     this.imagePreview = hotel.imagen;

@@ -3,6 +3,8 @@ import { ConvencionistasListComponent } from './components/convencionistas/conve
 import { ConvencionistasUpdateComponent } from './components/convencionistas/convencionistas-update/convencionistas-update.component';
 import { CategoriasListComponent } from './components/categorias/categorias-list/categorias-list.component';
 import { CategoriasUpdateComponent } from './components/categorias/categorias-update/categorias-update.component';
+import { PerfilesListComponent } from './components/perfiles/perfiles-list/perfiles-list.component';
+import { PerfilesUpdateComponent } from './components/perfiles/perfiles-update/perfiles-update.component';
 
 export const ConvencionistasRoutes: Routes = [
   {
@@ -18,17 +20,29 @@ export const ConvencionistasRoutes: Routes = [
     component: ConvencionistasUpdateComponent,
   },
   {
-      path: 'categorias',
-      component: CategoriasListComponent,
-    },
-    {
-      path: 'categorias/:id/edit',
-      component: CategoriasUpdateComponent,
-    },
-    {
-      path: 'categorias/new',
-      component: CategoriasUpdateComponent,
-    },
+    path: 'categorias',
+    component: CategoriasListComponent,
+  },
+  {
+    path: 'categorias/:id/edit',
+    component: CategoriasUpdateComponent,
+  },
+  {
+    path: 'categorias/new',
+    component: CategoriasUpdateComponent,
+  },
+  {
+    path: 'perfiles',
+    component: PerfilesListComponent,
+  },
+  {
+    path: 'perfiles/:id/edit',
+    component: PerfilesUpdateComponent,
+  },
+  {
+    path: 'perfiles/new',
+    component: PerfilesUpdateComponent,
+  },
   {
     path: '**',
     redirectTo: '',

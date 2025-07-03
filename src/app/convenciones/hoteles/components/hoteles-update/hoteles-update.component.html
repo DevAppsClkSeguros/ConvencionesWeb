@@ -86,6 +86,16 @@
         </small> }
       </div>
 
+      <div class="md:col-span-2">
+        <label class="label">Detalles</label>
+        <textarea class="textarea w-full min-h-[150px]" formControlName="detalles"></textarea>
+        @if (formUtils.isValidField(myForm, 'detalles')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'detalles')}}
+        </small>
+        }
+      </div>
+
       <!-- Foto -->
       <div>
         <label class="label">Foto</label>

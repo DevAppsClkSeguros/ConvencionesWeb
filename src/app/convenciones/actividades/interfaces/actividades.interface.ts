@@ -15,6 +15,6 @@ export interface Actividad {
   eventoId: number;
   nombreEvento: null;
   categoria_ActividadesId: number;
-  nombreCategoriaAct: null;
+  nombreCategoriaAc: null;
   convencionistasIds: number[];
 }

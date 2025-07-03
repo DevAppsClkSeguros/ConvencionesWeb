@@ -33,7 +33,7 @@
             <div class="flex items-center gap-3">
               <div class="avatar">
                 <div class="mask mask-squircle h-12 w-12">
-                  <img src="{{actividad.imagen}}" alt="{{actividad.nombreCategoriaAct}}" class="object-contain " />
+                  <img src="{{actividad.imagen}}" alt="{{actividad.nombreCategoriaAc}}" class="object-contain " />
                 </div>
               </div>
               <div>
@@ -48,7 +48,7 @@
             <span class="badge badge-ghost badge-sm">{{actividad.fecha | date: 'HH:mm' }}</span>
           </td>
           <td>{{actividad.nombreEvento}}</td>
-          <td>{{actividad.nombreCategoriaAct}}</td>
+          <td>{{actividad.nombreCategoriaAc}}</td>
           <th>
             <button class="btn btn-primary btn-xs" [routerLink]="[`/actividades/${actividad.id}/edit`]">Editar</button>
           </th>
