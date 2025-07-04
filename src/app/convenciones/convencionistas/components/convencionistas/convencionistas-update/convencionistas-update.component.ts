@@ -18,7 +18,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { map, tap } from 'rxjs';
 import { CategoriasService } from '../../../services/categorias.service';
-import { PerfilesConvensionistaService } from 'src/app/convenciones/configuracion/perfilConvencionista/services/perfilesConvencionista.service';
+import { PerfilesService } from '../../../services/perfiles.service';
 
 @Component({
   selector: 'convencionistas-update',
@@ -33,7 +33,7 @@ export class ConvencionistasUpdateComponent {
   notificacion = inject(NotificacionService);
   convencionesService = inject(ConvencionesService);
   categoriasService = inject(CategoriasService);
-  perfilesConvencionistaService = inject(PerfilesConvensionistaService);
+  perfilesService = inject(PerfilesService);
   convenciones = signal<Convencion[]>([]);
   convencionistasService = inject(ConvencionistasService);
   convencionistaId = this.route.snapshot.params['id'];
@@ -91,8 +91,8 @@ export class ConvencionistasUpdateComponent {
 
   perfilesResouce = rxResource({
     loader: ({}) => {
-      return this.perfilesConvencionistaService
-        .obtienePerfilesConvencionista()
+      return this.perfilesService
+        .obtienePerfiles()
         .pipe(map((resp: any) => resp.response));
     },
   });
