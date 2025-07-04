@@ -5,7 +5,7 @@ import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.co
 import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
 import { EncuestaService } from '../../../services/encuesta.service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { NotificacionService } from '@shared/services/notificacion.service';
 
 @Component({
@@ -28,9 +28,16 @@ export class PreguntasListComponent {
   preguntasResource = rxResource({
     request: () => ({}),
     loader: () => {
-      return this.encuestaService
-        .obtienePreguntas()
-        .pipe(map((resp) => resp.response));
+      return this.encuestaService.obtienePreguntas().pipe(
+        map((resp) => resp.response),
+        catchError((error) => {
+          this.notificacion.show(
+            'Ocurrio un error al cargar lista de preguntas.',
+            'error'
+          );
+          return of([]);
+        })
+      );
     },
   });
 

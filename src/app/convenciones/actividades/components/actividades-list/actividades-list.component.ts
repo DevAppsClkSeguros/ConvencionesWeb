@@ -6,7 +6,7 @@ import { RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { ActividadesService } from '../../services/actividades.service';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -29,9 +29,21 @@ export class ActividadesListComponent {
 
   actividadesResource = rxResource({
     loader: () => {
-      return this.actividadesService
-        .obtieneActividades()
-        .pipe(map((resp) => resp.response));
+      return this.actividadesService.obtieneActividades().pipe(
+        map((resp) =>
+          resp.response.map((actividad) => ({
+            ...actividad,
+            imagen: `${actividad.imagen}?n=${Math.random()}`,
+          }))
+        ),
+        catchError((error) => {
+          this.notificacion.show(
+            'Ocurrio un error al cargar lista de actividades.',
+            'error'
+          );
+          return of([]);
+        })
+      );
     },
   });
 

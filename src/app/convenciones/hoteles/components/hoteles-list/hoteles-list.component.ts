@@ -5,7 +5,7 @@ import {
 } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { HotelesService } from '../../services/hoteles.service';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
 import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
 import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
@@ -34,7 +34,18 @@ export class HotelesListComponent {
     loader: () => {
       return this.hotelesService
         .obtieneHoteles()
-        .pipe(map((resp) => resp.response));
+        .pipe(
+          map((resp) => resp.response.map(hotel => ({
+            ...hotel, imagen: `${hotel.imagen}?n=${Math.random()}`
+          }))),
+          catchError(error => {
+            this.notificacion.show(
+              'Ocurrio un error al cargar lista de hoteles.',
+              'error'
+            );
+            return of([])
+          })
+        );
     },
   });
 

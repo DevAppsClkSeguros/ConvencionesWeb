@@ -103,7 +103,7 @@ export class HotelesUpdateComponent {
       detalles: hotel.detalles,
       convencionistasIds: hotel.convencionistasIds,
     });
-    this.imagePreview = hotel.imagen;
+    this.imagePreview = `${hotel.imagen}?n=${Math.random()}`;
     this.convencionId.set(hotel.eventoId);
   }
 

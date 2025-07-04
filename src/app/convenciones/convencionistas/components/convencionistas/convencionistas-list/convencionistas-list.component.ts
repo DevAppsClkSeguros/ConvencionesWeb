@@ -61,7 +61,6 @@ export class ConvencionistasListComponent implements OnInit {
             'Ocurrio un error al cargar lista de convencionistas.',
             'error'
           );
-          Math.random(); // Forzar recarga de imagenes
           return of([]);
         })
       );

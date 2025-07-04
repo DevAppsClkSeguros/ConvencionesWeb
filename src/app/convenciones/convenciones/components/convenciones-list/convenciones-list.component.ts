@@ -3,7 +3,7 @@ import { ConvencionesService } from '../../services/convenciones.service';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
 import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
 import { NotificacionService } from '@shared/services/notificacion.service';
@@ -33,7 +33,16 @@ export class ConvencionesListComponent {
     loader: () => {
       return this.convencionesService
         .obtieneConvenciones()
-        .pipe(map((resp) => resp.response));
+        .pipe(
+          map((resp) => resp.response),
+        catchError((error) => {
+                  this.notificacion.show(
+                    'Ocurrio un error al cargar lista de convenciones.',
+                    'error'
+                  );
+                  return of([]);
+                })
+              );
     },
   });
 

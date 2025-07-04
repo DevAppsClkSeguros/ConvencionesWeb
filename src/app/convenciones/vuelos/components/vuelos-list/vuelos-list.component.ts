@@ -4,7 +4,7 @@ import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
 import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
 import { Router, RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { VuelosService } from '../../services/vuelos.service';
 import { Vuelo } from '../../interfaces/vuelos.interface';
@@ -17,7 +17,7 @@ import { DatePipe } from '@angular/common';
     IconAddComponent,
     ConfirmModalComponent,
     RouterLink,
-    DatePipe
+    DatePipe,
   ],
   templateUrl: './vuelos-list.component.html',
 })
@@ -35,9 +35,16 @@ export class VuelosListComponent {
   vuelosResource = rxResource({
     request: () => ({}),
     loader: () => {
-      return this.vuelosService
-        .obtieneVuelos()
-        .pipe(map((resp) => resp.response));
+      return this.vuelosService.obtieneVuelos().pipe(
+        map((resp) => resp.response),
+        catchError((error) => {
+          this.notificacion.show(
+            'Ocurrio un error al cargar lista de vuelos.',
+            'error'
+          );
+          return of([]);
+        })
+      );
     },
   });
 

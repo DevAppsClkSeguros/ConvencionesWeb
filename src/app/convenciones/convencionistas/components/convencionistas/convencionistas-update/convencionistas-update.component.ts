@@ -1,5 +1,3 @@
-import { Imagen } from './../../../../memorias-fotograficas/interfaces/imagen.interface';
-import { Categoria } from '../../../../recomendaciones/interfaces/categorias.interface';
 import { Component, effect, inject, signal } from '@angular/core';
 import {
   FormBuilder,
@@ -69,12 +67,7 @@ export class ConvencionistasUpdateComponent {
                 if (!resp.status) {
                   throw new Error(resp.message?.[0] || 'Error desconocido');
                 }
-              }),
-              map((resp) => ({
-                ...resp, response: resp.response.map((convencionista) => ({
-                  ...convencionista, imagen2: 'hola', otro: 'mundo'
-                }))
-              }))
+              })
             ),
       })
     : null;
@@ -138,7 +131,7 @@ export class ConvencionistasUpdateComponent {
       categoriaNombreId: convencionista.categoriaNombreId,
       eventoId: convencionista.eventoId,
     });
-    this.imagePreview = convencionista.imagen;
+    this.imagePreview = `${convencionista.imagen}?n=${Math.random()}`;
   }
 
   // getConvenciones() {

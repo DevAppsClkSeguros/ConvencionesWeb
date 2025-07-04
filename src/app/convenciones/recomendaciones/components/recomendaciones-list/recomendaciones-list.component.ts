@@ -1,12 +1,12 @@
 import { Component, inject, ViewChild } from '@angular/core';
-import { IconAddComponent } from "@shared/icons/icon-add/icon-add.component";
-import { IconRefreshComponent } from "@shared/icons/icon-refresh/icon-refresh.component";
-import { ConfirmModalComponent } from "@shared/components/confirm-modal/confirm-modal.component";
+import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
+import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
+import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
 import { RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { RecomendacionesService } from '../../services/recomendaciones.service';
-import { map } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 
 @Component({
   selector: 'app-recomendaciones-list',
@@ -27,9 +27,21 @@ export class RecomendacionesListComponent {
 
   recomendacionesResource = rxResource({
     loader: () => {
-      return this.recomendacionesService
-        .obtieneRecomendaciones()
-        .pipe(map((resp) => resp.response));
+      return this.recomendacionesService.obtieneRecomendaciones().pipe(
+        map((resp) =>
+          resp.response.map((recomendacion) => ({
+            ...recomendacion,
+            imagen: `${recomendacion.imagen}?n=${Math.random()}`,
+          }))
+        ),
+        catchError((error) => {
+          this.notificacion.show(
+            'Ocurrio un error al cargar lista de recomendaciones.',
+            'error'
+          );
+          return of([]);
+        })
+      );
     },
   });
 

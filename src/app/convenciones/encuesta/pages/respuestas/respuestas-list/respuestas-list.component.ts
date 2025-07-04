@@ -2,10 +2,10 @@ import { Component, inject, OnInit, signal, ViewChild } from '@angular/core';
 import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
 import { EncuestaService } from '../../../services/encuesta.service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { map, of } from 'rxjs';
+import { catchError, map, of } from 'rxjs';
 import { NotificacionService } from '@shared/services/notificacion.service';
-import { IconRefreshComponent } from "../../../../../shared/icons/icon-refresh/icon-refresh.component";
-import { IconAddComponent } from "../../../../../shared/icons/icon-add/icon-add.component";
+import { IconRefreshComponent } from '../../../../../shared/icons/icon-refresh/icon-refresh.component';
+import { IconAddComponent } from '../../../../../shared/icons/icon-add/icon-add.component';
 import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
 import { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
 
@@ -33,9 +33,16 @@ export class RespuestasListComponent implements OnInit {
   respuestasResource = rxResource({
     request: () => ({}),
     loader: () => {
-      return this.encuestaService
-        .obtieneRespuestas(1011)
-        .pipe(map((resp) => resp));
+      return this.encuestaService.obtieneRespuestas(1011).pipe(
+        map((resp) => resp),
+        catchError((error) => {
+          this.notificacion.show(
+            'Ocurrio un error al cargar lista de respuestas.',
+            'error'
+          );
+          return of([]);
+        })
+      );
     },
   });
 

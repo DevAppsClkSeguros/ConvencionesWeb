@@ -124,7 +124,7 @@ export class ActividadesUpdateComponent {
       especificaciones: actividad.especificaciones,
       convencionistasIds: actividad.convencionistasIds,
     });
-    this.imagePreview = actividad.imagen;
+    this.imagePreview = `${actividad.imagen}?n=${Math.random()}`;
     this.convencionId.set(actividad.eventoId);
   }
 

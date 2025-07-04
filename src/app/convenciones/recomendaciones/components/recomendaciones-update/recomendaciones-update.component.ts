@@ -106,7 +106,7 @@ export class RecomendacionesUpdateComponent {
       eventoId: recomendacion.eventoId,
       categoria_RecomendacionId: recomendacion.categoria_RecomendacionId,
     });
-    this.imagePreview = recomendacion.imagen;
+    this.imagePreview = `${recomendacion.imagen}?n=${Math.random()}`;
   }
 
   onFileSelected(event: Event): void {
