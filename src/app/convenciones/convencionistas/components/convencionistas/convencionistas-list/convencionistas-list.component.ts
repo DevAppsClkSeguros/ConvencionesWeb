@@ -53,7 +53,9 @@ export class ConvencionistasListComponent implements OnInit {
     request: () => ({}), // sin dependencias reactivas
     loader: () => {
       return this.convencionistasService.GetConvencionistas().pipe(
-        map((resp) => resp.response),
+        map((resp) => resp.response.map((convencionista) => ({
+          ...convencionista, imagen: `${convencionista.imagen}?n=${Math.random()}`
+        }))),
         catchError((error) => {
           this.notificacion.show(
             'Ocurrio un error al cargar lista de convencionistas.',

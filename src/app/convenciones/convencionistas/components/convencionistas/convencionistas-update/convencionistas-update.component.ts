@@ -72,7 +72,7 @@ export class ConvencionistasUpdateComponent {
               }),
               map((resp) => ({
                 ...resp, response: resp.response.map((convencionista) => ({
-                  ...convencionista, imagen: `${convencionista.imagen}?n=${Math.random()}`
+                  ...convencionista, imagen2: 'hola', otro: 'mundo'
                 }))
               }))
             ),
