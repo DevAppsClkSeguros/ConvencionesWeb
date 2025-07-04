@@ -15,7 +15,8 @@
       </div>
       <shared-search-input class="w-full sm:w-auto" placerholder="Buscar convencionista" (value)="query.set($event)"
         [debounceTime]="500" [initialValue]="query()"></shared-search-input>
-        <a class="btn btn-outline btn-primary tooltip tooltip-info" data-tip="Cargar seguros de viajero">
+        <a class="btn btn-outline btn-primary tooltip tooltip-info" data-tip="Cargar seguros de viajero"
+        (click)="mostrarModal.set(true)">
           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
             <path fill="#ef5350"
               d="M28.967 12H9.442a2 2 0 0 0-1.898 1.368L4 24V10h24a2 2 0 0 0-2-2H15.124a2 2 0 0 1-1.28-.464l-1.288-1.072A2 2 0 0 0 11.276 6H4a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h22l4.805-11.212A2 2 0 0 0 28.967 12" />
@@ -100,3 +101,6 @@
 
 <shared-confirm-modal #deleteModal titulo="¡Confirmar Eliminación!" mensajeAceptar="Si, Eliminar"
   mensaje="{{mensajeEliminar}}" (confirmar)="eliminaConvencionista()" (cancelar)="convencionistaId = 0" />
+  @if (mostrarModal()) {
+  <shared-upload-file-modal (cerrarModal)="cerrarModal()" (subirArchivos)="enviarArchivosAlBackend($event)" />
+  }

@@ -19,6 +19,7 @@ import { NotificacionService } from '@shared/services/notificacion.service';
 import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
 import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
 import type { Convencionista } from '../../../interfaces/convencionistas.interface';
+import { UploadFileModalComponent } from '@shared/components/upload-file-modal/upload-file-modal.component';
 
 @Component({
   selector: 'convencionistas-list',
@@ -29,6 +30,7 @@ import type { Convencionista } from '../../../interfaces/convencionistas.interfa
     IconAddComponent,
     IconRefreshComponent,
     ConfirmModalComponent,
+    UploadFileModalComponent,
   ],
   templateUrl: './convencionistas-list.component.html',
 })
@@ -40,6 +42,7 @@ export class ConvencionistasListComponent implements OnInit {
   query = signal('');
   convencionSeleccionada = signal<string>('');
   mensajeEliminar = '';
+  mostrarModal = signal(false);
 
   convenciones = signal<Convencion[]>([]);
 
@@ -53,9 +56,12 @@ export class ConvencionistasListComponent implements OnInit {
     request: () => ({}), // sin dependencias reactivas
     loader: () => {
       return this.convencionistasService.GetConvencionistas().pipe(
-        map((resp) => resp.response.map((convencionista) => ({
-          ...convencionista, imagen: `${convencionista.imagen}?n=${Math.random()}`
-        }))),
+        map((resp) =>
+          resp.response.map((convencionista) => ({
+            ...convencionista,
+            imagen: `${convencionista.imagen}?n=${Math.random()}`,
+          }))
+        ),
         catchError((error) => {
           this.notificacion.show(
             'Ocurrio un error al cargar lista de convencionistas.',
@@ -163,5 +169,24 @@ export class ConvencionistasListComponent implements OnInit {
           );
         },
       });
+  }
+
+  abrirModalArchivos() {
+    this.mostrarModal.set(true);
+  }
+
+  cerrarModal() {
+    this.mostrarModal.set(false);
+  }
+
+  enviarArchivosAlBackend(archivos: File[]) {
+    const formData = new FormData();
+    archivos.forEach((file) => formData.append('archivos', file));
+
+    // // Aquí va tu API de carga
+    // this.http.post('/api/tu-endpoint', formData).subscribe({
+    //   next: () => alert('Archivos cargados chingón'),
+    //   error: () => alert('Falló la carga, wey'),
+    // });
   }
 }

@@ -1,5 +1,10 @@
 import { Component, effect, inject, signal } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Location } from '@angular/common';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map, tap } from 'rxjs';
@@ -9,9 +14,10 @@ import { ConvencionesService } from 'src/app/convenciones/convenciones/services/
 import { FormUtils } from '@core/utils/form-utils';
 import type { Hotel } from '../../interfaces/hoteles.interface';
 import { HotelesService } from '../../services/hoteles.service';
-import { NotFoundComponent } from "@shared/components/not-found/not-found.component";
+import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { NotificacionService } from '@shared/services/notificacion.service';
-import { ConvencionistasPorConvencionComponent } from "../../../../shared/pages/convencionistas-por-convencion/convencionistas-por-convencion.component";
+import { ConvencionistasPorConvencionComponent } from '@shared/pages/convencionistas-por-convencion/convencionistas-por-convencion.component';
+import { UploadFileComponent } from '@shared/components/upload-file/upload-file.component';
 
 @Component({
   selector: 'app-hoteles-update',
@@ -19,6 +25,7 @@ import { ConvencionistasPorConvencionComponent } from "../../../../shared/pages/
     NotFoundComponent,
     ReactiveFormsModule,
     ConvencionistasPorConvencionComponent,
+    UploadFileComponent,
   ],
   templateUrl: './hoteles-update.component.html',
 })
@@ -103,46 +110,26 @@ export class HotelesUpdateComponent {
       detalles: hotel.detalles,
       convencionistasIds: hotel.convencionistasIds,
     });
-    this.imagePreview = `${hotel.imagen}?n=${Math.random()}`;
+    this.imagePreview = `${hotel.imagen}`;
     this.convencionId.set(hotel.eventoId);
   }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      if (!this.selectedFile.type.match('image.*')) {
-        alert('Solo se permiten imágenes');
-        return;
-      }
-      this.myForm.patchValue({
-        imagen: this.selectedFile,
-        url: '',
-      });
-      this.myForm.get('imagen')?.markAsTouched();
-      this.myForm.get('imagen')?.updateValueAndValidity();
-
-      this.previewImage(this.selectedFile);
-    }
-  }
-
-  private previewImage(file: File): void {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.imagePreview = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  limpiarImagen(inputRef: HTMLInputElement): void {
-    this.imagePreview = null;
-    inputRef.value = '';
-    this.selectedFile = null;
+  imagenSeleccionada(imagen: any) {
     this.myForm.patchValue({
-      imagen: null,
-      url: null,
+      imagen,
+      url: '',
     });
+    this.myForm.get('imagen')?.markAsTouched();
     this.myForm.get('imagen')?.updateValueAndValidity();
+    if (imagen) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(imagen);
+    } else {
+      this.imagePreview = null;
+    }
   }
 
   onSubmit() {

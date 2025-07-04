@@ -18,10 +18,16 @@ import { NotFoundComponent } from '@shared/components/not-found/not-found.compon
 import { map, tap } from 'rxjs';
 import { CategoriasService } from '../../../services/categorias.service';
 import { PerfilesService } from '../../../services/perfiles.service';
+import { UploadFileComponent } from "../../../../../shared/components/upload-file/upload-file.component";
 
 @Component({
   selector: 'convencionistas-update',
-  imports: [ReactiveFormsModule, JsonPipe, NotFoundComponent],
+  imports: [
+    ReactiveFormsModule,
+    JsonPipe,
+    NotFoundComponent,
+    UploadFileComponent,
+  ],
   templateUrl: './convencionistas-update.component.html',
 })
 export class ConvencionistasUpdateComponent {
@@ -131,7 +137,7 @@ export class ConvencionistasUpdateComponent {
       categoriaNombreId: convencionista.categoriaNombreId,
       eventoId: convencionista.eventoId,
     });
-    this.imagePreview = `${convencionista.imagen}?n=${Math.random()}`;
+    this.imagePreview = `${convencionista.imagen}`;
   }
 
   // getConvenciones() {
@@ -150,43 +156,22 @@ export class ConvencionistasUpdateComponent {
   //   });
   // }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-
-      // Validaciones básicas del archivo
-      if (!this.selectedFile.type.match('image.*')) {
-        alert('Solo se permiten imágenes');
-        return;
-      }
-      this.myForm.patchValue({
-        imagen: this.selectedFile,
-        url: '',
-      });
-      this.myForm.get('imagen')?.markAsTouched();
-      this.myForm.get('imagen')?.updateValueAndValidity();
-      this.previewImage(this.selectedFile);
-    }
-  }
-
-  private previewImage(file: File): void {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.imagePreview = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  limpiarImagen(inputRef: HTMLInputElement): void {
-    this.imagePreview = null;
-    inputRef.value = '';
-    this.selectedFile = null;
+  imagenSeleccionada(imagen: any) {
     this.myForm.patchValue({
-      imagen: null,
+      imagen,
       url: '',
     });
+    this.myForm.get('imagen')?.markAsTouched();
     this.myForm.get('imagen')?.updateValueAndValidity();
+    if (imagen) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.imagePreview = e.target.result;
+      };
+      reader.readAsDataURL(imagen);
+    } else {
+      this.imagePreview = null;
+    }
   }
 
   onSubmit() {
