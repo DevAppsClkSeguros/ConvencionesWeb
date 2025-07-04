@@ -7,6 +7,7 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { RecomendacionesService } from '../../services/recomendaciones.service';
 import { catchError, map, of } from 'rxjs';
+import { SlicePipe } from '@angular/common';
 
 @Component({
   selector: 'app-recomendaciones-list',
@@ -14,7 +15,7 @@ import { catchError, map, of } from 'rxjs';
     IconAddComponent,
     IconRefreshComponent,
     ConfirmModalComponent,
-    RouterLink,
+    RouterLink, SlicePipe
   ],
   templateUrl: './recomendaciones-list.component.html',
 })
