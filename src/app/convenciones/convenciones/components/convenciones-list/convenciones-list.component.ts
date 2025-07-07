@@ -31,18 +31,21 @@ export class ConvencionesListComponent {
   convencionesResource = rxResource({
     request: () => ({}),
     loader: () => {
-      return this.convencionesService
-        .obtieneConvenciones()
-        .pipe(
-          map((resp) => resp.response),
+      return this.convencionesService.obtieneConvenciones().pipe(
+        map((resp) =>
+          resp.response.map(convencion => ({
+            ...convencion,
+            imagen: `${convencion.imagen}?n=${Math.random()}`,
+          }))
+        ),
         catchError((error) => {
-                  this.notificacion.show(
-                    'Ocurrio un error al cargar lista de convenciones.',
-                    'error'
-                  );
-                  return of([]);
-                })
-              );
+          this.notificacion.show(
+            'Ocurrio un error al cargar lista de convenciones.',
+            'error'
+          );
+          return of([]);
+        })
+      );
     },
   });
 

@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Output, Input, signal } from '@angular/core';
+import { Component, EventEmitter, Output, signal, input } from '@angular/core';
 
 @Component({
   selector: 'shared-upload-file',
   templateUrl: './upload-file.component.html',
 })
 export class UploadFileComponent {
-  @Input() preview: string | ArrayBuffer | null = null;
+  preview = input<string | ArrayBuffer | null>(null)
   @Output() imagenSeleccionada = new EventEmitter<{
     file: File | null;
     preview: string | ArrayBuffer | null;
