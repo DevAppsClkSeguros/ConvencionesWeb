@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, signal, input } from '@angular/core';
+import { Component, EventEmitter, Output, signal, input, effect } from '@angular/core';
 
 @Component({
   selector: 'shared-upload-file',
@@ -13,7 +13,16 @@ export class UploadFileComponent {
 
   fileInputRef!: HTMLInputElement;
   mathRandom = Math.random();
+  imagen = '';
 
+  constructor() {
+    const imagen = this.preview();
+    effect(() => {
+      if (imagen) {
+        `${imagen}?n=${Math.random()}`
+      }
+    })
+  }
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {

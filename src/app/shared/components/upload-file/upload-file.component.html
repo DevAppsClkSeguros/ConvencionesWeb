@@ -3,7 +3,7 @@
   <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
     accept="image/*" />
   @if(preview()) {
-  <img src="{{preview()}}?n={{mathRandom}}" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
+  <img [src]="imagen" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
   <button type="button" (click)="limpiar()" class="btn btn-error mt-2">Quitar imagen</button>
   }
 </div>

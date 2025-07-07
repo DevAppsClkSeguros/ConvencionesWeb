@@ -103,15 +103,6 @@ export class ConvencionistasUpdateComponent {
   });
 
   constructor() {
-    console.log(
-      'convencionistaResourceError: ',
-      this.convencionistaResource?.error()
-    );
-    console.log(
-      'convencionistaResourceValue: ',
-      this.convencionistaResource?.value()
-    );
-    console.log('this.convencionistaId: ', this.convencionistaId);
     if (this.isEditMode && this.convencionistaResource) {
       effect(() => {
         const data = this.convencionistaResource!.value();
