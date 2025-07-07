@@ -1,55 +1,45 @@
-import { Component, effect, input, output } from '@angular/core';
+import { Component, EventEmitter, Output, Input, signal } from '@angular/core';
 
 @Component({
   selector: 'shared-upload-file',
-  imports: [],
   templateUrl: './upload-file.component.html',
 })
 export class UploadFileComponent {
-  selectedFile: File | null = null;
-  imagePreview = input<string | ArrayBuffer | null>(null);
-  imagenSeleccionada = output<ArrayBuffer | null>();
+  @Input() preview: string | ArrayBuffer | null = null;
+  @Output() imagenSeleccionada = new EventEmitter<{
+    file: File | null;
+    preview: string | ArrayBuffer | null;
+  }>();
 
-  url: any;
+  fileInputRef!: HTMLInputElement;
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
+      const file = input.files[0];
 
-      if (!this.selectedFile.type.match('image.*')) {
+      if (!file.type.match('image.*')) {
         alert('Solo se permiten imágenes');
+        this.limpiar();
         return;
       }
-      this.url = this.selectedFile;
-      console.log('Imagen en hijo: ', this.url);
-      this.imagenSeleccionada.emit(this.url);
-      this.previewImage(this.selectedFile);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagenSeleccionada.emit({ file, preview: reader.result });
+      };
+      reader.readAsDataURL(file);
     }
   }
 
-  private previewImage(file: File): void {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.url = e.target.result;
-    };
-    reader.readAsDataURL(file);
+  limpiar(): void {
+    this.imagenSeleccionada.emit({ file: null, preview: null });
+    if (this.fileInputRef) {
+      this.fileInputRef.value = '';
+    }
   }
 
-  limpiarImagen(inputRef: HTMLInputElement): void {
-    this.url = null;
-    this.imagenSeleccionada.emit(null);
-    inputRef.value = '';
-    this.selectedFile = null;
-  }
-
-  constructor() {
-    effect(() => {
-      const imagen = this.imagePreview();
-      if (imagen) {
-        this.url = `${this.imagePreview()}?n=${Math.random()}`;
-        console.log('imagen: ', this.url);
-      }
-    });
+  setInputRef(ref: HTMLInputElement) {
+    this.fileInputRef = ref;
   }
 }

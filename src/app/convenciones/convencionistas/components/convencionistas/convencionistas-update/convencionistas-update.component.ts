@@ -45,7 +45,7 @@ export class ConvencionistasUpdateComponent {
   isEditMode = !!this.convencionistaId;
   formUtils = FormUtils;
   selectedFile: File | null = null;
-  imagePreview: string | ArrayBuffer | null = null;
+  imagePreview = signal<string | ArrayBuffer | null>(null);
 
   myForm: FormGroup = this.fb.group({
     id: [0],
@@ -137,7 +137,7 @@ export class ConvencionistasUpdateComponent {
       categoriaNombreId: convencionista.categoriaNombreId,
       eventoId: convencionista.eventoId,
     });
-    this.imagePreview = `${convencionista.imagen}`;
+    this.imagePreview.set(convencionista.imagen); //= `${convencionista.imagen}`;
   }
 
   // getConvenciones() {
@@ -156,22 +156,17 @@ export class ConvencionistasUpdateComponent {
   //   });
   // }
 
-  imagenSeleccionada(imagen: any) {
-    this.myForm.patchValue({
-      imagen,
-      url: '',
-    });
+  imagenSeleccionada({
+    file,
+    preview,
+  }: {
+    file: File | null;
+    preview: string | ArrayBuffer | null;
+  }) {
+    this.myForm.patchValue({ imagen: file, url: '' });
     this.myForm.get('imagen')?.markAsTouched();
     this.myForm.get('imagen')?.updateValueAndValidity();
-    if (imagen) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.imagePreview = e.target.result;
-      };
-      reader.readAsDataURL(imagen);
-    } else {
-      this.imagePreview = null;
-    }
+    this.imagePreview.set(preview);
   }
 
   onSubmit() {

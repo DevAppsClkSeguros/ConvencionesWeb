@@ -95,8 +95,8 @@
         </small> }
       </div>
 
-      <!-- Foto -->
-       <shared-upload-file [imagePreview]="imagePreview" (imagenSeleccionada)="imagenSeleccionada($event)"/>
+      <!-- Imagen -->
+      <shared-upload-file [preview]="imagePreview()" (imagenSeleccionada)="imagenSeleccionada($event)" />
 
       <!-- Convención -->
       <div>

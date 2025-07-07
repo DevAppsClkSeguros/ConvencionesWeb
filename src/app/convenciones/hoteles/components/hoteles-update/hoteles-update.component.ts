@@ -39,7 +39,7 @@ export class HotelesUpdateComponent {
   location = inject(Location);
   formUtils = FormUtils;
   selectedFile: File | null = null;
-  imagePreview: string | ArrayBuffer | null = null;
+  imagePreview = signal<string | ArrayBuffer | null>(null);
   hotelId = this.route.snapshot.params['id'];
   isEditMode = !!this.hotelId;
   convencionId = signal<number>(0);
@@ -110,26 +110,21 @@ export class HotelesUpdateComponent {
       detalles: hotel.detalles,
       convencionistasIds: hotel.convencionistasIds,
     });
-    this.imagePreview = `${hotel.imagen}`;
+    this.imagePreview.set(hotel.imagen)
     this.convencionId.set(hotel.eventoId);
   }
 
-  imagenSeleccionada(imagen: any) {
-    this.myForm.patchValue({
-      imagen,
-      url: '',
-    });
+  imagenSeleccionada({
+    file,
+    preview,
+  }: {
+    file: File | null;
+    preview: string | ArrayBuffer | null;
+  }) {
+    this.myForm.patchValue({ imagen: file, url: '' });
     this.myForm.get('imagen')?.markAsTouched();
     this.myForm.get('imagen')?.updateValueAndValidity();
-    if (imagen) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.imagePreview = e.target.result;
-      };
-      reader.readAsDataURL(imagen);
-    } else {
-      this.imagePreview = null;
-    }
+    this.imagePreview.set(preview);
   }
 
   onSubmit() {

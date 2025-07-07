@@ -1,10 +1,4 @@
-import {
-  Component,
-  effect,
-  inject,
-  input,
-  output,
-} from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map, of } from 'rxjs';
 import { Convencionista } from 'src/app/convenciones/convencionistas/interfaces/convencionistas.interface';
@@ -49,11 +43,7 @@ export class ConvencionistasPorConvencionComponent {
     effect(() => {
       const id = this.convencionId();
       console.log('Id de la convencion recibida en el hijo: ', id);
-      // if (id) {
-        this.convencionistasResource!.reload();
-      // } else {
-        // console.log('No se ha proporcionado un ID de convencion');
-      // }
+      this.convencionistasResource!.reload();
     });
   }
 

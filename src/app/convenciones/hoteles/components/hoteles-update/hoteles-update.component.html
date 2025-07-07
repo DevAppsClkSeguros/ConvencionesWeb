@@ -96,8 +96,9 @@
         }
       </div>
 
+      <!-- Imagen -->
       <div>
-        <shared-upload-file [imagePreview]="imagePreview" (imagenSeleccionada)="imagenSeleccionada($event)" />
+        <shared-upload-file [preview]="imagePreview()" (imagenSeleccionada)="imagenSeleccionada($event)" />
         @if (formUtils.isValidField(myForm, 'imagen')){
         <small class="text-error">
           {{formUtils.getFieldError(myForm, 'imagen')}}
