@@ -1,5 +1,4 @@
 <div class="navbar bg-base-100 shadow-sm">
-
   <div class="navbar-start">
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
@@ -27,6 +26,7 @@
     <a class="btn btn-ghost text-xl" [routerLink]="['/dashboard']">
       <span class="hidden md:inline">Convenciones Click</span>
       <img src="assets/images/logos/logoConvencionesClick.webp" alt="Logo" class="h-12 w-auto" />
+      <span class="badge badge-ghost badge-xs">V-{{environment.version}}</span>
     </a>
   </div>
 
