@@ -125,8 +125,6 @@ export class HotelesUpdateComponent {
 
     this.myForm.get('imagen')?.markAsTouched();
     this.myForm.get('imagen')?.updateValueAndValidity();
-
-    // 👉 Esto es lo que faltaba
     this.imagePreview.set(data.preview);
   }
 
