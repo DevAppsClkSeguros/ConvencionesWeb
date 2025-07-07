@@ -16,10 +16,9 @@ export class UploadFileComponent {
   imagen = '';
 
   constructor() {
-    const imagen = this.preview();
     effect(() => {
-      if (imagen) {
-        `${imagen}?n=${Math.random()}`
+      if (this.imagen) {
+        `${this.imagen}?n=${Math.random()}`
       }
     })
   }
