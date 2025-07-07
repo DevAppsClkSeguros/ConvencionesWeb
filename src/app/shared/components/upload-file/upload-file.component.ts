@@ -5,13 +5,14 @@ import { Component, EventEmitter, Output, signal, input } from '@angular/core';
   templateUrl: './upload-file.component.html',
 })
 export class UploadFileComponent {
-  preview = input<string | ArrayBuffer | null>(null)
+  preview = input<string | ArrayBuffer | null>(null);
   @Output() imagenSeleccionada = new EventEmitter<{
     file: File | null;
     preview: string | ArrayBuffer | null;
   }>();
 
   fileInputRef!: HTMLInputElement;
+  mathRandom = Math.random();
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
