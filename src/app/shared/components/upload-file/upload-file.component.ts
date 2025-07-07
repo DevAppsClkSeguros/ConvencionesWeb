@@ -12,16 +12,22 @@ export class UploadFileComponent {
   }>();
 
   fileInputRef!: HTMLInputElement;
-  mathRandom = Math.random();
-  imagen = '';
+  imagenUrl = signal<string | ArrayBuffer | null>(null);
 
   constructor() {
     effect(() => {
-      if (this.imagen) {
-        `${this.imagen}?n=${Math.random()}`
+      const currentPreview = this.preview();
+
+      if (typeof currentPreview === 'string') {
+        // Si es string (url), le metemos cache busting
+        this.imagenUrl.set(`${currentPreview}?n=${Math.random()}`);
+      } else {
+        // Si es ArrayBuffer o null
+        this.imagenUrl.set(currentPreview);
       }
-    })
+    });
   }
+
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
