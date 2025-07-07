@@ -52,7 +52,6 @@ export class UploadFileComponent {
       const reader = new FileReader();
       reader.onload = () => {
         this.imagenSeleccionada.emit({ file, preview: reader.result });
-        this.imagenUrl.set(reader.result)
       };
       reader.readAsDataURL(file);
     }

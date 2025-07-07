@@ -110,21 +110,24 @@ export class HotelesUpdateComponent {
       detalles: hotel.detalles,
       convencionistasIds: hotel.convencionistasIds,
     });
-    this.imagePreview.set(hotel.imagen)
+    this.imagePreview.set(hotel.imagen);
     this.convencionId.set(hotel.eventoId);
   }
 
-  imagenSeleccionada({
-    file,
-    preview,
-  }: {
+  imagenSeleccionada(data: {
     file: File | null;
     preview: string | ArrayBuffer | null;
   }) {
-    this.myForm.patchValue({ imagen: file, url: '' });
+    this.myForm.patchValue({
+      imagen: data.file,
+      url: '',
+    });
+
     this.myForm.get('imagen')?.markAsTouched();
     this.myForm.get('imagen')?.updateValueAndValidity();
-    this.imagePreview.set(preview);
+
+    // 👉 Esto es lo que faltaba
+    this.imagePreview.set(data.preview);
   }
 
   onSubmit() {
