@@ -26,7 +26,6 @@ import { UploadFileComponent } from "../../../../../shared/components/upload-fil
     ReactiveFormsModule,
     JsonPipe,
     NotFoundComponent,
-    UploadFileComponent,
   ],
   templateUrl: './convencionistas-update.component.html',
 })
@@ -45,7 +44,7 @@ export class ConvencionistasUpdateComponent {
   isEditMode = !!this.convencionistaId;
   formUtils = FormUtils;
   selectedFile: File | null = null;
-  imagePreview = signal<string | ArrayBuffer | null>(null);
+  imagePreview: string | ArrayBuffer | null = null;
 
   myForm: FormGroup = this.fb.group({
     id: [0],
@@ -128,7 +127,7 @@ export class ConvencionistasUpdateComponent {
       categoriaNombreId: convencionista.categoriaNombreId,
       eventoId: convencionista.eventoId,
     });
-    this.imagePreview.set(convencionista.imagen);
+    this.imagePreview = (convencionista.imagen);
   }
 
   // getConvenciones() {
@@ -147,17 +146,42 @@ export class ConvencionistasUpdateComponent {
   //   });
   // }
 
-  imagenSeleccionada({
-    file,
-    preview,
-  }: {
-    file: File | null;
-    preview: string | ArrayBuffer | null;
-  }) {
-    this.myForm.patchValue({ imagen: file, url: '' });
-    this.myForm.get('imagen')?.markAsTouched();
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+      if (!this.selectedFile.type.match('image.*')) {
+        alert('Solo se permiten imágenes');
+        return;
+      }
+      this.myForm.patchValue({
+        imagen: this.selectedFile,
+        url: '',
+      });
+      this.myForm.get('imagen')?.markAsTouched();
+      this.myForm.get('imagen')?.updateValueAndValidity();
+
+      this.previewImage(this.selectedFile);
+    }
+  }
+
+  private previewImage(file: File): void {
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.imagePreview = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  limpiarImagen(inputRef: HTMLInputElement): void {
+    this.imagePreview = null;
+    inputRef.value = '';
+    this.selectedFile = null;
+    this.myForm.patchValue({
+      imagen: null,
+      url: null,
+    });
     this.myForm.get('imagen')?.updateValueAndValidity();
-    this.imagePreview.set(preview);
   }
 
   onSubmit() {
