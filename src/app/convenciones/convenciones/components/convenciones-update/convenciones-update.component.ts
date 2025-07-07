@@ -98,7 +98,7 @@ export class ConvencionesUpdateComponent {
       longitud: convencion.longitud,
       lugarDestino: convencion.lugarDestino,
     });
-    this.imagePreview = convencion.imagen;
+    this.imagePreview = `${convencion.imagen}?n=${Math.random()}`;
   }
 
   onFileSelected(event: Event): void {

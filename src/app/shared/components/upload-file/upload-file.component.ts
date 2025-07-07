@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Output, signal, input, effect } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  signal,
+  input,
+  effect,
+} from '@angular/core';
 
 @Component({
   selector: 'shared-upload-file',
@@ -15,15 +22,18 @@ export class UploadFileComponent {
   imagenUrl = signal<string | ArrayBuffer | null>(null);
 
   constructor() {
+    console.log('Contructor');
     effect(() => {
       const currentPreview = this.preview();
-
+      console.log('currentPreview: ', currentPreview);
       if (typeof currentPreview === 'string') {
         // Si es string (url), le metemos cache busting
         this.imagenUrl.set(`${currentPreview}?n=${Math.random()}`);
+        console.log('this.imagenUrl: ', this.imagenUrl());
       } else {
         // Si es ArrayBuffer o null
         this.imagenUrl.set(currentPreview);
+        console.log('this.array: ', this.imagenUrl());
       }
     });
   }

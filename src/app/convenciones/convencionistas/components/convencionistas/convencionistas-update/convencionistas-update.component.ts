@@ -128,7 +128,7 @@ export class ConvencionistasUpdateComponent {
       categoriaNombreId: convencionista.categoriaNombreId,
       eventoId: convencionista.eventoId,
     });
-    this.imagePreview.set(convencionista.imagen); //= `${convencionista.imagen}`;
+    this.imagePreview.set(convencionista.imagen);
   }
 
   // getConvenciones() {
