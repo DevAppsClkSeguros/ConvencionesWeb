@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { HomePageComponent } from './shared/pages/home-page/home-page.component';
-import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './core/guards/auth.guard';
 import { PasswordResetInitComponent } from './account/password-reset/init/password-reset-init/password-reset-init.component';
 
@@ -65,11 +64,11 @@ export const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./admin/usuarios/usuarios.routes'),
     canActivate: [AuthGuard],
+    data: { roles: ['Admin', 'Developer'] },
   },
   {
     path: 'actividades',
-    loadChildren: () =>
-      import('./convenciones/actividades/actividades.routes'),
+    loadChildren: () => import('./convenciones/actividades/actividades.routes'),
     canActivate: [AuthGuard],
   },
   {

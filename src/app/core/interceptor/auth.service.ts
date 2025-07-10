@@ -70,7 +70,6 @@ export class AuthService {
     if (!token) return null;
 
     try {
-      console.log('Token decodificado:', jwtDecode(token));
       return jwtDecode(token);
     } catch (error) {
       console.error('Error al decodificar el token:', error);
@@ -83,20 +82,3 @@ export class AuthService {
     this.tokenSub.next(null);
   }
 }
-
-// const decodeToken = (token: string): any => {
-//   try {
-//     const base64Url = token.split('.')[1];
-//     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-//     const jsonPayload = decodeURIComponent(
-//       atob(base64)
-//         .split('')
-//         .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
-//         .join('')
-//     );
-//     return JSON.parse(jsonPayload);
-//   } catch (e) {
-//     console.error('Error al decodificar el token', e);
-//     return null;
-//   }
-// };
