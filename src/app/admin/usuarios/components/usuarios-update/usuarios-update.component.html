@@ -1,1 +1,111 @@
-<p>usuarios-update works!</p>,
+@if (usuarioResource?.error()) {
+<shared-not-found mensaje="{{usuarioResource?.error()}}" />
+}
+@if (!usuarioResource?.error()) {
+<div class="min-h-screen flex items-center justify-center bg-base-200 p-5">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()"
+    class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl mt-5 mb-5">
+    <h2 class="text-3xl font-bold mb-6">Datos del usuario</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      @if (isEditMode) {
+      <!-- Estatus -->
+      <div>
+        <label class="label w-full">Estatus</label>
+        <input type="checkbox" formControlName="activo" class="toggle toggle-primary " />
+        @if (formUtils.isValidField(myForm, 'activo')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'activo')}}
+        </small>
+        }
+      </div>
+      }
+      <!-- Nombre de usuario -->
+      <div>
+        <label class="label">Nombre de usuario</label>
+        <input type="text" formControlName="userName" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'userName')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'userName')}}
+        </small>
+        }
+      </div>
+
+      <!-- Nombre -->
+      <div>
+        <label class="label">Nombre</label>
+        <input type="text" formControlName="firstName" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'firstName')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'firstName')}}
+        </small>
+        }
+      </div>
+
+      <!-- Apellidos -->
+      <div>
+        <label class="label">Apellidos</label>
+        <input type="text" formControlName="lastName" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'lastName')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'lastName')}}
+        </small>
+        }
+      </div>
+
+      <!-- Contraseña -->
+      <div>
+        <label class="label">Contraseña</label>
+        <input type="text" formControlName="password" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'password')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'password')}}
+        </small>
+        }
+      </div>
+
+      <!-- <div>
+        <label class="label">Roles</label>
+        <select formControlName="roles" class=" w-full form-control" multiple>
+          <option>hola</option>
+          <option>hola1</option>
+          <option>hola2</option>
+          <option>hola3</option>
+          @for (rol of rolesResource.value(); track rol.id) {
+          <option [value]="rol.id">{{rol.name}}</option>
+          }
+        </select>
+        @if (formUtils.isValidField(myForm, 'roles')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'roles')}}
+        </small>
+        }
+      </div> -->
+
+      <div class="form-control w-full max-w-xs">
+        <label class="label">
+          <span class="label-text">Selecciona tus opciones</span>
+        </label>
+        <select class="select select-bordered h-32" multiple>
+          <option disabled selected>Selecciona una o varias</option>
+          <option>Opción 1</option>
+          <option>Opción 2</option>
+          <option>Opción 3</option>
+          <option>Opción 4</option>
+          <option>Opción 5</option>
+        </select>
+        <label class="label">
+          <span class="label-text-alt">Usa Ctrl para seleccionar varias</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end mt-8 gap-4">
+      <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+</div>
+}

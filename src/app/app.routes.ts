@@ -62,9 +62,9 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
-    loadChildren: () => import('./admin/usuarios/usuarios.routes'),
-    canActivate: [AuthGuard],
-    data: { roles: ['Admin', 'Developer'] },
+    loadChildren: () => import('./admin/usuarios/admin.routes'),
+    // canActivate: [AuthGuard],
+    // data: { roles: ['Admin', 'Developer'] },
   },
   {
     path: 'actividades',
