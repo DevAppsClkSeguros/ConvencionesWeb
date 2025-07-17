@@ -1,4 +1,4 @@
-import { DatePipe, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
 import {
   FormBuilder,
@@ -12,7 +12,7 @@ import { NotificacionService } from '@shared/services/notificacion.service';
 import { ActivatedRoute } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
-import { map, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { RolesService } from '../../services/roles.service';
 
 @Component({
@@ -31,15 +31,21 @@ export class UsuariosUpdateComponent {
 
   userName = this.route.snapshot.params['username'];
   isEditMode = !!this.userName;
+  get passwordErrors() {
+    return this.myForm.get('password')!.errors ?? {};
+  }
 
   myForm: FormGroup = this.fb.group({
     userName: ['', Validators.required],
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    email: ['', Validators.required],
-    password: ['', Validators.required],
+    email: [
+      '',
+      [Validators.required, Validators.pattern(FormUtils.emailPattern)],
+    ],
+    password: ['', [Validators.required, FormUtils.passwordValidator()]],
     activo: [true],
-    roles: [],
+    roles: [['11a4b203-fa0e-43c9-bc6d-2ecf8a0f7498']],
   });
 
   usuarioResource = this.isEditMode
@@ -65,6 +71,25 @@ export class UsuariosUpdateComponent {
   // });
 
   constructor() {
+    const passwordControl = this.myForm.get('password');
+
+    if (this.isEditMode) {
+      // En edición: si está vacío no valida, pero si escriben algo aplica validaciones mamalonas
+      passwordControl?.setValidators([
+        (control) => {
+          if (!control.value) return null; // No valida si está vacío
+          return FormUtils.passwordValidator()(control);
+        },
+      ]);
+    } else {
+      // En creación: obligatorio y validado
+      passwordControl?.setValidators([
+        Validators.required,
+        FormUtils.passwordValidator(),
+      ]);
+    }
+
+    passwordControl?.updateValueAndValidity();
     effect(() => {
       if (this.isEditMode) {
         const usuario = this.usuarioResource!.value();
@@ -77,9 +102,9 @@ export class UsuariosUpdateComponent {
 
   private llenaFormulario(usuario: any) {
     this.myForm.patchValue({
-      userName: usuario.nombreUsuario,
-      firstName: usuario.nombre,
-      lastName: usuario.apellidos,
+      userName: usuario.userName,
+      firstName: usuario.firstName,
+      lastName: usuario.lastName,
       activo: usuario.activo,
       email: usuario.email,
       password: usuario.password,
@@ -92,10 +117,10 @@ export class UsuariosUpdateComponent {
       this.myForm.markAllAsTouched();
       return;
     }
-    this.registraConvencion();
+    this.registraUsuario();
   }
 
-  registraConvencion() {
+  registraUsuario() {
     const request$ = this.isEditMode
       ? this.usuariosService.actualizaUsuario(this.myForm.value)
       : this.usuariosService.nuevoUsuario(this.myForm.value);

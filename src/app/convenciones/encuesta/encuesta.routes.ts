@@ -20,11 +20,11 @@ export const EncuestaRoutes: Routes = [
     ],
   },
   {
-    path: ':id/edit',
+    path: 'preguntas/:id/edit',
     component: PreguntasUpdateComponent,
   },
   {
-    path: 'new',
+    path: 'preguntas/new',
     component: PreguntasUpdateComponent,
   },
   {

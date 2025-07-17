@@ -19,8 +19,8 @@
         <tr>
           <th>NicName</th>
           <th>Nombre</th>
-          <th>Apellidos</th>
           <th>Estatus</th>
+          <th>Roles</th>
           <th></th>
         </tr>
       </thead>
@@ -28,10 +28,16 @@
         @for (usuario of usuariosResource.value(); track usuario.userName) {
         <tr>
           <td>{{usuario.userName}}</td>
-          <td>{{usuario.firstName}}
+          <td>{{usuario.firstName}} {{usuario.lastName}}
           </td>
-          <td> {{usuario.lastName}} </td>
           <td> {{usuario.activo ? 'Activo' : 'Inactivo'}} </td>
+          <td>
+            @for (rol of usuario.roles; track rol) {
+            <span class="badge badge-info badge-sm">
+              {{rol}}
+            </span> <br />
+            }
+          </td>
           <th>
             <button class="btn btn-primary btn-xs"
               [routerLink]="[`/admin/usuarios/${usuario.userName}/edit`]">Editar</button>

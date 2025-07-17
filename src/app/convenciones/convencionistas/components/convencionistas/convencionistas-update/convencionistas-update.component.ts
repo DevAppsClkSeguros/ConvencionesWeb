@@ -18,7 +18,7 @@ import { NotFoundComponent } from '@shared/components/not-found/not-found.compon
 import { map, tap } from 'rxjs';
 import { CategoriasService } from '../../../services/categorias.service';
 import { PerfilesService } from '../../../services/perfiles.service';
-import { UploadFileComponent } from "../../../../../shared/components/upload-file/upload-file.component";
+import { UploadFileComponent } from "@shared/components/upload-file/upload-file.component";
 
 @Component({
   selector: 'convencionistas-update',

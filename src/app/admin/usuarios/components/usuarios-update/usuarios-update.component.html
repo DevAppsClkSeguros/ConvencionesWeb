@@ -54,14 +54,40 @@
         }
       </div>
 
+      <div>
+        <label class="label">Correo electrónico</label>
+        <input type="email" formControlName="email" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'email')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'email')}}
+        </small>
+        }
+      </div>
+
       <!-- Contraseña -->
       <div>
         <label class="label">Contraseña</label>
-        <input type="text" formControlName="password" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'password')){
+        <input type="password" formControlName="password" class="input input-bordered w-full" placeholder="******" />
+        <!-- @if (formUtils.isValidField(myForm, 'password')){
         <small class="text-error">
           {{formUtils.getFieldError(myForm, 'password')}}
         </small>
+        } -->
+        @if (formUtils.isValidField(myForm, 'password')) {
+        <ul class="text-sm text-error mt-3">
+          @if (passwordErrors['minlength']) {
+          <li>- {{ formUtils.getTextError({ minlength: passwordErrors['minlength'] }) }}</li>
+          }
+          @if (passwordErrors['uppercase']) {
+          <li>- La contraseña {{ formUtils.getTextError({ uppercase: true }) }}</li>
+          }
+          @if (passwordErrors['number']) {
+          <li>- La contraseña {{ formUtils.getTextError({ number: true }) }}</li>
+          }
+          @if (passwordErrors['special']) {
+          <li>- La contraseña {{ formUtils.getTextError({ special: true }) }}</li>
+          }
+        </ul>
         }
       </div>
 

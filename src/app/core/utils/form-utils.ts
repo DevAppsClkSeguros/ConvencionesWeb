@@ -42,6 +42,12 @@ export class FormUtils {
             return 'El valor ingresado no luce como un correo electrónico';
           }
           return 'Error de patron contra expresión regular';
+        case 'uppercase':
+          return 'debe contener al menos una letra mayúscula';
+        case 'number':
+          return 'debe contener al menos un número';
+        case 'special':
+          return 'debe contener al menos un carácter especial';
         default:
           return `Error de validación no controlado ${key}`;
       }
@@ -115,6 +121,30 @@ export class FormUtils {
         return null;
       }
       return { required: true };
+    };
+  }
+
+  static passwordValidator(): (
+    control: AbstractControl
+  ) => ValidationErrors | null {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value || '';
+      const errors: ValidationErrors = {};
+
+      if (value.length < 6) {
+        errors['minlength'] = { requiredLength: 6 };
+      }
+      if (!/[A-Z]/.test(value)) {
+        errors['uppercase'] = true;
+      }
+      if (!/\d/.test(value)) {
+        errors['number'] = true;
+      }
+      if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) {
+        errors['special'] = true;
+      }
+
+      return Object.keys(errors).length ? errors : null;
     };
   }
 }
