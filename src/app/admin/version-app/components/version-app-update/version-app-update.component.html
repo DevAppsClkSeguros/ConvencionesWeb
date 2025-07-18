@@ -1,0 +1,53 @@
+@if (versionResource?.error()) {
+<shared-not-found mensaje="{{versionResource?.error()}}" />
+}
+@if (!versionResource?.error()) {
+<div class="min-h-screen flex items-center justify-center bg-base-200">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()"
+    class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl mt-5 mb-5">
+    <h2 class="text-3xl font-bold mb-6">Datos de versiones</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      <!-- Android -->
+      <div>
+        <label class="label">Android</label>
+        <input type="text" formControlName="version_Android" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'version_Android')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'version_Android')}}
+        </small>
+        }
+      </div>
+
+      <!-- IOS -->
+      <div>
+        <label class="label">IOS</label>
+        <input type="text" formControlName="version_IOs" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'version_IOs')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'version_IOs')}}
+        </small>
+        }
+      </div>
+
+      <!-- Huawei -->
+      <div>
+        <label class="label">Huawei</label>
+        <input type="text" formControlName="version_Huawei" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'version_Huawei')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'version_Huawei')}}
+        </small>
+        }
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end mt-8 gap-4">
+      <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+</div>
+}
