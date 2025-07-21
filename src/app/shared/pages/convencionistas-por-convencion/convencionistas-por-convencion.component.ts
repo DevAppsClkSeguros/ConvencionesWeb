@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, output } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, output, ViewChild } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map, of } from 'rxjs';
 import { Convencionista } from 'src/app/convenciones/convencionistas/interfaces/convencionistas.interface';
@@ -15,6 +15,10 @@ export class ConvencionistasPorConvencionComponent {
   convencionistasPorVuelo = input<number[]>();
   convencionistasSeleccionados2 = output<number[]>();
   seleccionados: number[] = [];
+
+  getChecked(event: Event): boolean {
+    return (event.target as HTMLInputElement).checked;
+  }
 
   convencionistasResource = rxResource({
     loader: ({}) => {
@@ -67,6 +71,31 @@ export class ConvencionistasPorConvencionComponent {
         this.seleccionados.push(convencionista.id);
       }
     });
+    this.convencionistasSeleccionados2.emit(this.seleccionados);
+  }
+
+  selecciona(event: Event) {
+    const selectElement = event.target as HTMLSelectElement;
+    const seleccionadosIds: number[] = [];
+
+    for (let i = 0; i < selectElement.options.length; i++) {
+      const option = selectElement.options[i];
+      const id = +option.value; // Aseguramos que sea número
+      const seleccionado = option.selected;
+
+      const conv = this.convencionistasResource
+        .value()
+        ?.find((c) => c.id === id);
+      if (conv) {
+        conv.seleccionado = seleccionado;
+      }
+
+      if (seleccionado) {
+        seleccionadosIds.push(id);
+      }
+    }
+
+    this.seleccionados = seleccionadosIds;
     this.convencionistasSeleccionados2.emit(this.seleccionados);
   }
 }

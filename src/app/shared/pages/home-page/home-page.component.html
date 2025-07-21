@@ -7,7 +7,7 @@
   <!-- Grid de Cards -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
     <!-- Card 1 -->
-      @for (card of cards; track card.title) {
+      @for (card of opcionesMenu; track card.title) {
     <app-card [card]="card"></app-card>
   }
   </div>

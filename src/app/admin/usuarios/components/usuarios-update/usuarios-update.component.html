@@ -91,39 +91,20 @@
         }
       </div>
 
-      <!-- <div>
+      <div>
         <label class="label">Roles</label>
-        <select formControlName="roles" class=" w-full form-control" multiple>
-          <option>hola</option>
-          <option>hola1</option>
-          <option>hola2</option>
-          <option>hola3</option>
-          @for (rol of rolesResource.value(); track rol.id) {
-          <option [value]="rol.id">{{rol.name}}</option>
-          }
-        </select>
+        <div class="border border-base-200 bg-base-100 color">
+          <select formControlName="roles" class=" w-full form-control" multiple>
+            @for (rol of rolesResource.value(); track rol.id) {
+            <option [value]="rol.id">{{rol.name}}</option>
+            }
+          </select>
+        </div>
         @if (formUtils.isValidField(myForm, 'roles')){
         <small class="text-error">
           {{formUtils.getFieldError(myForm, 'roles')}}
         </small>
         }
-      </div> -->
-
-      <div class="form-control w-full max-w-xs">
-        <label class="label">
-          <span class="label-text">Selecciona tus opciones</span>
-        </label>
-        <select class="select select-bordered h-32" multiple>
-          <option disabled selected>Selecciona una o varias</option>
-          <option>Opción 1</option>
-          <option>Opción 2</option>
-          <option>Opción 3</option>
-          <option>Opción 4</option>
-          <option>Opción 5</option>
-        </select>
-        <label class="label">
-          <span class="label-text-alt">Usa Ctrl para seleccionar varias</span>
-        </label>
       </div>
     </div>
 

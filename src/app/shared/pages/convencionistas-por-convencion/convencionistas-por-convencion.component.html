@@ -1,27 +1,21 @@
-<!-- <div *ngIf="convencionistasResource.value()?.length > 0" class="overflow-x-auto mt-6"> -->
-<table class="table table-zebra w-full">
-  <thead>
-    <tr>
-      <th>
-        <input #selectAll type="checkbox" (change)="seleccionaTodos(selectAll.checked)"
-          class="checkbox" />
-      </th>
-      <th>Id</th>
-      <th>Clave</th>
-      <th>Convencionista</th>
-    </tr>
-  </thead>
-  <tbody>
-    @for (convencionista of convencionistasResource!.value(); track convencionista.id) {
-    <tr>
-      <td>
-        <input type="checkbox" class="checkbox" [checked]="convencionista.seleccionado"
-          (change)="seleccionaConvencionista(convencionista)" />
-      </td>
-      <td>{{ convencionista.id }}</td>
-      <td>{{ convencionista.clave }}</td>
-      <td>{{ convencionista.nombreCompleto }}</td>
-    </tr>
+<div class="form-control w-full">
+  <div class="flex items-center gap-2 mb-2">
+    <input type="checkbox" (change)="seleccionaTodos(getChecked($event))" class="checkbox checkbox-primary checkbox-sm"
+    />
+    <label class="label">
+      <span class="label-text font-bold text-base">Convencionistas</span>
+    </label>
+  </div>
+  <div class="border border-base-200 bg-base-100">
+
+  <select class=" w-full" multiple [size]="convencionistasResource.value()?.length || 4"
+    (change)="selecciona($event)">
+    @for (convencionista of convencionistasResource.value(); track convencionista.id) {
+    <option [value]="convencionista.id" [selected]="convencionista.seleccionado">
+      {{ convencionista.nombreCompleto }}
+    </option>
     }
-  </tbody>
-</table>
+  </select>
+</div>
+</div>
+

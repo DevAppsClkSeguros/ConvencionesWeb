@@ -1,18 +1,22 @@
 <div class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow h-full">
-  <figure><img [src]="card.imageUrl" [alt]="card.title" class="h-58 w-full"/></figure>
+  <figure><img [src]="card.imageUrl" [alt]="card.title" class="h-58 w-full" /></figure>
   <div class="card-body">
     <h2 class="card-title">{{ card.title }}</h2>
     <p>{{ card.description }}</p>
     @if (card.buttonText) {
     <div class="card-actions justify-end">
+      @if(card.subMenu.length>1) {
       <div class="dropdown">
         <div tabindex="0" role="button" class="btn m-1" [ngClass]="card.buttonClass || 'btn-primary'">Módulos</div>
         <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
-        @for (module of card.subMenu; track module.title) {
-            <li><a [routerLink]="[module.route]">{{module.title}}</a></li>
+          @for (module of card.subMenu; track module.title) {
+          <li><a [routerLink]="[module.route]">{{module.title}}</a></li>
           }
         </ul>
       </div>
+      } @else () {
+      <button class="btn btn-primary" [routerLink]="card.subMenu[0].route">Entrar</button>
+      }
     </div>
     }
   </div>

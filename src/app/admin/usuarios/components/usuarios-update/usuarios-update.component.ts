@@ -12,7 +12,7 @@ import { NotificacionService } from '@shared/services/notificacion.service';
 import { ActivatedRoute } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { RolesService } from '../../services/roles.service';
 
 @Component({
@@ -45,7 +45,7 @@ export class UsuariosUpdateComponent {
     ],
     password: ['', [Validators.required, FormUtils.passwordValidator()]],
     activo: [true],
-    roles: [['11a4b203-fa0e-43c9-bc6d-2ecf8a0f7498']],
+    roles: [[], Validators.required],
   });
 
   usuarioResource = this.isEditMode
@@ -62,13 +62,13 @@ export class UsuariosUpdateComponent {
       })
     : null;
 
-  // rolesResource = rxResource({
-  //   loader: ({}) => {
-  //     return this.rolesService
-  //       .obtieneRoles()
-  //       .pipe(map((resp) => resp.response));
-  //   },
-  // });
+  rolesResource = rxResource({
+    loader: ({}) => {
+      return this.rolesService
+        .obtieneRoles()
+        .pipe(map((resp) => resp.response));
+    },
+  });
 
   constructor() {
     const passwordControl = this.myForm.get('password');
