@@ -1,7 +1,9 @@
 <div class="form-control w-full">
   <div class="flex items-center gap-2 mb-2">
-    <input type="checkbox" (change)="seleccionaTodos(getChecked($event))" class="checkbox checkbox-primary checkbox-sm"
-    />
+    <div class="tooltip tooltip-info" data-tip="Seleccionar todos">
+      <input type="checkbox" (change)="seleccionaTodos(getChecked($event))" class="checkbox checkbox-primary checkbox-sm"
+      />
+    </div>
     <label class="label">
       <span class="label-text font-bold text-base">Convencionistas</span>
     </label>
@@ -11,7 +13,7 @@
   <select class=" w-full" multiple [size]="convencionistasResource.value()?.length || 4"
     (change)="selecciona($event)">
     @for (convencionista of convencionistasResource.value(); track convencionista.id) {
-    <option [value]="convencionista.id" [selected]="convencionista.seleccionado">
+    <option class="mx-2" [value]="convencionista.id" [selected]="convencionista.seleccionado">
       {{ convencionista.nombreCompleto }}
     </option>
     }

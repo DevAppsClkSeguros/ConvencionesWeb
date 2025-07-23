@@ -2,6 +2,7 @@ import { AfterViewInit, Component, ElementRef, inject, OnInit, signal, viewChild
 import { MicrosoftGraphService } from '../../services/microsoftGraph.service';
 import { ScrollStateService } from '../../services/scroll-state.service';
 import { ImagenListComponent } from "../imagen-list/imagen-list.component";
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -14,6 +15,8 @@ export class MemoriasFotograficasComponent implements AfterViewInit {
 
   scrollStateService = inject(ScrollStateService);
   scrollDivRef = viewChild<ElementRef<HTMLDivElement>>('groupDiv');
+  private route = inject(ActivatedRoute);
+  carpetaId = this.route.snapshot.params['convencion'];
 
   ngAfterViewInit(): void {
     const scrollDiv = this.scrollDivRef()?.nativeElement;

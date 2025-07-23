@@ -22,4 +22,5 @@ export interface Respuesta {
   claveConvencionista:  string;
   nombreConvencionista: string;
   comentario:           string;
+  calificacion:         number;
 }

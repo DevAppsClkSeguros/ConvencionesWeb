@@ -5,6 +5,7 @@ import { AppConfig } from '@shared/app-config';
 import type { MicrosoftResponse } from '../interfaces/microsoftGraph.interface';
 import type { Imagen } from '../interfaces/imagen.interface';
 import { ImageMapper } from '../mapper/memorias-fotograficas.mapper';
+import { Observable } from 'rxjs';
 
 
 @Injectable({ providedIn: 'root' })
@@ -26,13 +27,20 @@ export class MicrosoftGraphService {
 
   constructor() {
     this.loadTrendingGifs();
-    console.log('Servicio creado');
   }
 
-  archivosCarpetaOneDriveMS(idCarpeta: string) {
+  archivosUnidadOneDriveMS(): Observable<MicrosoftResponse> {
     return this.http
-      .get(
-        `${AppConfig.APIREST_MICROSOFT}b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/items/01GH2CWJUGGJRHLBPKIVGYYLKTAJKLPYB7/children?$top=1000&$expand=thumbnails&$orderby=lastModifiedDateTime desc`
+      .get<MicrosoftResponse>(
+        `${AppConfig.APIREST_MICROSOFT}b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/root/children`
+      )
+      .pipe(catchError(AppConfig.handleErrors));
+  }
+
+  archivosCarpetaOneDriveMS(idCarpeta: string): Observable<MicrosoftResponse> {
+    return this.http
+      .get<MicrosoftResponse>(
+        `${AppConfig.APIREST_MICROSOFT}b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/items/${idCarpeta}/children?$top=1000&$expand=thumbnails&$orderby=lastModifiedDateTime desc`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
@@ -49,20 +57,17 @@ export class MicrosoftGraphService {
       ? this.nextLink
       : `${AppConfig.APIREST_MICROSOFT}b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/items/01GH2CWJQXC7FNT7ETSVGI7CPPO5NHI4WE/children?$top=25&$expand=thumbnails&$orderby=lastModifiedDateTime desc`;
 
-    this.http
-      .get<MicrosoftResponse>(`${url}`
-      )
-      .subscribe((resp) => {
-        const imagenes = ImageMapper.mapMicrosoftItemToImageArray(resp.value);
-        this.trendingImagen.update((currentGifs) => [
-          ...currentGifs,
-          ...imagenes,
-        ]);
+    this.http.get<MicrosoftResponse>(`${url}`).subscribe((resp) => {
+      const imagenes = ImageMapper.mapMicrosoftItemToImageArray(resp.value);
+      this.trendingImagen.update((currentGifs) => [
+        ...currentGifs,
+        ...imagenes,
+      ]);
 
-        this.nextLink = resp['@odata.nextLink'] || null;
+      this.nextLink = resp['@odata.nextLink'] || null;
 
-        this.trendingImagenLoading.set(false);
-        // this.trendingPage.update((currenPage) => currenPage + 1);
-      });
+      this.trendingImagenLoading.set(false);
+      // this.trendingPage.update((currenPage) => currenPage + 1);
+    });
   }
 }

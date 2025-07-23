@@ -51,7 +51,7 @@ export class UsuariosService {
           email: usuario.email,
           fechaCreacion: usuario.fechaCreacion,
           activo: usuario.activo,
-          newPassword: usuario.newPassword,
+          newPassword: usuario.password,
           roles: usuario.roles,
         }
       )

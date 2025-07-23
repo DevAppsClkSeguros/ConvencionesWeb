@@ -46,7 +46,7 @@
                   <td>
                     <div class="rating">
                       @for (star of [1 ,2, 3, 4, 5]; track $index) {
-                      <div class="mask mask-star" [attr.aria-label]="star + ' star'" [attr.aria-current]="star === 4">
+                      <div class="mask mask-star" [attr.aria-label]="star + ' star'" [attr.aria-current]="star === respuesta.calificacion">
                       </div>
                       }
                     </div>

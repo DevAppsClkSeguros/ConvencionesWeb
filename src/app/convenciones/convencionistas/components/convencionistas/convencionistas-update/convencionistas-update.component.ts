@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { JsonPipe, Location } from '@angular/common';
+import { Location } from '@angular/common';
 import { ConvencionistasService } from '../../../services/convencionistas.service';
 import { FormUtils } from '@core/utils/form-utils';
 import { CdnService } from '@shared/services/cdn.service';
@@ -24,7 +24,6 @@ import { UploadFileComponent } from "@shared/components/upload-file/upload-file.
   selector: 'convencionistas-update',
   imports: [
     ReactiveFormsModule,
-    JsonPipe,
     NotFoundComponent,
   ],
   templateUrl: './convencionistas-update.component.html',
