@@ -15,11 +15,12 @@
           </a></li>
       </ul>
     </div>
-    <label class="btn btn-ghost text-xl">Memorias Fotográficas</label>
+    <label class="btn btn-ghost text-xl hidden lg:flex">Memorias Fotográficas</label>
   </div>
   <div class="navbar-center hidden lg:flex">
     <ul class="menu menu-horizontal px-1">
-      <li><a routerLink="/memorias-fotograficas/fotos/Los Cabos" class="btn btn-ghost" routerLinkActive="text-primary">
+      <li><a routerLink="/memorias-fotograficas/fotos" [routerLinkActiveOptions]="{ exact: false }"
+          class="btn btn-ghost" routerLinkActive="text-primary">
           Fotos
         </a></li>
       <li><a routerLink="/memorias-fotograficas/videos" class="btn btn-ghost" routerLinkActive="text-primary">
@@ -27,7 +28,7 @@
         </a></li>
     </ul>
   </div>
-  <div class="navbar-end hidden lg:flex">
+  <div class="navbar-end">
     <section class="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
       <div class="flex flex-col justify-end items-end w-full sm:w-full">
         <fieldset class="fieldset h-10">
@@ -40,12 +41,12 @@
           </select>
         </fieldset>
       </div>
-      <div class="flex flex-col sm:flex-row items-center justify-end gap-4 w-full md:w-auto">
+      <!-- <div class="flex flex-col sm:flex-row items-center justify-end gap-4 w-full md:w-auto">
         <a class="btn btn-info">
           <shared-icon-refresh />
           Refrescar
         </a>
-      </div>
+      </div> -->
     </section>
   </div>
 </div>

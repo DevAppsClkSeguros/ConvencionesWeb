@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
 import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
@@ -13,7 +13,7 @@ import { MicrosoftGraphService } from '../../services/microsoftGraph.service';
   imports: [RouterLink, RouterLinkActive, IconRefreshComponent],
   templateUrl: './memoras-navbar.component.html',
 })
-export class MemorasNavbarComponent implements OnInit {
+export class MemorasNavbarComponent {
   convencionSeleccionada = signal<string>('');
   router = inject(Router);
   convenciones = signal<Convencion[]>([]);
@@ -29,35 +29,34 @@ export class MemorasNavbarComponent implements OnInit {
     },
   });
 
-  ngOnInit(): void {}
-
   multimedia(convencion: string) {
     this.microsoftGraphService.archivosUnidadOneDriveMS().subscribe({
       next: (dataUnidad) => {
-        console.log('Cargando dataUnidad: ', dataUnidad);
         if (dataUnidad) {
+          console.log('dataUnidad: ', dataUnidad);
           let eventoPath = dataUnidad.value.filter(
             (v) => v.name === convencion
           )[0];
-          this.microsoftGraphService
-            .archivosCarpetaOneDriveMS(eventoPath.id)
-            .subscribe({
-              next: (dataCarpeta) => {
-                if (dataCarpeta) {
-                  let imagenesPath = dataCarpeta.value.filter(v => v.name === 'imagenes')[0];
-                   this.router.navigate([
-                     `/memorias-fotograficas/fotos/${imagenesPath.id}`,
-                   ]);
-                }
-              },
-            });
+          console.log('eventoPath: ', eventoPath);
+          if (eventoPath) {
+            this.microsoftGraphService
+              .archivosCarpetaOneDriveMS(eventoPath?.id)
+              .subscribe({
+                next: (dataCarpeta) => {
+                  if (dataCarpeta) {
+                    console.log('dataCarpeta: ', dataCarpeta);
+                    let imagenesPath = dataCarpeta.value.filter(
+                      (v) => v.name === 'imagenes'
+                    )[0];
+                    this.router.navigate([
+                      `/memorias-fotograficas/fotos/${imagenesPath.id}`,
+                    ]);
+                  }
+                },
+              });
+          }
         }
       },
     });
-  }
-
-  navegar(convencion: string) {
-    // console.log('Navegando a la convención:', convencion);
-    // this.router.navigate([`/memorias-fotograficas/fotos/${convencion}`]);
   }
 }

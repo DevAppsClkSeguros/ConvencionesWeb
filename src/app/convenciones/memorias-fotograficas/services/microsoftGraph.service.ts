@@ -7,7 +7,6 @@ import type { Imagen } from '../interfaces/imagen.interface';
 import { ImageMapper } from '../mapper/memorias-fotograficas.mapper';
 import { Observable } from 'rxjs';
 
-
 @Injectable({ providedIn: 'root' })
 export class MicrosoftGraphService {
   http = inject(HttpClient);
@@ -16,17 +15,17 @@ export class MicrosoftGraphService {
   trendingImagenLoading = signal(false);
   private trendingPage = signal(0);
   private nextLink: string | null = null;
+  private usedNextLinks = new Set<string>();
   trendingImagenGroup = computed<Imagen[][]>(() => {
     const groups = [];
     for (let i = 0; i < this.trendingImagen().length; i += 3) {
       groups.push(this.trendingImagen().slice(i, i + 3));
     }
-    console.log('grupos: ', groups);
     return groups;
   });
 
   constructor() {
-    this.loadTrendingGifs();
+    // this.loadTrendingGifs();
   }
 
   archivosUnidadOneDriveMS(): Observable<MicrosoftResponse> {
@@ -45,6 +44,12 @@ export class MicrosoftGraphService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
+  archivosCarpetaScroll(url: string): Observable<MicrosoftResponse> {
+    return this.http
+      .get<MicrosoftResponse>(url)
+      .pipe(catchError(AppConfig.handleErrors));
+  }
+
   /*******************
    * Curso
    ******************/
@@ -52,22 +57,22 @@ export class MicrosoftGraphService {
   loadTrendingGifs(): any {
     if (this.trendingImagenLoading()) return;
     this.trendingImagenLoading.set(true);
-
     const url = this.nextLink
       ? this.nextLink
-      : `${AppConfig.APIREST_MICROSOFT}b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/items/01GH2CWJQXC7FNT7ETSVGI7CPPO5NHI4WE/children?$top=25&$expand=thumbnails&$orderby=lastModifiedDateTime desc`;
-
+      : `${AppConfig.APIREST_MICROSOFT}b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/items/01GH2CWJQXC7FNT7ETSVGI7CPPO5NHI4WE/children?$top=105&$expand=thumbnails&$orderby=lastModifiedDateTime desc`;
+    if (this.usedNextLinks.has(url)) {
+      this.trendingImagenLoading.set(false);
+      return;
+    }
+    this.usedNextLinks.add(url);
     this.http.get<MicrosoftResponse>(`${url}`).subscribe((resp) => {
       const imagenes = ImageMapper.mapMicrosoftItemToImageArray(resp.value);
       this.trendingImagen.update((currentGifs) => [
         ...currentGifs,
         ...imagenes,
       ]);
-
       this.nextLink = resp['@odata.nextLink'] || null;
-
       this.trendingImagenLoading.set(false);
-      // this.trendingPage.update((currenPage) => currenPage + 1);
     });
   }
 }

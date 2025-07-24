@@ -6,7 +6,7 @@
 </section> -->
 <div class="h-screen overflow-y-scroll grid grid-cols-2 md:grid-cols-4 gap-4 pt-5" (scroll)="onScroll($event)" #groupDiv>
 
-  @for (group of microsoftGraphService.trendingImagenGroup(); track $index) {
+  @for (group of trendingImagenGroup(); track $index) {
     <div class="grid gap-4">
       @for (imagen of group; track imagen.id) {
         <div>
