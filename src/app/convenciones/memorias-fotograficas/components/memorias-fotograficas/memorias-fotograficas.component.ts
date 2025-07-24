@@ -32,6 +32,7 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
   trendingImagenLoading = signal(false);
   trendingImagen = signal<Imagen[]>([]);
   private usedNextLinks = new Set<string>();
+  existeError = signal(false);
   trendingImagenGroup = computed<Imagen[][]>(() => {
     const groups = [];
     for (let i = 0; i < this.trendingImagen().length; i += 3) {
@@ -42,11 +43,11 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      const convencionId = params['convencion'];
+      const nombreConvencion = params['convencion'];
       this.nextLink = null;
       this.trendingImagen.set([]);
       this.usedNextLinks.clear();
-      this.loadMultimedia(convencionId);
+      this.verificaMultimedia(nombreConvencion);
     });
   }
 
@@ -54,6 +55,40 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
     const scrollDiv = this.scrollDivRef()?.nativeElement;
     if (!scrollDiv) return;
     scrollDiv.scrollTop = this.scrollStateService.trendingScrollState();
+  }
+
+  verificaMultimedia(nombreConvencion: string) {
+    this.microsoftGraphService.archivosUnidadOneDriveMS().subscribe({
+      next: (dataUnidad) => {
+        if (dataUnidad) {
+          let eventoPath = dataUnidad.value.filter(
+            (v) => v.name === nombreConvencion
+          )[0];
+          this.existeError.set(!eventoPath);
+          if (eventoPath) {
+            this.microsoftGraphService
+              .archivosCarpetaOneDriveMS(eventoPath?.id)
+              .subscribe({
+                next: (dataCarpeta) => {
+                  this.existeError.set(!dataCarpeta);
+                  if (dataCarpeta) {
+                    let imagenesPath = dataCarpeta.value.filter(
+                      (v) => v.name === 'imagenes'
+                    )[0];
+                    this.cargaMultimedia(imagenesPath?.id);
+                  }
+                },
+                error: (error) => {
+                  this.existeError.set(true);
+                }
+              });
+          }
+        }
+      },
+      error: (error) => {
+        this.existeError.set(true);
+      }
+    });
   }
 
   onScroll(event: Event) {
@@ -66,11 +101,11 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
     this.scrollStateService.trendingScrollState.set(scrollTop);
     if (isAtBottom) {
       // this.microsoftGraphService.loadTrendingGifs();
-      this.loadMultimedia();
+      this.cargaMultimedia();
     }
   }
 
-  loadMultimedia(carpetaId?: string) {
+  cargaMultimedia(carpetaId?: string) {
     if (this.trendingImagenLoading()) return;
     this.trendingImagenLoading.set(true);
     const url = this.nextLink
@@ -90,6 +125,9 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
         ]);
         this.nextLink = resp['@odata.nextLink'] || null;
         this.trendingImagenLoading.set(false);
+      },
+      error: (error) => {
+        this.existeError.set(true);
       },
     });
   }

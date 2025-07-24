@@ -15,7 +15,7 @@ export const MemoriasFotograficasRoutes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'fotos',
+    redirectTo: 'fotos/:convencion',
   },
 ];
 
