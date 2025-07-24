@@ -7,6 +7,7 @@ export class ImageMapper {
       id: item.id,
       title: item.name,
       url: item.thumbnails[0].large.url,
+      urlDownload: item['@microsoft.graph.downloadUrl'],
     };
   }
 

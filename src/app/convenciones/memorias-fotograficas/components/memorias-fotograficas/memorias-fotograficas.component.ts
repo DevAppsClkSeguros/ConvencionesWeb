@@ -28,11 +28,14 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
   private route = inject(ActivatedRoute);
   carpetaId = this.route.snapshot.params['convencion'];
 
+  videoSeleccionado: any = null;
+
   private nextLink: string | null = null;
   trendingImagenLoading = signal(false);
   trendingImagen = signal<Imagen[]>([]);
   private usedNextLinks = new Set<string>();
   existeError = signal(false);
+  private currentCarpetaId: string | null = null;
   trendingImagenGroup = computed<Imagen[][]>(() => {
     const groups = [];
     for (let i = 0; i < this.trendingImagen().length; i += 3) {
@@ -75,19 +78,20 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
                     let imagenesPath = dataCarpeta.value.filter(
                       (v) => v.name === 'imagenes'
                     )[0];
-                    this.cargaMultimedia(imagenesPath?.id);
+                    this.currentCarpetaId = imagenesPath?.id;
+                    this.cargaMultimedia(this.currentCarpetaId);
                   }
                 },
                 error: (error) => {
                   this.existeError.set(true);
-                }
+                },
               });
           }
         }
       },
       error: (error) => {
         this.existeError.set(true);
-      }
+      },
     });
   }
 
@@ -101,11 +105,14 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
     this.scrollStateService.trendingScrollState.set(scrollTop);
     if (isAtBottom) {
       // this.microsoftGraphService.loadTrendingGifs();
+      if (this.nextLink === null) return;
       this.cargaMultimedia();
     }
   }
 
   cargaMultimedia(carpetaId?: string) {
+    const targetId = carpetaId ?? this.currentCarpetaId;
+    if (!targetId && !this.nextLink) return; // nada que hacer
     if (this.trendingImagenLoading()) return;
     this.trendingImagenLoading.set(true);
     const url = this.nextLink
@@ -130,5 +137,13 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
         this.existeError.set(true);
       },
     });
+  }
+
+  abrirModal(video: any) {
+    this.videoSeleccionado = video;
+  }
+
+  cerrarModal() {
+    this.videoSeleccionado = null;
   }
 }

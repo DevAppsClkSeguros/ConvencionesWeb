@@ -32,8 +32,7 @@
     <section class="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
       <div class="flex flex-col justify-end items-end w-full sm:w-full">
         <fieldset class="fieldset h-10">
-          <select #convencionSelect class="select"
-            (change)="multimedia(convencionSelect.value)">
+          <select #convencionSelect class="select" (change)="multimedia(convencionSelect.value)">
             <option value="" selected>Selecciona una convención </option>
             @for (convencion of convencionesResource.value(); track convencion.id) {
             <option [value]="convencion.nombreEvento">{{convencion.nombreEvento}}</option>

@@ -2,7 +2,7 @@
   <imagen-list [imagenes]="microsoftGraphService.trendingImagen()"/>
 </section> -->
 <!-- <section class="py-5">
-  <imagen-list [imagenes]="microsoftGraphService.trendingImagenGroup()"/>
+  <imagen-list [imagenes]="trendingImagenGroup()"/>
 </section> -->
 
 @if (existeError()) {
@@ -17,16 +17,29 @@
   </div>
 </div>
 } @else {
-<div class="h-screen overflow-y-scroll grid grid-cols-2 md:grid-cols-4 gap-4 pt-5" (scroll)="onScroll($event)"
+<div class="h-screen overflow-y-scroll grid grid-cols-2 md:grid-cols-4 gap-4 py-5" (scroll)="onScroll($event)"
   #groupDiv>
   @for (group of trendingImagenGroup(); track $index) {
   <div class="grid gap-4">
     @for (imagen of group; track imagen.id) {
-    <div>
-      <img class="h-full w-full rounded-lg object-cover" [src]="imagen.url" [alt]="imagen.title">
+    <div (click)="abrirModal(imagen)">
+      <img class="h-full w-full rounded-lg object-cover cursor-pointer" [src]="imagen.url"
+        [alt]="imagen.title" />
     </div>
     }
   </div>
   }
 </div>
+
+<!-- Modal -->
+ @if (videoSeleccionado) {
+   <div class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+     <div class="bg-black p-4 rounded-lg max-w-4xl w-full relative">
+       <video [src]="videoSeleccionado.urlDownload" class="w-full h-[70vh] rounded" controls autoplay></video>
+       <button (click)="cerrarModal()" class="absolute top-2 right-2 text-white text-xl">
+         ✕
+       </button>
+     </div>
+   </div>
+ }
 }
