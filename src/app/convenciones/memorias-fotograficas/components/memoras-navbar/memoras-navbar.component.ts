@@ -1,5 +1,10 @@
-import { Component, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { rxResource } from '@angular/core/rxjs-interop';
@@ -13,7 +18,9 @@ import { map } from 'rxjs';
 export class MemorasNavbarComponent {
   notificacion = inject(NotificacionService);
   router = inject(Router);
+  private route = inject(ActivatedRoute);
   eventosService = inject(ConvencionesService);
+  convencionSeleccionada = signal<string | null>(null);
 
   convencionesResource = rxResource({
     loader: ({}) => {
@@ -23,7 +30,32 @@ export class MemorasNavbarComponent {
     },
   });
 
-  multimedia(convencion: string) {
-   this.router.navigate([`/memorias-fotograficas/fotos/${convencion}`]);
-}
+  constructor() {
+    const convencionParam = this.route.snapshot.queryParamMap.get('convencion');
+    if (convencionParam) {
+      this.convencionSeleccionada.set(convencionParam);
+    }
+  }
+
+  multimedia(tipoMedia: 'Imagenes' | 'Videos') {
+    const convencion = this.convencionSeleccionada();
+    if (!convencion) return;
+    this.router.navigate([`/memorias-fotograficas/${tipoMedia}/${convencion}`]);
+  }
+
+  onChange(event: Event) {
+    const value = (event.target as HTMLSelectElement).value;
+    this.convencionSeleccionada.set(value);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        ...this.route.snapshot.queryParams,
+        tipo: this.route.snapshot.queryParams['tipo']
+          ? this.route.snapshot.queryParams['tipo']
+          : 'imagenes',
+        convencion: value,
+      },
+      queryParamsHandling: 'merge',
+    });
+  }
 }

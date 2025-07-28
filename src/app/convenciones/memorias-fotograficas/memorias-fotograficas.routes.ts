@@ -8,14 +8,14 @@ export const MemoriasFotograficasRoutes: Routes = [
     component: MemoriasLayoutComponent,
     children: [
       {
-        path: 'fotos/:convencion',
+        path: '',
         component: MemoriasFotograficasComponent,
       },
     ],
   },
   {
     path: '**',
-    redirectTo: 'fotos/:convencion',
+    redirectTo: '',
   },
 ];
 

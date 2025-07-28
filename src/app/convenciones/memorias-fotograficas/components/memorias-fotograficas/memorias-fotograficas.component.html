@@ -11,7 +11,7 @@
     <div class="max-w-md">
       <h1 class="text-5xl font-bold">Memorias</h1>
       <p class="py-6">
-        Aún no hay fotos disponibles. Vuelve a intentarlo más tarde.
+        Aún no hay contenido multimedia disponible. Vuelve a intentarlo más tarde.
       </p>
     </div>
   </div>
@@ -23,8 +23,7 @@
   <div class="grid gap-4">
     @for (imagen of group; track imagen.id) {
     <div (click)="abrirModal(imagen)">
-      <img class="h-full w-full rounded-lg object-cover cursor-pointer" [src]="imagen.url"
-        [alt]="imagen.title" />
+      <img class="h-full w-full rounded-lg object-cover cursor-pointer" [src]="imagen.url" [alt]="imagen.title" />
     </div>
     }
   </div>
@@ -32,14 +31,19 @@
 </div>
 
 <!-- Modal -->
- @if (videoSeleccionado) {
-   <div class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-     <div class="bg-black p-4 rounded-lg max-w-4xl w-full relative">
-       <video [src]="videoSeleccionado.urlDownload" class="w-full h-[70vh] rounded" controls autoplay></video>
-       <button (click)="cerrarModal()" class="absolute top-2 right-2 text-white text-xl">
-         ✕
-       </button>
-     </div>
-   </div>
- }
+@if (mediaSeleccionada) {
+<div class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+  <div class="bg-black p-4 rounded-lg max-w-4xl w-full relative">
+    @if (this.tipoMedia === 'videos') {
+    <video [src]="mediaSeleccionada.urlDownload" class="w-full h-[70vh] rounded" controls autoplay></video>
+    } @else {
+    <img src="{{ mediaSeleccionada.url }}" alt="{{ mediaSeleccionada.title }}"
+      class="w-auto h-max-[70vh] rounded justify-self-center" />
+    }
+    <button (click)="cerrarModal()" class="absolute top-2 right-2 text-white text-xl">
+      ✕
+    </button>
+  </div>
+</div>
+}
 }

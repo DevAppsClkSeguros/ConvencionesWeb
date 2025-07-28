@@ -28,7 +28,7 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
   private route = inject(ActivatedRoute);
   carpetaId = this.route.snapshot.params['convencion'];
 
-  videoSeleccionado: any = null;
+  mediaSeleccionada: any = null;
 
   private nextLink: string | null = null;
   trendingImagenLoading = signal(false);
@@ -36,6 +36,7 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
   private usedNextLinks = new Set<string>();
   existeError = signal(false);
   private currentCarpetaId: string | null = null;
+  tipoMedia: string = 'imagenes';
   trendingImagenGroup = computed<Imagen[][]>(() => {
     const groups = [];
     for (let i = 0; i < this.trendingImagen().length; i += 3) {
@@ -45,12 +46,13 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
   });
 
   ngOnInit(): void {
-    this.route.params.subscribe((params) => {
+    this.route.queryParams.subscribe((params) => {
+      this.tipoMedia = params['tipo'];
       const nombreConvencion = params['convencion'];
       this.nextLink = null;
       this.trendingImagen.set([]);
       this.usedNextLinks.clear();
-      this.verificaMultimedia(nombreConvencion);
+      this.verificaMultimedia(this.tipoMedia, nombreConvencion);
     });
   }
 
@@ -60,7 +62,7 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
     scrollDiv.scrollTop = this.scrollStateService.trendingScrollState();
   }
 
-  verificaMultimedia(nombreConvencion: string) {
+  verificaMultimedia(media: string, nombreConvencion: string) {
     this.microsoftGraphService.archivosUnidadOneDriveMS().subscribe({
       next: (dataUnidad) => {
         if (dataUnidad) {
@@ -76,7 +78,7 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
                   this.existeError.set(!dataCarpeta);
                   if (dataCarpeta) {
                     let imagenesPath = dataCarpeta.value.filter(
-                      (v) => v.name === 'imagenes'
+                      (v) => v.name === media
                     )[0];
                     this.currentCarpetaId = imagenesPath?.id;
                     this.cargaMultimedia(this.currentCarpetaId);
@@ -126,6 +128,11 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
     this.microsoftGraphService.archivosCarpetaScroll(url).subscribe({
       next: (resp) => {
         const imagenes = ImageMapper.mapMicrosoftItemToImageArray(resp.value);
+        if (imagenes.length === 0) {
+          this.existeError.set(true);
+          this.trendingImagenLoading.set(false);
+          return;
+        }
         this.trendingImagen.update((currentGifs) => [
           ...currentGifs,
           ...imagenes,
@@ -140,10 +147,10 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
   }
 
   abrirModal(video: any) {
-    this.videoSeleccionado = video;
+    this.mediaSeleccionada = video;
   }
 
   cerrarModal() {
-    this.videoSeleccionado = null;
+    this.mediaSeleccionada = null;
   }
 }
