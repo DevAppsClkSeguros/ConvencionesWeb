@@ -24,7 +24,6 @@ export class ConvencionistasPorConvencionComponent {
     loader: ({}) => {
       const id = this.convencionId();
       if (!id) {
-        console.warn('Convencion ID no proporcionado');
         return of([]);
       }
       return this.convencionistasService
@@ -46,13 +45,11 @@ export class ConvencionistasPorConvencionComponent {
   constructor() {
     effect(() => {
       const id = this.convencionId();
-      console.log('Id de la convencion recibida en el hijo: ', id);
       this.convencionistasResource!.reload();
     });
   }
 
   seleccionaConvencionista(convencionista: Convencionista) {
-    console.log('Seleccionando desde hijo: ', convencionista);
     convencionista.seleccionado = !convencionista.seleccionado;
     this.seleccionados = [];
     this.convencionistasResource!.value()?.forEach((c) => {

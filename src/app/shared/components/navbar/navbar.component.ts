@@ -12,13 +12,13 @@ import { environment } from 'src/environments/environment'
 export class NavbarComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
-  nombreUsuario: string = '';
+  usuario: string = '';
   environment = environment;
 
   ngOnInit(): void {
     const datosUsuario = this.authService.getUserData();
     if (datosUsuario) {
-      this.nombreUsuario = datosUsuario.Nombre;
+      this.usuario = datosUsuario.FirstName;
     }
   }
 

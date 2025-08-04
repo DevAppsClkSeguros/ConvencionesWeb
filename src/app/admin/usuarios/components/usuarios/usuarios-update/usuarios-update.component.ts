@@ -7,13 +7,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { FormUtils } from '@core/utils/form-utils';
-import { UsuariosService } from '../../services/usuarios.service';
+import { UsuariosService } from '../../../services/usuarios.service';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { ActivatedRoute } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { map, tap } from 'rxjs';
-import { RolesService } from '../../services/roles.service';
+import { RolesService } from '../../../services/roles.service';
 
 @Component({
   selector: 'app-usuarios-update',

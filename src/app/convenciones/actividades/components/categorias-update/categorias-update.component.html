@@ -2,7 +2,7 @@
 <shared-not-found mensaje="{{categoriasResource?.error()}}" />
 }
 @if (!categoriasResource?.error()) {
-<div class="min-h-screen flex items-center justify-center bg-base-200">
+<div class="min-h-screen flex items-center justify-center bg-base-200 p-5">
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
     <h2 class="text-3xl font-bold mb-6">Datos de la categoría</h2>
 

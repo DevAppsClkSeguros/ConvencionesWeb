@@ -72,6 +72,10 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'version-app',
+    loadChildren: () => import('./admin/version-app/version-app.routes'),
+  },
+  {
     path: '**',
     redirectTo: 'login',
   },

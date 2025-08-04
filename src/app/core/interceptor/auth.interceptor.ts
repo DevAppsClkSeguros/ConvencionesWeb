@@ -55,7 +55,6 @@ export const authInterceptorFn: HttpInterceptorFn = (req, next) => {
           catchError((renewErr) => {
             console.error('Renovación falló, cerrando sesión');
             auth.logOut();
-            // redirige al login
             setTimeout(() => {
               router.navigate(['/login'], {
                 queryParams: { sessionExpired: true },

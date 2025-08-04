@@ -98,7 +98,7 @@ export class HomePageComponent implements OnInit {
         { title: 'Log de eventos', route: 'log-eventos' },
         {
           title: 'Perfil de convencionistas',
-          route: '/convencionistas/perfil',
+          route: '/convencionistas/perfiles',
         },
         {
           title: 'Categoría de convencionistas',

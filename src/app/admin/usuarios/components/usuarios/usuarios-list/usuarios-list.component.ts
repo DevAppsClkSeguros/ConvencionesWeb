@@ -6,7 +6,7 @@ import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.co
 import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
-import { UsuariosService } from '../../services/usuarios.service';
+import { UsuariosService } from '../../../services/usuarios.service';
 
 @Component({
   selector: 'app-usuarios-list',
@@ -29,7 +29,7 @@ export class UsuariosListComponent {
         map((resp) => resp.response),
         catchError((error) => {
           this.notificacion.show(
-            'Ocurrio un error al cargar lista de convenciones.',
+            'Ocurrio un error al cargar la lista de usuarios.',
             'error'
           );
           return of([]);
