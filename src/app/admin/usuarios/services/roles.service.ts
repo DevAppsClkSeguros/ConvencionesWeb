@@ -17,10 +17,10 @@ export class RolesService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  obtieneRol(nombreUsuario: number): Observable<RolesResponse> {
+  obtieneRol(rolId: string): Observable<RolesResponse> {
     return this.http
       .get<RolesResponse>(
-        `${AppConfig.APIREST_URL}/api/Roles/Detalles/${nombreUsuario}`
+        `${AppConfig.APIREST_URL}/api/Roles/Detalles/${rolId}`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
@@ -38,16 +38,16 @@ export class RolesService {
       .put<RolesResponse>(
         `${AppConfig.APIREST_URL}/api/Roles/Actualizar/${rol.id}`,
         {
-          nombre: rol.name,
+          nuevoNombre: rol.name,
         }
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  eliminaRol(nombreUsuario: number): Observable<RolesResponse> {
+  eliminaRol(rolId: string): Observable<RolesResponse> {
     return this.http
       .delete<RolesResponse>(
-        `${AppConfig.APIREST_URL}/api/Roles/eliminar-rol/${nombreUsuario}`
+        `${AppConfig.APIREST_URL}/api/Roles/${rolId}`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }

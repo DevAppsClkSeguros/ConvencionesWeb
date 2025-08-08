@@ -64,7 +64,7 @@ export const routes: Routes = [
     path: 'admin',
     loadChildren: () => import('./admin/admin.routes'),
     canActivate: [AuthGuard],
-    data: { roles: ['ROLE_ADMIN'] },
+    data: { roles: ['ADMIN'] },
   },
   {
     path: 'actividades',
@@ -74,6 +74,10 @@ export const routes: Routes = [
   {
     path: 'version-app',
     loadChildren: () => import('./admin/version-app/version-app.routes'),
+  },
+  {
+    path: 'usuarios',
+    loadChildren: () => import('./admin/usuarios/usuarios.routes'),
   },
   {
     path: '**',

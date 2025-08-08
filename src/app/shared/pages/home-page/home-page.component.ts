@@ -14,7 +14,7 @@ export class HomePageComponent implements OnInit {
   cards: Card[] = [
     {
       title: 'Convenciones click',
-      roles: ['ROLE_ADMIN', 'ROLE_MARKETING', 'Admin'],
+      roles: ['ADMIN', 'MARKETING', 'Admin'],
       description:
         'Configuración inicial de la convención, creación de encuesta para la evaluación del evento y registro de asistentes.',
       imageUrl: 'assets/images/convenciones/destino.webp',
@@ -29,7 +29,7 @@ export class HomePageComponent implements OnInit {
     },
     {
       title: 'Hoteles',
-      roles: ['ROLE_ADMIN', 'ROLE_MARKETING'],
+      roles: ['ADMIN', 'MARKETING'],
       description: 'Selección del destino, elección del alojamiento y viajeros',
       imageUrl: 'assets/images/convenciones/informacion.webp',
       buttonText: 'Contratar',
@@ -39,7 +39,7 @@ export class HomePageComponent implements OnInit {
     },
     {
       title: 'Vuelos',
-      roles: ['ROLE_ADMIN', 'ROLE_MARKETING'],
+      roles: ['ADMIN', 'MARKETING'],
       description: 'Detalles específicos sobre los vuelos.',
       imageUrl: 'assets/images/convenciones/vuelos.webp',
       buttonText: 'Contratar',
@@ -54,7 +54,7 @@ export class HomePageComponent implements OnInit {
     },
     {
       title: 'Actividades',
-      roles: ['ROLE_ADMIN', 'ROLE_MARKETING'],
+      roles: ['ADMIN', 'MARKETING'],
       description: 'Lista organizada de actividades y lugares a visitar.',
       imageUrl: 'assets/images/convenciones/actividad2.webp',
       buttonText: 'Contratar',
@@ -69,7 +69,7 @@ export class HomePageComponent implements OnInit {
     },
     {
       title: 'Recomendaciones',
-      roles: ['ROLE_ADMIN', 'ROLE_MARKETING'],
+      roles: ['ADMIN', 'MARKETING'],
       description:
         'Recomendaciones de restaurantes y atracciones, sugerencias valiosas para los viajeros que desean aprovechar al máximo su visita.',
       imageUrl: 'assets/images/convenciones/recomendacion.webp',
@@ -85,7 +85,7 @@ export class HomePageComponent implements OnInit {
     },
     {
       title: 'Configuración',
-      roles: ['ROLE_ADMIN', 'ROLE_MARKETING'],
+      roles: ['ADMIN', 'MARKETING'],
       description:
         'Configuración y control de módulos, actualización de versión de app y registro detallado de las actividades y eventos que ocurren dentro de un sistema.',
       imageUrl: 'assets/images/convenciones/configuracion.webp',
