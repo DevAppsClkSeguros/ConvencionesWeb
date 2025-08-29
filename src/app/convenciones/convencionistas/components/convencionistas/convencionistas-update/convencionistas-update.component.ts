@@ -55,8 +55,8 @@ export class ConvencionistasUpdateComponent {
     imagen: [null],
     url: [''],
     documento: [''],
-    perfilNombreId: ['', Validators.required],
-    categoriaNombreId: ['', Validators.required],
+    perfilId: ['', Validators.required],
+    categoriaId: ['', Validators.required],
     eventoId: ['', Validators.required],
   });
 
@@ -122,8 +122,8 @@ export class ConvencionistasUpdateComponent {
       telefono: convencionista.telefono,
       imagen: convencionista.imagen,
       url: convencionista.imagen,
-      perfilNombreId: convencionista.perfilNombreId,
-      categoriaNombreId: convencionista.categoriaNombreId,
+      perfilId: convencionista.perfilId,
+      categoriaId: convencionista.categoriaId,
       eventoId: convencionista.eventoId,
     });
     this.imagePreview = (convencionista.imagen);

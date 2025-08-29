@@ -68,30 +68,30 @@
       <!-- Perfil -->
       <div>
         <label class="label">Perfil</label>
-        <select formControlName="perfilNombreId" class="select select-bordered w-full">
+        <select formControlName="perfilId" class="select select-bordered w-full">
           <option value="" selected>Selecciona un perfil</option>
           @for (perfil of perfilesResouce.value(); track perfil.id) {
           <option [value]="perfil.id">{{perfil.nombre}}</option>
           }
         </select>
-        @if (formUtils.isValidField(myForm, 'perfilNombreId')){
+        @if (formUtils.isValidField(myForm, 'perfilId')){
         <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'perfilNombreId')}}
+          {{formUtils.getFieldError(myForm, 'perfilId')}}
         </small> }
       </div>
 
       <!-- Categoría -->
       <div>
         <label class="label">Categoría</label>
-        <select formControlName="categoriaNombreId" class="select select-bordered w-full">
+        <select formControlName="categoriaId" class="select select-bordered w-full">
           <option value="" selected>Selecciona una categoria</option>
           @for (categoria of categoriasResource.value(); track categoria.id) {
           <option [value]="categoria.id">{{categoria.nombre}}</option>
           }
         </select>
-        @if (formUtils.isValidField(myForm, 'categoriaNombreId')){
+        @if (formUtils.isValidField(myForm, 'categoriaId')){
         <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'categoriaNombreId')}}
+          {{formUtils.getFieldError(myForm, 'categoriaId')}}
         </small> }
       </div>
 

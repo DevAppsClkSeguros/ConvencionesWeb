@@ -15,9 +15,9 @@ export interface Convencionista {
   documento: string;
   eventoId: number;
   nombreEvento: string;
-  perfilNombreId?: number;
+  perfilId?: number;
   perfilNombre: string;
-  categoriaNombreId?: number;
+  categoriaId?: number;
   categoriaNombre: string;
   activo: boolean;
   seleccionado?: boolean;

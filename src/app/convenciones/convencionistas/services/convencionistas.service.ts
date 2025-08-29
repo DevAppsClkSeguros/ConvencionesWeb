@@ -51,8 +51,8 @@ export class ConvencionistasService {
           telefono: convencionista.telefono,
           imagen: convencionista.url,
           documento: convencionista.documento,
-          perfilConvencionistaId: convencionista.perfilNombreId,
-          categoriaUsuarioId: convencionista.categoriaNombreId,
+          perfilConvencionistaId: convencionista.perfilId,
+          categoriaUsuarioId: convencionista.categoriaId,
           eventoId: convencionista.eventoId,
         }
       )
@@ -74,8 +74,8 @@ export class ConvencionistasService {
           telefono: convencionista.telefono,
           imagen: convencionista.url,
           documento: convencionista.documento,
-          perfilConvencionistaId: convencionista.perfilNombreId,
-          categoriaUsuarioId: convencionista.categoriaNombreId,
+          perfilId: convencionista.perfilId,
+          categoriaId: convencionista.categoriaId,
           eventoId: convencionista.eventoId,
         }
       )
