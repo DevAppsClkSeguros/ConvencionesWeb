@@ -24,37 +24,31 @@ export const ConvencionistasRoutes: Routes = [
     path: 'categorias',
     component: CategoriasListComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ADMIN'] },
   },
   {
     path: 'categorias/:id/edit',
     component: CategoriasUpdateComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ADMIN'] },
   },
   {
     path: 'categorias/new',
     component: CategoriasUpdateComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ADMIN'] },
   },
   {
     path: 'perfiles',
     component: PerfilesListComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ADMIN'] },
   },
   {
     path: 'perfiles/:id/edit',
     component: PerfilesUpdateComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ADMIN'] },
   },
   {
     path: 'perfiles/new',
     component: PerfilesUpdateComponent,
     canActivate: [AuthGuard],
-    data: { roles: ['ADMIN'] },
   },
   {
     path: '**',

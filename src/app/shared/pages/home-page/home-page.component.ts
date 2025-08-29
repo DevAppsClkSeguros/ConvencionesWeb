@@ -93,7 +93,7 @@ export class HomePageComponent implements OnInit {
       redirectTo: '',
       visible: true,
       subMenu: [
-        { title: 'Version App', route: '/admin/version-app' },
+        { title: 'Version App', route: '/version-app' },
         { title: 'Control de módulos', route: 'cs-cat-evn-modulos' },
         { title: 'Log de eventos', route: 'log-eventos' },
         {
