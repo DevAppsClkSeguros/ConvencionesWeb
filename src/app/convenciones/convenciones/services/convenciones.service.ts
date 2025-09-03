@@ -9,14 +9,11 @@ import type {
 
 @Injectable({ providedIn: 'root' })
 export class ConvencionesService {
-
   private http = inject(HttpClient);
 
   obtieneConvenciones(): Observable<ConvencionResponse> {
     return this.http
-      .get<ConvencionResponse>(
-        `${AppConfig.APIREST_URL}/api/Eventos/listado`
-      )
+      .get<ConvencionResponse>(`${AppConfig.APIREST_URL}/api/Eventos/listado`)
       .pipe(catchError(AppConfig.handleErrors));
   }
 
@@ -30,21 +27,18 @@ export class ConvencionesService {
 
   nuevaConvencion(convencion: Convencion): Observable<ConvencionResponse> {
     return this.http
-      .post<ConvencionResponse>(
-        `${AppConfig.APIREST_URL}/api/Eventos/Nuevo`,
-        {
-          NombreEvento: convencion.nombreEvento,
-          Subtitulo: convencion.subtitulo,
-          Activo: convencion.activo,
-          Fecha_inicio: convencion.fecha_inicio,
-          Fecha_fin: convencion.fecha_fin,
-          Imagen: convencion.url,
-          Direccion: convencion.direccion,
-          Latitud: convencion.latitud,
-          Longitud: convencion.longitud,
-          LugarDestino: convencion.lugarDestino,
-        }
-      )
+      .post<ConvencionResponse>(`${AppConfig.APIREST_URL}/api/Eventos/Nuevo`, {
+        NombreEvento: convencion.nombreEvento,
+        Subtitulo: convencion.subtitulo,
+        Activo: convencion.activo,
+        Fecha_inicio: convencion.fecha_inicio,
+        Fecha_fin: convencion.fecha_fin,
+        Imagen: convencion.url,
+        Direccion: convencion.direccion,
+        Latitud: convencion.latitud,
+        Longitud: convencion.longitud,
+        LugarDestino: convencion.lugarDestino,
+      })
       .pipe(catchError(AppConfig.handleErrors));
   }
 
@@ -71,7 +65,7 @@ export class ConvencionesService {
   eliminaConvencion(convencionId: number): Observable<ConvencionResponse> {
     return this.http
       .delete<ConvencionResponse>(
-        `${AppConfig.APIREST_URL}/api/Eventos/EliminarEvento/${convencionId}`
+        `${AppConfig.APIREST_URL}/api/Eventos/${convencionId}`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
