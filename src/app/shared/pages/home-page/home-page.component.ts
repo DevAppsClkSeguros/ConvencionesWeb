@@ -93,8 +93,8 @@ export class HomePageComponent implements OnInit {
       redirectTo: '',
       visible: true,
       subMenu: [
-        { title: 'Version App', route: '/version-app' },
-        { title: 'Control de módulos', route: 'cs-cat-evn-modulos' },
+        { title: 'Version App', route: '/admin/version-app/list' },
+        { title: 'Control de módulos', route: '/admin/modulos/list' },
         { title: 'Log de eventos', route: 'log-eventos' },
         {
           title: 'Perfil de convencionistas',

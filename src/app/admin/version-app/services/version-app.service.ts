@@ -30,12 +30,13 @@ export class VersionAppService {
   actualizaVersion(version: Version): Observable<VersionAppResponse> {
     return this.http
       .put<VersionAppResponse>(
-        `${AppConfig.APIREST_URL}/api/AppServices/Actualizar/${version.id}`,
+        `${AppConfig.APIREST_URL}/api/AppServices/ActualizarVersion/${version.id}`,
         {
           id: version.id,
           version_Android: version.version_Android,
           version_IOs: version.version_IOs,
           version_Huawei: version.version_Huawei,
+          token_Map_Box: "",
         }
       )
       .pipe(catchError(AppConfig.handleErrors));

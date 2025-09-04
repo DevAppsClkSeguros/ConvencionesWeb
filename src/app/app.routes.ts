@@ -61,23 +61,15 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'admin',
-    loadChildren: () => import('./admin/admin.routes'),
-    canActivate: [AuthGuard],
-    data: { roles: ['ADMIN'] },
-  },
-  {
     path: 'actividades',
     loadChildren: () => import('./convenciones/actividades/actividades.routes'),
     canActivate: [AuthGuard],
   },
   {
-    path: 'version-app',
-    loadChildren: () => import('./admin/version-app/version-app.routes'),
-  },
-  {
-    path: 'usuarios',
-    loadChildren: () => import('./admin/usuarios/usuarios.routes'),
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.routes'),
+    canActivate: [AuthGuard],
+    data: { roles: ['ADMIN'] },
   },
   {
     path: '**',

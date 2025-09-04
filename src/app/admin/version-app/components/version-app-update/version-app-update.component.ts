@@ -40,7 +40,7 @@ export class VersionAppUpdateComponent {
   versionResource = this.isEditMode
     ? rxResource({
         loader: () => {
-          return this.versionAppService.obtieneVersion(this.versionId).pipe(
+          return this.versionAppService.obtieneVersiones().pipe(
             tap((resp) => {
               if (!resp.status) {
                 throw new Error(resp.message?.[0] || 'Error desconocido');
@@ -56,7 +56,7 @@ export class VersionAppUpdateComponent {
       effect(() => {
         const data = this.versionResource!.value();
         if (data?.status) {
-          this.llenaFormulario(data.response);
+          this.llenaFormulario(data.response[0]);
         }
       });
     }

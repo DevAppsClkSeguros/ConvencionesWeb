@@ -4,7 +4,7 @@ import { VersionAppUpdateComponent } from './components/version-app-update/versi
 
 export const VersionAppRoutes: Routes = [
   {
-    path: '',
+    path: 'list',
     component: VersionAppListComponent,
   },
   {
@@ -13,7 +13,7 @@ export const VersionAppRoutes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'list',
   },
 ];
 
