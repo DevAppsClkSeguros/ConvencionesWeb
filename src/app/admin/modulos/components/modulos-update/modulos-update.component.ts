@@ -27,8 +27,8 @@ export class ModulosUpdateComponent {
   location = inject(Location);
   notificacion = inject(NotificacionService);
   modulosService = inject(ModulosService);
-  actividadId = this.route.snapshot.params['id'];
-  isEditMode = !!this.actividadId;
+  moduloId = this.route.snapshot.params['id'];
+  isEditMode = !!this.moduloId;
   formUtils = FormUtils;
   datePipe = inject(DatePipe);
 
@@ -50,9 +50,9 @@ export class ModulosUpdateComponent {
 
   modulosResource = this.isEditMode
     ? rxResource({
-        request: () => ({ id: this.actividadId }),
+        request: () => ({ id: this.moduloId }),
         loader: ({ request }) =>
-          this.modulosService.obtieneModulo(this.actividadId).pipe(
+          this.modulosService.obtieneModulo(this.moduloId).pipe(
             tap((resp) => {
               if (!resp.status) {
                 throw new Error(resp.message?.[0] || 'Error desconocido');

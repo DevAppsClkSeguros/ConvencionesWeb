@@ -48,7 +48,7 @@ export class ModulosService {
   actualizaModulo(modulo: Modulo): Observable<ModulosResponse> {
     return this.http
       .put<ModulosResponse>(
-        `${AppConfig.APIREST_URL}/api/Modulos/Actualizar/${modulo.keyCode}`,
+        `${AppConfig.APIREST_URL}/api/Modulos/Actualizar/${modulo.id}`,
         {
           masterKey: modulo.masterKey,
           keyCode: modulo.keyCode,

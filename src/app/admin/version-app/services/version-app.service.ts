@@ -36,7 +36,6 @@ export class VersionAppService {
           version_Android: version.version_Android,
           version_IOs: version.version_IOs,
           version_Huawei: version.version_Huawei,
-          token_Map_Box: "",
         }
       )
       .pipe(catchError(AppConfig.handleErrors));

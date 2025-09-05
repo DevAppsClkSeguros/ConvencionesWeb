@@ -30,7 +30,7 @@
         @for (modulo of modulosResource.value(); track modulo.id) {
         <tr>
           <td>{{modulo.id}}</td>
-          <td>{{modulo.status === modulo.status ? 'Activo' : 'Inactivo'}}</td>
+          <td>{{modulo.status ? 'Activo' : 'Inactivo'}}</td>
           <td>
             {{modulo.masterKey}}
             <br />
@@ -42,7 +42,7 @@
           <td>{{modulo.descripcion}}
           </td>
           <th>
-            <button class="btn btn-primary btn-xs" [routerLink]="[`/admin/modulos/${modulo.keyCode}/edit`]">Editar</button>
+            <button class="btn btn-primary btn-xs" [routerLink]="[`/admin/modulos/${modulo.id}/edit`]">Editar</button>
           </th>
           <th>
             <button class="btn btn-secondary btn-xs" (click)="abrirModal(modulo.id)">Eliminar</button>
