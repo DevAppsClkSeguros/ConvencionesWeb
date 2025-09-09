@@ -175,7 +175,7 @@ export class ActividadesUpdateComponent {
     if (this.myForm.get('imagen')?.value && !this.myForm.get('url')?.value) {
       const nombreImagen = `${this.myForm.get('id')?.value}-${String(
         Date.now()
-      ).substring(0, 3)}`;
+      ).substring(0, 10)}`;
       const file: File = this.myForm.controls['imagen'].value;
       this.cdnService.uploadFile('actividad', nombreImagen, file).subscribe({
         next: (data) => {

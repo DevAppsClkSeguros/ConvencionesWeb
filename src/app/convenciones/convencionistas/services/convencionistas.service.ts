@@ -45,14 +45,15 @@ export class ConvencionistasService {
         `${AppConfig.APIREST_URL}/api/Convencionistas/Nuevo`,
         {
           id: 0,
+          activo: convencionista.activo,
           clave: convencionista.clave,
           nombreCompleto: convencionista.nombreCompleto,
           puesto: convencionista.puesto,
           telefono: convencionista.telefono,
           imagen: convencionista.url,
           documento: convencionista.documento,
-          perfilConvencionistaId: convencionista.perfilId,
-          categoriaUsuarioId: convencionista.categoriaId,
+          perfilId: convencionista.perfilId,
+          categoriaId: convencionista.categoriaId,
           eventoId: convencionista.eventoId,
         }
       )

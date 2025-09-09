@@ -192,7 +192,7 @@ export class ConvencionistasUpdateComponent {
       const file: File = this.myForm.controls['imagen'].value;
       const nombreImagen = `${this.myForm.get('clave')?.value}-${String(
         Date.now()
-      ).substring(0, 3)}`;
+      ).substring(0, 10)}`;
       this.cdnService
         .uploadFile('convencionista', nombreImagen, file)
         .subscribe({
