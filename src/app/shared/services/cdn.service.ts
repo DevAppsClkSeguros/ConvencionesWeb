@@ -12,7 +12,7 @@ export class CdnService {
     console.log('mi file: ', file)
     const formData = new FormData();
     formData.append('archivo', file);
-    formData.append('modulo', modulo);
+    formData.append('modulo', `ClickSegurosVip/ClickMXEventos/${modulo}`);
     formData.append('nombreArchivo', nombreArchivo);
     return this.http
       .post<CDNResponse>(
