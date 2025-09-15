@@ -7,15 +7,11 @@
     <h2 class="text-3xl font-bold mb-6">Credenciales Microsoft</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <div>
-        <label class="label">ID</label>
-        <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
-      </div>
 
       <!-- tenantId -->
       <div>
         <label class="label w-full">tenantId</label>
-        <input type="text" formControlName="tenantId" class="input input-bordered w-full" />
+        <input type="text" formControlName="tenantId" class="input input-bordered w-full" readonly />
         @if (formUtils.isValidField(myForm, 'tenantId')){
         <small class="text-error">
           {{formUtils.getFieldError(myForm, 'tenantId')}}
@@ -26,7 +22,7 @@
       <!-- clientId -->
       <div>
         <label class="label">clientId</label>
-        <input type="text" formControlName="clientId" class="input input-bordered w-full" />
+        <input type="text" formControlName="clientId" class="input input-bordered w-full" readonly />
         @if (formUtils.isValidField(myForm, 'clientId')){
         <small class="text-error">
           {{formUtils.getFieldError(myForm, 'clientId')}}
@@ -37,7 +33,7 @@
       <!-- scope -->
       <div>
         <label class="label">scope</label>
-        <input type="text" formControlName="scope" class="input input-bordered w-full" />
+        <input type="text" formControlName="scope" class="input input-bordered w-full" readonly />
         @if (formUtils.isValidField(myForm, 'scope')){
         <small class="text-error">
           {{formUtils.getFieldError(myForm, 'scope')}}
@@ -48,10 +44,32 @@
       <!-- grantType -->
       <div>
         <label class="label">grantType</label>
-        <input type="text" formControlName="grantType" class="input input-bordered w-full" />
+        <input type="text" formControlName="grantType" class="input input-bordered w-full" readonly />
         @if (formUtils.isValidField(myForm, 'grantType')){
         <small class="text-error">
           {{formUtils.getFieldError(myForm, 'grantType')}}
+        </small>
+        }
+      </div>
+
+      <!-- userId -->
+      <div>
+        <label class="label">userId</label>
+        <input type="text" formControlName="userId" class="input input-bordered w-full"readonly />
+        @if (formUtils.isValidField(myForm, 'userId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'userId')}}
+        </small>
+        }
+      </div>
+
+      <!-- email -->
+      <div>
+        <label class="label">email</label>
+        <input type="text" formControlName="email" class="input input-bordered w-full" readonly />
+        @if (formUtils.isValidField(myForm, 'email')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'email')}}
         </small>
         }
       </div>
@@ -63,28 +81,6 @@
         @if (formUtils.isValidField(myForm, 'clientSecret')){
         <small class="text-error">
           {{formUtils.getFieldError(myForm, 'clientSecret')}}
-        </small>
-        }
-      </div>
-
-      <!-- userId -->
-      <div>
-        <label class="label">userId</label>
-        <input type="text" formControlName="userId" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'userId')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'userId')}}
-        </small>
-        }
-      </div>
-
-      <!-- email -->
-      <div>
-        <label class="label">email</label>
-        <input type="text" formControlName="email" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'email')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'email')}}
         </small>
         }
       </div>

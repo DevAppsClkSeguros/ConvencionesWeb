@@ -12,7 +12,7 @@ export const ModulosAppRoutes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'lista',
+    redirectTo: 'edit',
   },
 ];
 

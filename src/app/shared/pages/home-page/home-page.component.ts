@@ -112,6 +112,10 @@ export class HomePageComponent implements OnInit {
           title: 'Categoría de recomendaciones',
           route: '/recomendaciones/categorias',
         },
+        {
+          title: 'Credenciales Microsoft',
+          route: '/admin/credencialesMicrosoft/edit',
+        },
       ],
     },
   ];

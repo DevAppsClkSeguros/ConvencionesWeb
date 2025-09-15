@@ -21,7 +21,7 @@ export class CredencialesService {
 
   actualizaCredenciales(credencial: Credencial): Observable<CredencialesResponse> {
     return this.http
-      .put<CredencialesResponse>(
+      .post<CredencialesResponse>(
         `${AppConfig.APIREST_URL}/api/Authentication/GuardarCredenciales`,
         {
           id: credencial.id,
@@ -29,7 +29,7 @@ export class CredencialesService {
           clientId: credencial.clientId,
           scope: credencial.scope,
           grantType: credencial.grantType,
-          clientSecret: credencial.clientId,
+          clientSecret: credencial.clientSecret,
           userId: credencial.userId,
           email: credencial.email,
         }

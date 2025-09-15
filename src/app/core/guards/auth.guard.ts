@@ -17,8 +17,16 @@ export const AuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
   const allowedRoles = route.data['roles'] as string[] | undefined;
 
   if (allowedRoles) {
-    const userRoles = user?.Roles as string[];
-    const hasAccess = userRoles?.some((r) => allowedRoles.includes(r));
+    // Normalizamos Roles
+    let userRoles: string[] = [];
+    if (Array.isArray(user?.Roles)) {
+      userRoles = user.Roles;
+    } else if (typeof user?.Roles === 'string') {
+      userRoles = [user.Roles];
+    }
+
+    const hasAccess = userRoles.some((r) => allowedRoles.includes(r));
+
     if (!hasAccess) {
       notificacion.show(
         'No tienes permiso para acceder a esa sección.',

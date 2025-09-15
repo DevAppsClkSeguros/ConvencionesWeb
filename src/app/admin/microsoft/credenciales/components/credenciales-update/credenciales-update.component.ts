@@ -16,7 +16,6 @@ import { CommonModule } from '@angular/common';
 import { CredencialesService } from '../../services/credenciales.service';
 import { Credencial } from '../../interfaces/credenciales.interface';
 
-
 @Component({
   selector: 'app-credenciales-update',
   imports: [ReactiveFormsModule, NotFoundComponent, CommonModule],
@@ -28,7 +27,6 @@ export class CredencialesUpdateComponent {
   location = inject(Location);
   notificacion = inject(NotificacionService);
   credencialesService = inject(CredencialesService);
-  moduloId = this.route.snapshot.params['id'];
   formUtils = FormUtils;
 
   myForm: FormGroup = this.fb.group({
@@ -43,18 +41,17 @@ export class CredencialesUpdateComponent {
   });
 
   credencialesResource = rxResource({
-        request: () => ({ id: this.moduloId }),
-        loader: ({ request }) =>
-          this.credencialesService
-            .obtieneCredencial('medios@grupobituaj.com.mx')
-            .pipe(
-              tap((resp) => {
-                if (!resp.status) {
-                  throw new Error(resp.message?.[0] || 'Error desconocido');
-                }
-              })
-            ),
-      });
+    loader: ({ request }) =>
+      this.credencialesService
+        .obtieneCredencial('medios@grupobituaj.com.mx')
+        .pipe(
+          tap((resp) => {
+            if (!resp.status) {
+              throw new Error(resp.message?.[0] || 'Error desconocido');
+            }
+          })
+        ),
+  });
 
   constructor() {
     if (this.credencialesResource) {
@@ -74,7 +71,7 @@ export class CredencialesUpdateComponent {
       clientId: credencial.clientId,
       scope: credencial.scope,
       grantType: credencial.grantType,
-      clientSecret: credencial.clientId,
+      clientSecret: credencial.clientSecret,
       userId: credencial.userId,
       email: credencial.email,
     });
@@ -86,26 +83,27 @@ export class CredencialesUpdateComponent {
       return;
     }
     console.log('Formulario enviado:', this.myForm.value);
-    this.registraModulo();
+    this.actualizaCredenciales();
   }
 
-  registraModulo() {
+  actualizaCredenciales() {
     const request$ = this.credencialesService.actualizaCredenciales(
       this.myForm.value
     );
     request$.subscribe({
       next: (data) => {
         if (data.status) {
-          this.notificacion.show('Credenciales actualizadas correctamente.',
+          this.notificacion.show(
+            'Credenciales actualizadas correctamente.',
             'success'
           );
-          this.location.back();
         } else {
           this.notificacion.show(data.message?.[0], 'error');
         }
       },
       error: (e) => {
-        this.notificacion.show('Ocurrio un error al actualizar las credenciales, favor de intentarlo nuevamente',
+        this.notificacion.show(
+          'Ocurrio un error al actualizar las credenciales, favor de intentarlo nuevamente',
           'error'
         );
       },
