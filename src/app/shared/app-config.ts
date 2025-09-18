@@ -8,6 +8,8 @@ export class AppConfig {
   public static APIREST_MICROSOFT: string =
     'https://graph.microsoft.com/v1.0/users/';
 
+  public static SITE_CDN: string = 'https://cdn.portalseguros.com.mx/';
+
   public static idTokenMS: string = '';
 
   public static handleErrors(error: HttpErrorResponse) {

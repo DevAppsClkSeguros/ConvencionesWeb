@@ -20,6 +20,7 @@ import { SearchInputComponent } from '@shared/components/search-input/search-inp
 import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
 import type { Convencionista } from '../../../interfaces/convencionistas.interface';
 import { UploadFileModalComponent } from '@shared/components/upload-file-modal/upload-file-modal.component';
+import { AppConfig } from '@shared/app-config';
 
 @Component({
   selector: 'convencionistas-list',
@@ -60,7 +61,9 @@ export class ConvencionistasListComponent implements OnInit {
         map((resp) => {
           const convencionistas = resp.response.map((convencionista) => ({
             ...convencionista,
-            imagen: `${convencionista.imagen}?n=${Math.random()}`,
+            imagen: convencionista.imagen
+              ? `${convencionista.imagen}`
+              : `${AppConfig.SITE_CDN}ClickSegurosVip/Eventos/Convencionistas/clicky.png`,
           }));
           return convencionistas;
         }),
@@ -126,7 +129,10 @@ export class ConvencionistasListComponent implements OnInit {
   }
 
   // Nuevo método específico para cambiar la convención del convencionista
-  actualizaConvencionConvencionista(convencionista: Convencionista, nuevaConvencion: string) {
+  actualizaConvencionConvencionista(
+    convencionista: Convencionista,
+    nuevaConvencion: string
+  ) {
     // Crear una copia del convencionista con la nueva convención
     convencionista.url = convencionista.imagen;
     const convencionistaActualizado: Convencionista = {

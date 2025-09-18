@@ -178,7 +178,7 @@ export class ConvencionistasUpdateComponent {
     this.selectedFile = null;
     this.myForm.patchValue({
       imagen: null,
-      url: null,
+      url: '',
     });
     this.myForm.get('imagen')?.updateValueAndValidity();
   }

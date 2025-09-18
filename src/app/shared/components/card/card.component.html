@@ -6,7 +6,7 @@
     @if (card.buttonText) {
     <div class="card-actions justify-end">
       @if(card.subMenu.length>1) {
-      <div class="dropdown">
+      <div class="dropdown dropdown-top">
         <div tabindex="0" role="button" class="btn m-1" [ngClass]="card.buttonClass || 'btn-primary'">Módulos</div>
         <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
           @for (module of card.subMenu; track module.title) {
