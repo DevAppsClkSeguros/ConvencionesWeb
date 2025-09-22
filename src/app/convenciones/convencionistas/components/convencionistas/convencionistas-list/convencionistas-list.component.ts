@@ -105,12 +105,6 @@ export class ConvencionistasListComponent implements OnInit {
       next: (data) => {
         if (data.status) {
           this.convenciones.set(data.response);
-
-          // Debug: Log para verificar las convenciones disponibles
-          console.log(
-            'Convenciones disponibles:',
-            data.response.map((c) => c.nombreEvento)
-          );
         }
       },
       error: (e) => {
@@ -128,28 +122,33 @@ export class ConvencionistasListComponent implements OnInit {
     this.convencionistaResource.reload();
   }
 
-  // Nuevo método específico para cambiar la convención del convencionista
   actualizaConvencionConvencionista(
     convencionista: Convencionista,
-    nuevaConvencion: string
+    nuevaConvencionId: number
   ) {
-    // Crear una copia del convencionista con la nueva convención
-    convencionista.url = convencionista.imagen;
+    const estadoAnterior = {
+      eventoId: convencionista.eventoId,
+      nombreEvento: convencionista.nombreEvento,
+    };
+    const nuevaConvencion = this.convenciones().find(
+      (c) => c.id === Number(nuevaConvencionId)
+    );
+    if (!nuevaConvencion) return;
+
     const convencionistaActualizado: Convencionista = {
       ...convencionista,
-      nombreEvento: nuevaConvencion,
+      eventoId: nuevaConvencion.id,
+      nombreEvento: nuevaConvencion.nombreEvento,
+      url: convencionista.imagen,
     };
-    // Actualizar visualmente primero (optimistic update)
+
     this.convencionistaResource.update((convencionistas) => {
       if (!convencionistas) return convencionistas;
       return convencionistas.map((conv) =>
-        conv.id === convencionista.id
-          ? { ...conv, nombreEvento: nuevaConvencion }
-          : conv
+        conv.id === convencionista.id ? convencionistaActualizado : conv
       );
     });
-    console.log('convencionistaActualizado: ', convencionistaActualizado);
-    // Llamar al servicio para persistir el cambio
+
     this.convencionistasService
       .actualizaConvencionista(convencionistaActualizado)
       .subscribe({
@@ -160,15 +159,7 @@ export class ConvencionistasListComponent implements OnInit {
               'success'
             );
           } else {
-            // Si falla, revertir el cambio visual
-            this.convencionistaResource.update((convencionistas) => {
-              if (!convencionistas) return convencionistas;
-              return convencionistas.map((conv) =>
-                conv.id === convencionista.id
-                  ? { ...conv, nombreEvento: convencionista.nombreEvento }
-                  : conv
-              );
-            });
+            this.rollback(convencionista.id, estadoAnterior);
             this.notificacion.show(
               `Error al actualizar la convención: ${
                 data.message?.[0] || 'Error desconocido'
@@ -177,22 +168,26 @@ export class ConvencionistasListComponent implements OnInit {
             );
           }
         },
-        error: (e) => {
-          // Si hay error, revertir el cambio visual
-          this.convencionistaResource.update((convencionistas) => {
-            if (!convencionistas) return convencionistas;
-            return convencionistas.map((conv) =>
-              conv.id === convencionista.id
-                ? { ...conv, nombreEvento: convencionista.nombreEvento }
-                : conv
-            );
-          });
+        error: () => {
+          this.rollback(convencionista.id, estadoAnterior);
           this.notificacion.show(
-            'Ocurrio un error al actualizar la convención',
+            'Ocurrió un error al actualizar la convención',
             'error'
           );
         },
       });
+  }
+
+  private rollback(
+    idConvencionista: number,
+    estadoAnterior: { eventoId: number; nombreEvento: string }
+  ) {
+    this.convencionistaResource.update((convencionistas) => {
+      if (!convencionistas) return convencionistas;
+      return convencionistas.map((conv) =>
+        conv.id === idConvencionista ? { ...conv, ...estadoAnterior } : conv
+      );
+    });
   }
 
   abrirModal(convencionId: number) {

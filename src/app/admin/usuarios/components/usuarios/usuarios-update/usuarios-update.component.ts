@@ -122,31 +122,32 @@ export class UsuariosUpdateComponent {
 
   registraUsuario() {
     const request$ = this.isEditMode
-      ? this.usuariosService.actualizaUsuario(this.myForm.value)
-      : this.usuariosService.nuevoUsuario(this.myForm.value);
-    request$.subscribe({
-      next: (data) => {
-        if (data.status) {
-          this.notificacion.show(
-            this.isEditMode
-              ? 'Usuario actualizado correctamente.'
-              : 'Usuario guardado correctamente.',
-            'success'
-          );
-          this.location.back();
-        } else {
-          this.notificacion.show(`Error ${data.message[0]}`, 'error');
-        }
-      },
-      error: (e) => {
-        this.notificacion.show(
-          this.isEditMode
-            ? 'Ocurrio un error al actualizar el usuario, favor de intentarlo nuevamente'
-            : 'Ocurrio un error a guardar el usuario, favor de intentarlo nuevamente',
-          'error'
-        );
-      },
-    });
+    console.log('this.myForm.value: ', this.myForm.value);
+    //   ? this.usuariosService.actualizaUsuario(this.myForm.value)
+    //   : this.usuariosService.nuevoUsuario(this.myForm.value);
+    // request$.subscribe({
+    //   next: (data) => {
+    //     if (data.status) {
+    //       this.notificacion.show(
+    //         this.isEditMode
+    //           ? 'Usuario actualizado correctamente.'
+    //           : 'Usuario guardado correctamente.',
+    //         'success'
+    //       );
+    //       this.location.back();
+    //     } else {
+    //       this.notificacion.show(`Error ${data.message[0]}`, 'error');
+    //     }
+    //   },
+    //   error: (e) => {
+    //     this.notificacion.show(
+    //       this.isEditMode
+    //         ? 'Ocurrio un error al actualizar el usuario, favor de intentarlo nuevamente'
+    //         : 'Ocurrio un error a guardar el usuario, favor de intentarlo nuevamente',
+    //       'error'
+    //     );
+    //   },
+    // });
   }
 
   goBack() {

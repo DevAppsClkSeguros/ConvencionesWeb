@@ -57,8 +57,8 @@
             <div class="flex items-center gap-3">
               <div class="avatar">
                 <div class="mask mask-squircle h-12 w-12">
-                  <img src="{{convencionista.imagen}}" alt="{{convencionista.nombreCompleto}}"
-                    loading="lazy" class="object-contain " />
+                  <img src="{{convencionista.imagen}}" alt="{{convencionista.nombreCompleto}}" loading="lazy"
+                    class="object-contain " />
                 </div>
               </div>
               <div>
@@ -75,10 +75,11 @@
             <span class="badge badge-ghost badge-sm">{{convencionista.perfilNombre}}</span>
           </td>
           <td>
-            <select class="select select-sm select-info w-auto max-w-xs" [ngModel]="convencionista.nombreEvento || ''"
+            <select class="select select-sm select-info w-auto max-w-xs" [ngModel]="convencionista.eventoId || ''"
               (ngModelChange)="actualizaConvencionConvencionista(convencionista, $event)">
+
               @for (convencion of convenciones(); track convencion.id) {
-              <option [value]="convencion.nombreEvento">{{convencion.nombreEvento}}</option>
+              <option [value]="convencion.id">{{convencion.nombreEvento}}</option>
               }
             </select>
           </td>
