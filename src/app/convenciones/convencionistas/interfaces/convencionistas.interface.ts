@@ -23,3 +23,17 @@ export interface Convencionista {
   seleccionado?: boolean;
 }
 
+export interface ConvencionistasResponsePaginado {
+  response: Paginado;
+  status:   boolean;
+  message:  string[];
+}
+
+export interface Paginado {
+  totalRegistros: number;
+  paginaActual:   number;
+  tamanoPagina:   number;
+  totalPaginas:   number;
+  listado:        Convencionista[];
+}
+

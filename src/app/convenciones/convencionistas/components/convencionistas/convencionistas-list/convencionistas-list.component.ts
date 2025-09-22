@@ -21,6 +21,7 @@ import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-
 import type { Convencionista } from '../../../interfaces/convencionistas.interface';
 import { UploadFileModalComponent } from '@shared/components/upload-file-modal/upload-file-modal.component';
 import { AppConfig } from '@shared/app-config';
+import { PaginationComponent } from "@shared/pagination/pagination.component";
 
 @Component({
   selector: 'convencionistas-list',
@@ -32,6 +33,7 @@ import { AppConfig } from '@shared/app-config';
     IconRefreshComponent,
     ConfirmModalComponent,
     UploadFileModalComponent,
+    PaginationComponent,
   ],
   templateUrl: './convencionistas-list.component.html',
 })
@@ -57,7 +59,7 @@ export class ConvencionistasListComponent implements OnInit {
   convencionistaResource = rxResource({
     request: () => ({}), // sin dependencias reactivas
     loader: () => {
-      return this.convencionistasService.GetConvencionistas().pipe(
+      return this.convencionistasService.obtieneConvencionistas().pipe(
         map((resp) => {
           const convencionistas = resp.response.map((convencionista) => ({
             ...convencionista,
