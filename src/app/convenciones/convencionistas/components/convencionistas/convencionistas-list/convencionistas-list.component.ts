@@ -17,8 +17,8 @@ import { ConvencionistasService } from '../../../services/convencionistas.servic
 import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
 import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
 import { NotificacionService } from '@shared/services/notificacion.service';
-import { PaginationComponent } from '@shared/pagination/pagination.component';
-import { PaginationService } from '@shared/pagination/pagination.service';
+import { PaginationComponent } from '@shared/components/pagination/pagination.component';
+import { PaginationService } from '@shared/components/pagination/pagination.service';
 import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
 import { UploadFileModalComponent } from '@shared/components/upload-file-modal/upload-file-modal.component';
 import type { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
