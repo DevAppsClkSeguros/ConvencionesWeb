@@ -34,6 +34,8 @@
       </a>
     </div>
   </section>
+
+  <shared-pagination [pages]="convencionistaResource.value()?.response?.totalPaginas ?? 0" [currentPage]="paginationService.currentPage()" />
   <div class="overflow-x-auto">
     <table class="table md:ml-5 w-full min-w-full">
       <!-- head -->
@@ -50,7 +52,7 @@
       </thead>
       <tbody>
         <!-- row 1 -->
-        @for (convencionista of filteredConvencionistas(); track convencionista.id) {
+        @for (convencionista of convencionistas(); track convencionista.id) {
         <tr>
           <td>{{convencionista.id}}</td>
           <td>

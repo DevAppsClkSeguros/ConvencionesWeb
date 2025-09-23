@@ -10,18 +10,19 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { catchError, map, of } from 'rxjs';
-import type { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
-import { ConvencionistasService } from '../../../services/convencionistas.service';
+import { AppConfig } from '@shared/app-config';
+import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
 import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
+import { ConvencionistasService } from '../../../services/convencionistas.service';
 import { IconAddComponent } from '@shared/icons/icon-add/icon-add.component';
 import { IconRefreshComponent } from '@shared/icons/icon-refresh/icon-refresh.component';
 import { NotificacionService } from '@shared/services/notificacion.service';
+import { PaginationComponent } from '@shared/pagination/pagination.component';
+import { PaginationService } from '@shared/pagination/pagination.service';
 import { SearchInputComponent } from '@shared/components/search-input/search-input.component';
-import { ConfirmModalComponent } from '@shared/components/confirm-modal/confirm-modal.component';
-import type { Convencionista } from '../../../interfaces/convencionistas.interface';
 import { UploadFileModalComponent } from '@shared/components/upload-file-modal/upload-file-modal.component';
-import { AppConfig } from '@shared/app-config';
-import { PaginationComponent } from "@shared/pagination/pagination.component";
+import type { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
+import type { Convencionista } from '../../../interfaces/convencionistas.interface';
 
 @Component({
   selector: 'convencionistas-list',
@@ -42,6 +43,7 @@ export class ConvencionistasListComponent implements OnInit {
   eventosService = inject(ConvencionesService);
   notificacion = inject(NotificacionService);
   router = inject(Router);
+  paginationService = inject(PaginationService);
   query = signal('');
   convencionSeleccionada = signal<string>('');
   mensajeEliminar = '';
@@ -57,50 +59,58 @@ export class ConvencionistasListComponent implements OnInit {
   }
 
   convencionistaResource = rxResource({
-    request: () => ({}), // sin dependencias reactivas
-    loader: () => {
-      return this.convencionistasService.obtieneConvencionistas().pipe(
-        map((resp) => {
-          const convencionistas = resp.response.map((convencionista) => ({
-            ...convencionista,
-            imagen: convencionista.imagen
-              ? `${convencionista.imagen}`
-              : `${AppConfig.SITE_CDN}ClickSegurosVip/Eventos/Convencionistas/clicky.png`,
-          }));
-          return convencionistas;
-        }),
-        catchError((error) => {
-          this.notificacion.show(
-            'Ocurrio un error al cargar lista de convencionistas.',
-            'error'
-          );
-          return of([]);
-        })
-      );
-    },
+    request: () => ({
+      pagina: this.paginationService.currentPage(),
+      registrosPorPagina: 30,
+    }),
+    loader: ({ request }) =>
+      this.convencionistasService
+        .ObtieneConvencionistasPaginado(
+          request.pagina,
+          request.registrosPorPagina
+        )
+        .pipe(
+          map((resp) => {
+            const convencionistas = resp.response.listado.map(
+              (convencionista) => ({
+                ...convencionista,
+                imagen: convencionista.imagen
+                  ? `${convencionista.imagen}`
+                  : `${AppConfig.SITE_CDN}ClickSegurosVip/Eventos/Convencionistas/clicky.png`,
+              })
+            );
+
+            return {
+              ...resp,
+              response: {
+                ...resp.response,
+                listado: convencionistas,
+              },
+            };
+          }),
+          catchError((error) => {
+            this.notificacion.show(
+              'Ocurrió un error al cargar lista de convencionistas.',
+              'error'
+            );
+            return of({
+              status: false,
+              message: ['Error'],
+              response: {
+                totalRegistros: 0,
+                // paginaActual: this.paginaActual(),
+                // tamanoPagina: this.tamanoPagina(),
+                totalPaginas: 0,
+                listado: [] as Convencionista[], // 👈 aquí el truco
+              },
+            });
+          })
+        ),
   });
 
-  filteredConvencionistas = computed(() => {
-    const listaConvenciones = this.convencionistaResource.value();
-    const texto = this.query().toLowerCase().trim();
-    const nombreConvencion = this.convencionSeleccionada().toLowerCase().trim();
-
-    if (!listaConvenciones) return [];
-
-    return listaConvenciones.filter((conv) => {
-      const coincideTexto =
-        !texto ||
-        conv.clave.toLowerCase().includes(texto) ||
-        conv.nombreCompleto.toLowerCase().includes(texto) ||
-        conv.telefono.includes(texto) ||
-        conv.puesto.toLowerCase().includes(texto);
-
-      const coincideConvencion =
-        !nombreConvencion ||
-        conv.nombreEvento?.toLowerCase().trim() == nombreConvencion;
-      return coincideTexto && coincideConvencion;
-    });
-  });
+  convencionistas = computed(
+    () => this.convencionistaResource.value()?.response?.listado ?? []
+  );
 
   getConvenciones() {
     this.eventosService.obtieneConvenciones().subscribe({
@@ -144,11 +154,17 @@ export class ConvencionistasListComponent implements OnInit {
       url: convencionista.imagen,
     };
 
-    this.convencionistaResource.update((convencionistas) => {
-      if (!convencionistas) return convencionistas;
-      return convencionistas.map((conv) =>
-        conv.id === convencionista.id ? convencionistaActualizado : conv
-      );
+    this.convencionistaResource.update((data) => {
+      if (!data) return data;
+      return {
+        ...data,
+        response: {
+          ...data.response,
+          listado: data.response.listado.map((conv) =>
+            conv.id === convencionista.id ? convencionistaActualizado : conv
+          ),
+        },
+      };
     });
 
     this.convencionistasService
@@ -184,11 +200,17 @@ export class ConvencionistasListComponent implements OnInit {
     idConvencionista: number,
     estadoAnterior: { eventoId: number; nombreEvento: string }
   ) {
-    this.convencionistaResource.update((convencionistas) => {
-      if (!convencionistas) return convencionistas;
-      return convencionistas.map((conv) =>
-        conv.id === idConvencionista ? { ...conv, ...estadoAnterior } : conv
-      );
+    this.convencionistaResource.update((data) => {
+      if (!data) return data;
+      return {
+        ...data,
+        response: {
+          ...data.response,
+          listado: data.response.listado.map((conv) =>
+            conv.id === idConvencionista ? { ...conv, ...estadoAnterior } : conv
+          ),
+        },
+      };
     });
   }
 
@@ -209,10 +231,20 @@ export class ConvencionistasListComponent implements OnInit {
               'success'
             );
             this.convencionistaResource.update((convencionistas) => {
-              return convencionistas?.filter(
-                (convencionista) => convencionista.id !== this.convencionistaId
-              );
+              if (!convencionistas) return convencionistas;
+
+              return {
+                ...convencionistas,
+                response: {
+                  ...convencionistas.response,
+                  listado: convencionistas.response.listado.filter(
+                    (convencionista) =>
+                      convencionista.id !== this.convencionistaId
+                  ),
+                },
+              };
             });
+            this.convencionistaId = 0;
           } else {
             this.notificacion.show(
               `${data.message?.[0] || 'Error desconocido'}`,
@@ -220,9 +252,9 @@ export class ConvencionistasListComponent implements OnInit {
             );
           }
         },
-        error: (e) => {
+        error: () => {
           this.notificacion.show(
-            'Error al eliminar la convencionista',
+            'Error al eliminar al convencionista',
             'error'
           );
         },

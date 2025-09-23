@@ -20,10 +20,10 @@ export class ConvencionistasService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  ObtieneConvencionistasPaginado(): Observable<ConvencionistasResponsePaginado> {
+  ObtieneConvencionistasPaginado(pagina: number, registrosPorPagina: number): Observable<ConvencionistasResponsePaginado> {
     return this.http
       .get<ConvencionistasResponsePaginado>(
-        `${AppConfig.APIREST_URL}/api/Convencionistas/ListadoPaginado?NumPagina=1&RegXPag=10`
+        `${AppConfig.APIREST_URL}/api/Convencionistas/ListadoPaginado?NumPagina=${pagina}&RegXPag=${registrosPorPagina}`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
