@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable } from 'rxjs';
+import { catchError, Observable, of, tap } from 'rxjs';
 import { AppConfig } from '@shared/app-config';
 import { HttpClient } from '@angular/common/http';
 import type {
@@ -11,6 +11,7 @@ import type {
 @Injectable({ providedIn: 'root' })
 export class ConvencionistasService {
   private http = inject(HttpClient);
+  private convencionistasCache = new Map<string, ConvencionistasResponsePaginado>();
 
   obtieneConvencionistas(): Observable<ConvencionistasResponse> {
     return this.http
@@ -21,11 +22,18 @@ export class ConvencionistasService {
   }
 
   ObtieneConvencionistasPaginado(pagina: number, registrosPorPagina: number): Observable<ConvencionistasResponsePaginado> {
+    console.log('cacheKey', this.convencionistasCache.entries());
+    const cacheKey = `pagina:${pagina}-registrosPorPagina:${registrosPorPagina}`;
+    if (this.convencionistasCache.has(cacheKey)) {
+      return of(this.convencionistasCache.get(cacheKey)!);
+    }
     return this.http
       .get<ConvencionistasResponsePaginado>(
         `${AppConfig.APIREST_URL}/api/Convencionistas/ListadoPaginado?NumPagina=${pagina}&RegXPag=${registrosPorPagina}`
       )
-      .pipe(catchError(AppConfig.handleErrors));
+      .pipe(
+        tap((resp => this.convencionistasCache.set(cacheKey, resp))),
+        catchError(AppConfig.handleErrors));
   }
 
   obtieneConvencionistasPorConvencion(

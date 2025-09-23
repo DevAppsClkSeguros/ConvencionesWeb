@@ -35,7 +35,6 @@
     </div>
   </section>
 
-  <shared-pagination [pages]="convencionistaResource.value()?.response?.totalPaginas ?? 0" [currentPage]="paginationService.currentPage()" />
   <div class="overflow-x-auto">
     <table class="table md:ml-5 w-full min-w-full">
       <!-- head -->
@@ -98,7 +97,8 @@
     </table>
   </div>
 </div>
-
+<shared-pagination [pages]="convencionistaResource.value()?.response?.totalPaginas ?? 0"
+  [currentPage]="paginationService.currentPage()" />
 <shared-confirm-modal #deleteModal titulo="¡Confirmar Eliminación!" mensajeAceptar="Si, Eliminar"
   mensaje="{{mensajeEliminar}}" (confirmar)="eliminaConvencionista()" (cancelar)="convencionistaId = 0" />
 @if (mostrarModal()) {
