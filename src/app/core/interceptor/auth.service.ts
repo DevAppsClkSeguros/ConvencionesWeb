@@ -34,7 +34,6 @@ export class AuthService {
     token: string,
     thresholdSeconds: number = 60
   ): boolean {
-    // const decoded = decodeToken(token);
     const decoded = jwtDecode(token);
     if (!decoded || !decoded.exp) return true;
 
