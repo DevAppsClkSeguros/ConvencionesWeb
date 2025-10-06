@@ -6,26 +6,24 @@ import {
   Validators,
 } from '@angular/forms';
 import { Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { CategoriasService } from '../../../services/categorias.service';
+import { CdnService } from '@shared/services/cdn.service';
+import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
+import { Convencionista } from '../../../interfaces/convencionistas.interface';
 import { ConvencionistasService } from '../../../services/convencionistas.service';
 import { FormUtils } from '@core/utils/form-utils';
-import { CdnService } from '@shared/services/cdn.service';
-import { NotificacionService } from '@shared/services/notificacion.service';
-import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
-import type { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
-import { ActivatedRoute } from '@angular/router';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { map, tap } from 'rxjs';
-import { CategoriasService } from '../../../services/categorias.service';
+import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
+import { NotificacionService } from '@shared/services/notificacion.service';
 import { PerfilesService } from '../../../services/perfiles.service';
-import { UploadFileComponent } from "@shared/components/upload-file/upload-file.component";
+import { rxResource } from '@angular/core/rxjs-interop';
+import { UploadFileComponent } from '@shared/components/upload-file/upload-file.component';
+import type { Convencion } from 'src/app/convenciones/convenciones/interfaces/convenciones.interface';
 
 @Component({
   selector: 'convencionistas-update',
-  imports: [
-    ReactiveFormsModule,
-    NotFoundComponent,
-  ],
+  imports: [ReactiveFormsModule, NotFoundComponent],
   templateUrl: './convencionistas-update.component.html',
 })
 export class ConvencionistasUpdateComponent {
@@ -58,6 +56,8 @@ export class ConvencionistasUpdateComponent {
     perfilId: ['', Validators.required],
     categoriaId: ['', Validators.required],
     eventoId: ['', Validators.required],
+    perfilNombre: [''],
+    categoriaNombre: [''],
   });
 
   convencionistaResource = this.isEditMode
@@ -111,8 +111,7 @@ export class ConvencionistasUpdateComponent {
     }
   }
 
-  private llenaFormulario(convencionista: any): void {
-    console.log('Convencionista a llenar el formulario: ', convencionista);
+  private llenaFormulario(convencionista: Convencionista): void {
     this.myForm.patchValue({
       id: convencionista.id,
       activo: convencionista.activo,
@@ -126,7 +125,7 @@ export class ConvencionistasUpdateComponent {
       categoriaId: convencionista.categoriaId,
       eventoId: convencionista.eventoId,
     });
-    this.imagePreview = (convencionista.imagen);
+    this.imagePreview = convencionista.imagen;
   }
 
   // getConvenciones() {
@@ -217,6 +216,18 @@ export class ConvencionistasUpdateComponent {
   }
 
   registraConvencionista() {
+    const perfilId = this.myForm.get('perfilId')?.value;
+    const perfil = this.perfilesResouce
+      .value()
+      .find((p: any) => p.id === Number(perfilId)).nombre;
+    const categoriaId = this.myForm.get('categoriaId')?.value;
+    const categoria = this.categoriasResource
+      .value()
+      .find((c: any) => c.id === Number(categoriaId)).nombre;
+    this.myForm.patchValue({
+      perfilNombre: perfil,
+      categoriaNombre: categoria,
+    });
     const request$ = this.isEditMode
       ? this.convencionistasService.actualizaConvencionista(this.myForm.value)
       : this.convencionistasService.nuevoConvencionista(this.myForm.value);

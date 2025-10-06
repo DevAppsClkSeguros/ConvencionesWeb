@@ -4,6 +4,7 @@ import { AppConfig } from '@shared/app-config';
 import { HttpClient } from '@angular/common/http';
 import type {
   Convencionista,
+  ConvencionistaResponse,
   ConvencionistasResponse,
   ConvencionistasResponsePaginado,
 } from '../interfaces/convencionistas.interface';
@@ -11,7 +12,10 @@ import type {
 @Injectable({ providedIn: 'root' })
 export class ConvencionistasService {
   private http = inject(HttpClient);
-  private convencionistasCache = new Map<string, ConvencionistasResponsePaginado>();
+  private convencionistasCache = new Map<
+    string,
+    ConvencionistasResponsePaginado
+  >();
 
   obtieneConvencionistas(): Observable<ConvencionistasResponse> {
     return this.http
@@ -21,8 +25,10 @@ export class ConvencionistasService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  ObtieneConvencionistasPaginado(pagina: number, registrosPorPagina: number): Observable<ConvencionistasResponsePaginado> {
-    console.log('cacheKey', this.convencionistasCache.entries());
+  ObtieneConvencionistasPaginado(
+    pagina: number,
+    registrosPorPagina: number
+  ): Observable<ConvencionistasResponsePaginado> {
     const cacheKey = `pagina:${pagina}-registrosPorPagina:${registrosPorPagina}`;
     if (this.convencionistasCache.has(cacheKey)) {
       return of(this.convencionistasCache.get(cacheKey)!);
@@ -32,8 +38,9 @@ export class ConvencionistasService {
         `${AppConfig.APIREST_URL}/api/Convencionistas/ListadoPaginado?NumPagina=${pagina}&RegXPag=${registrosPorPagina}`
       )
       .pipe(
-        tap((resp => this.convencionistasCache.set(cacheKey, resp))),
-        catchError(AppConfig.handleErrors));
+        tap((resp) => this.convencionistasCache.set(cacheKey, resp)),
+        catchError(AppConfig.handleErrors)
+      );
   }
 
   obtieneConvencionistasPorConvencion(
@@ -48,9 +55,9 @@ export class ConvencionistasService {
 
   obtieneConvencionista(
     idConvencionista: number
-  ): Observable<ConvencionistasResponse> {
+  ): Observable<ConvencionistaResponse> {
     return this.http
-      .get<ConvencionistasResponse>(
+      .get<ConvencionistaResponse>(
         `${AppConfig.APIREST_URL}/api/Convencionistas/Detalles/${idConvencionista}`
       )
       .pipe(catchError(AppConfig.handleErrors));
@@ -58,9 +65,9 @@ export class ConvencionistasService {
 
   nuevoConvencionista(
     convencionista: Convencionista
-  ): Observable<ConvencionistasResponse> {
+  ): Observable<ConvencionistaResponse> {
     return this.http
-      .post<ConvencionistasResponse>(
+      .post<ConvencionistaResponse>(
         `${AppConfig.APIREST_URL}/api/Convencionistas/Nuevo`,
         {
           id: 0,
@@ -76,14 +83,17 @@ export class ConvencionistasService {
           eventoId: convencionista.eventoId,
         }
       )
-      .pipe(catchError(AppConfig.handleErrors));
+      .pipe(
+        tap(() => this.limpiaCache()),
+        catchError(AppConfig.handleErrors)
+      );
   }
 
   actualizaConvencionista(
     convencionista: Convencionista
-  ): Observable<ConvencionistasResponse> {
+  ): Observable<ConvencionistaResponse> {
     return this.http
-      .put<ConvencionistasResponse>(
+      .put<ConvencionistaResponse>(
         `${AppConfig.APIREST_URL}/api/Convencionistas/Actualizar/${convencionista.id}`,
         {
           id: convencionista.id,
@@ -99,7 +109,14 @@ export class ConvencionistasService {
           eventoId: convencionista.eventoId,
         }
       )
-      .pipe(catchError(AppConfig.handleErrors));
+      .pipe(
+        tap((resp) => {
+          if (resp.status) {
+            this.actualizaCached(convencionista);
+          }
+        }),
+        catchError(AppConfig.handleErrors)
+      );
   }
 
   detallesConvencionista(id: number): Observable<ConvencionistasResponse> {
@@ -116,5 +133,18 @@ export class ConvencionistasService {
         `${AppConfig.APIREST_URL}/api/Convencionistas/${id}`
       )
       .pipe(catchError(AppConfig.handleErrors));
+  }
+
+  private actualizaCached(item: Convencionista): void {
+    this.convencionistasCache.forEach((value) => {
+      const index = value.response.listado.findIndex((c) => c.id === item.id);
+      if (index >= 0) {
+        value.response.listado[index] = item;
+      }
+    });
+  }
+
+  private limpiaCache(): void {
+    this.convencionistasCache.clear();
   }
 }

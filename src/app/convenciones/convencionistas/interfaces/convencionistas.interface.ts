@@ -1,7 +1,7 @@
-export interface ConvencionistasResponse {
-  response: Convencionista[];
-  status:   boolean;
-  message:  string[];
+export interface ApiResponse<T> {
+  response: T;
+  status: boolean;
+  message: string[];
 }
 
 export interface Convencionista {
@@ -23,17 +23,14 @@ export interface Convencionista {
   seleccionado?: boolean;
 }
 
-export interface ConvencionistasResponsePaginado {
-  response: Paginado;
-  status:   boolean;
-  message:  string[];
-}
-
 export interface Paginado {
   totalRegistros: number;
-  paginaActual:   number;
-  tamanoPagina:   number;
-  totalPaginas:   number;
-  listado:        Convencionista[];
+  paginaActual: number;
+  tamanoPagina: number;
+  totalPaginas: number;
+  listado: Convencionista[];
 }
 
+export type ConvencionistasResponse = ApiResponse<Convencionista[]>;
+export type ConvencionistaResponse = ApiResponse<Convencionista>;
+export type ConvencionistasResponsePaginado = ApiResponse<Paginado>;
