@@ -1,6 +1,6 @@
 import { CanMatchFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthService } from '../interceptor/auth.service';
+import { AuthService } from '../services/auth.service';
 
 export const noAuthGuard: CanMatchFn = () => {
   const authService = inject(AuthService);

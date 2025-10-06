@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, tap } from 'rxjs/operators';
 import { AppConfig } from '@shared/app-config';
-import { MicrosoftTokenResponse } from './microsoft.interface';
+import { MicrosoftTokenResponse } from '../interfaces/microsoft.interface';
 
 @Injectable({ providedIn: 'root' })
 export class MicrosoftAuthService {

@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { CardComponent } from "../../components/card/card.component";
 import type { Card } from '../../interfaces/card.interface';
-import { AuthService } from '../../../core/interceptor/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-home-page',

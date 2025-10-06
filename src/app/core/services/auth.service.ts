@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, tap, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { AppConfig } from '@shared/app-config';
-import type { Login } from './auth.interface';
+import type { Login } from '../interfaces/auth.interface';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

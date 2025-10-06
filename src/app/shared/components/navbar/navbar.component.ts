@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AppConfig } from '@shared/app-config';
-import { AuthService } from '@core/interceptor/auth.service';
+import { AuthService } from '@core/services/auth.service';
 import { environment } from 'src/environments/environment'
 
 @Component({
