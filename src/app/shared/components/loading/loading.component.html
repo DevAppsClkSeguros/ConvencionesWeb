@@ -1,0 +1,34 @@
+@if (loadingService.isLoading()) {
+<div class="fixed inset-0 z-[9999] flex items-center justify-center">
+  <div class="flex flex-col items-center gap-4">
+    <svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img">
+      <defs>
+        <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
+          <stop offset="0%" stop-color="#e62800" />
+          <stop offset="100%" stop-color="red" />
+        </linearGradient>
+      </defs>
+
+      <g transform="translate(48 48)" stroke="url(#g1)" stroke-width="2" fill="none" stroke-linecap="round">
+        <circle r="6" stroke-opacity="0.9">
+          <animate attributeName="r" values="6;36" dur="1.6s" repeatCount="indefinite" />
+          <animate attributeName="stroke-opacity" values="0.9;0" dur="1.6s" repeatCount="indefinite" />
+        </circle>
+        <circle r="6" stroke-opacity="0.6">
+          <animate attributeName="r" values="6;36" dur="1.6s" begin="0.53s" repeatCount="indefinite" />
+          <animate attributeName="stroke-opacity" values="0.6;0" dur="1.6s" begin="0.53s" repeatCount="indefinite" />
+        </circle>
+      </g>
+
+      <g transform="translate(48 48)">
+        <circle r="8" fill="url(#g1)">
+          <animate attributeName="r" values="6;8;6" dur="1s" repeatCount="indefinite" />
+          <animate attributeName="opacity" values="1;0.85;1" dur="1s" repeatCount="indefinite" />
+        </circle>
+      </g>
+    </svg>
+
+    <p class="text-sm text-black/90 font-medium">Cargando, por favor espere…</p>
+  </div>
+</div>
+}

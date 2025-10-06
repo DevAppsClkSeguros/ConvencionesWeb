@@ -7,6 +7,7 @@ import {
 } from '@angular/common/http';
 import { routes } from './app.routes';
 import { authInterceptorFn } from '../app/core/interceptor/auth.interceptor';
+import { loadingInterceptorFn } from '@core/interceptor/loading.interceptor';
 import { microsoftInterceptorFn } from '@core/interceptor/microsoft.interceptor';
 
 export const appConfig: ApplicationConfig = {
@@ -15,7 +16,12 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(
       withFetch(),
-      withInterceptors([authInterceptorFn, microsoftInterceptorFn])
+      withInterceptors([
+        loadingInterceptorFn,
+        authInterceptorFn,
+        authInterceptorFn,
+        microsoftInterceptorFn,
+      ])
     ),
   ],
 };
