@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable } from 'rxjs';
 import { AppConfig } from '@shared/app-config';
-import type { Hotel, HotelesResponse } from '../interfaces/hoteles.interface';
+import type { Hotel, HotelesResponse, HotelResponse } from '../interfaces/hoteles.interface';
 
 @Injectable({ providedIn: 'root' })
 export class HotelesService {
@@ -14,9 +14,9 @@ export class HotelesService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  obtieneHotel(hotelId: number): Observable<HotelesResponse> {
+  obtieneHotel(hotelId: number): Observable<HotelResponse> {
     return this.http
-      .get<HotelesResponse>(
+      .get<HotelResponse>(
         `${AppConfig.APIREST_URL}/api/Hotel/Detalles/${hotelId}`
       )
       .pipe(catchError(AppConfig.handleErrors));

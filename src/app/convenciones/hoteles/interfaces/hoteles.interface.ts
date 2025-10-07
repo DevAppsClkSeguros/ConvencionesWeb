@@ -1,7 +1,7 @@
-export interface HotelesResponse {
-  response: Hotel[];
-  status:   boolean;
-  message:  string[];
+export interface ApiResponse<T> {
+  response: T;
+  status: boolean;
+  message: string[];
 }
 
 export interface Hotel {
@@ -18,3 +18,6 @@ export interface Hotel {
   detalles:           string;
   convencionistasIds: number[];
 }
+
+export type HotelesResponse = ApiResponse<Hotel[]>;
+export type HotelResponse = ApiResponse<Hotel>;

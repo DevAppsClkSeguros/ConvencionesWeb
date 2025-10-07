@@ -5,19 +5,19 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map, tap } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 import { CdnService } from '@shared/services/cdn.service';
 import { ConvencionesService } from 'src/app/convenciones/convenciones/services/convenciones.service';
+import { ConvencionistasPorConvencionComponent } from '@shared/pages/convencionistas-por-convencion/convencionistas-por-convencion.component';
 import { FormUtils } from '@core/utils/form-utils';
-import type { Hotel } from '../../interfaces/hoteles.interface';
 import { HotelesService } from '../../services/hoteles.service';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { NotificacionService } from '@shared/services/notificacion.service';
-import { ConvencionistasPorConvencionComponent } from '@shared/pages/convencionistas-por-convencion/convencionistas-por-convencion.component';
 import { UploadFileComponent } from '@shared/components/upload-file/upload-file.component';
+import type { Hotel } from '../../interfaces/hoteles.interface';
 
 @Component({
   selector: 'app-hoteles-update',
@@ -89,13 +89,11 @@ export class HotelesUpdateComponent {
       });
     }
     this.myForm.get('eventoId')?.valueChanges.subscribe((eventoId) => {
-      console.log('Evento seleccionado: ', eventoId);
       this.convencionId.set(eventoId);
     });
   }
 
-  private llenaFormulario(hotel: any): void {
-    console.log('Convencionista a llenar el formulario: ', hotel);
+  private llenaFormulario(hotel: Hotel): void {
     this.myForm.patchValue({
       id: hotel.id,
       nombreHotel: hotel.nombreHotel,
@@ -212,7 +210,6 @@ export class HotelesUpdateComponent {
   }
 
   seleccionaConvencionista(convencionistas: number[]) {
-    console.log('Seleccionando desde padre, ', convencionistas);
     this.myForm.patchValue({
       convencionistasIds: convencionistas,
     });

@@ -1,19 +1,20 @@
-import { DatePipe, Location } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 import { Component, effect, inject } from '@angular/core';
+import { DatePipe, Location } from '@angular/common';
+import { rxResource } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FormUtils } from '@core/utils/form-utils';
-import { CdnService } from '@shared/services/cdn.service';
-import { ConvencionesService } from '../../services/convenciones.service';
-import { NotificacionService } from '@shared/services/notificacion.service';
-import { ActivatedRoute } from '@angular/router';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { tap } from 'rxjs';
+import { CdnService } from '@shared/services/cdn.service';
+import { Convencion } from '../../interfaces/convenciones.interface';
+import { ConvencionesService } from '../../services/convenciones.service';
+import { FormUtils } from '@core/utils/form-utils';
+import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
+import { NotificacionService } from '@shared/services/notificacion.service';
 
 @Component({
   selector: 'evento-update',
@@ -69,7 +70,6 @@ export class ConvencionesUpdateComponent {
     effect(() => {
       if (this.isEditMode) {
         const convencion = this.convencionResource!.value();
-        console.log('convencionResource: ', convencion);
         if (convencion?.status) {
           this.llenaFormulario(convencion?.response);
         }
@@ -77,7 +77,7 @@ export class ConvencionesUpdateComponent {
     });
   }
 
-  private llenaFormulario(convencion: any) {
+  private llenaFormulario(convencion: Convencion) {
     this.myForm.patchValue({
       id: convencion.id,
       nombreEvento: convencion.nombreEvento,

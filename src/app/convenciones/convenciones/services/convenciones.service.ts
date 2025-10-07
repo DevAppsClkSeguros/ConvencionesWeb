@@ -4,6 +4,7 @@ import { AppConfig } from '@shared/app-config';
 import { catchError, map, Observable } from 'rxjs';
 import type {
   Convencion,
+  ConvencionesResponse,
   ConvencionResponse,
 } from '../interfaces/convenciones.interface';
 
@@ -11,9 +12,9 @@ import type {
 export class ConvencionesService {
   private http = inject(HttpClient);
 
-  obtieneConvenciones(): Observable<ConvencionResponse> {
+  obtieneConvenciones(): Observable<ConvencionesResponse> {
     return this.http
-      .get<ConvencionResponse>(`${AppConfig.APIREST_URL}/api/Eventos/listado`)
+      .get<ConvencionesResponse>(`${AppConfig.APIREST_URL}/api/Eventos/listado`)
       .pipe(catchError(AppConfig.handleErrors));
   }
 
@@ -25,9 +26,9 @@ export class ConvencionesService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  nuevaConvencion(convencion: Convencion): Observable<ConvencionResponse> {
+  nuevaConvencion(convencion: Convencion): Observable<ConvencionesResponse> {
     return this.http
-      .post<ConvencionResponse>(`${AppConfig.APIREST_URL}/api/Eventos/Nuevo`, {
+      .post<ConvencionesResponse>(`${AppConfig.APIREST_URL}/api/Eventos/Nuevo`, {
         NombreEvento: convencion.nombreEvento,
         Subtitulo: convencion.subtitulo,
         Activo: convencion.activo,
@@ -42,9 +43,9 @@ export class ConvencionesService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  actualizaConvencion(convencion: Convencion): Observable<ConvencionResponse> {
+  actualizaConvencion(convencion: Convencion): Observable<ConvencionesResponse> {
     return this.http
-      .put<ConvencionResponse>(
+      .put<ConvencionesResponse>(
         `${AppConfig.APIREST_URL}/api/Eventos/Actualizar/${convencion.id}`,
         {
           NombreEvento: convencion.nombreEvento,
@@ -62,9 +63,9 @@ export class ConvencionesService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  eliminaConvencion(convencionId: number): Observable<ConvencionResponse> {
+  eliminaConvencion(convencionId: number): Observable<ConvencionesResponse> {
     return this.http
-      .delete<ConvencionResponse>(
+      .delete<ConvencionesResponse>(
         `${AppConfig.APIREST_URL}/api/Eventos/${convencionId}`
       )
       .pipe(catchError(AppConfig.handleErrors));

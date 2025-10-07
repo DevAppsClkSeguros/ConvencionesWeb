@@ -1,5 +1,5 @@
-export interface ConvencionResponse {
-  response: Convencion[];
+export interface ApiResponse <T> {
+  response: T;
   status: boolean;
   message: string[];
 }
@@ -18,3 +18,6 @@ export interface Convencion {
   longitud: string;
   lugarDestino: string;
 }
+
+export type ConvencionesResponse = ApiResponse<Convencion[]>;
+export type ConvencionResponse = ApiResponse<Convencion>;
