@@ -13,11 +13,6 @@ export const ConvencionesRoutes: Routes = [
       //   component: HomePageComponent,
       // },
       {
-        path: 'dashboard',
-        component: HomePageComponent,
-        canActivate: [AuthGuard],
-      },
-      {
         path: 'convencionistas',
         loadChildren: () =>
           import('../convenciones/convencionistas/convencionistas.routes'),
@@ -73,7 +68,7 @@ export const ConvencionesRoutes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'convenciones',
+    redirectTo: 'convencionistas',
   },
 ];
 export default ConvencionesRoutes;
