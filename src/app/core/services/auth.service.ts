@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { BehaviorSubject, tap, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { AppConfig } from '@shared/app-config';
@@ -11,9 +11,32 @@ export class AuthService {
   private tokenSub = new BehaviorSubject<string | null>(null);
   token$ = this.tokenSub.asObservable();
 
+  userRoles = signal<string[]>([]);
+
   constructor(private http: HttpClient) {
     const t = localStorage.getItem('authToken');
-    if (t) this.tokenSub.next(t);
+    if (t) {
+      this.tokenSub.next(t);
+      this.updateUserRoles(t);
+    }
+  }
+
+  private updateUserRoles(token: string) {
+    try {
+      const decoded: any = jwtDecode(token);
+      const roles = decoded.Roles;
+
+      if (Array.isArray(roles)) {
+        this.userRoles.set(roles);
+      } else if (typeof roles === 'string') {
+        this.userRoles.set([roles]);
+      } else {
+        this.userRoles.set([]);
+      }
+    } catch (err) {
+      console.error('Error al decodificar roles:', err);
+      this.userRoles.set([]);
+    }
   }
 
   login(credenciales: any) {
@@ -24,8 +47,10 @@ export class AuthService {
       })
       .pipe(
         tap((resp) => {
-          localStorage.setItem('authToken', resp.response.token);
-          this.tokenSub.next(resp.response.token);
+          const token = resp.response.token;
+          localStorage.setItem('authToken', token);
+          this.tokenSub.next(token);
+          this.updateUserRoles(token);
         })
       );
   }
@@ -53,9 +78,11 @@ export class AuthService {
       })
       .pipe(
         tap((resp) => {
-          localStorage.setItem('authToken', resp.response.token);
-          this.tokenSub.next(resp.response.token);
-          console.log('Token renovado: ', resp.response.token);
+          const token = resp.response.token;
+          localStorage.setItem('authToken', token);
+          this.tokenSub.next(token);
+          this.updateUserRoles(token);
+          console.log('Token renovado: ', token);
         })
       );
   }
@@ -76,8 +103,13 @@ export class AuthService {
     }
   }
 
+  hasRole(role: string): boolean {
+    return this.userRoles().includes(role);
+  }
+
   logOut() {
     localStorage.removeItem('authToken');
     this.tokenSub.next(null);
+    this.userRoles.set([]);
   }
 }
