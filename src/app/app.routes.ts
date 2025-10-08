@@ -12,64 +12,19 @@ export const routes: Routes = [
     canMatch: [noAuthGuard],
   },
   {
-    path: 'dashboard',
-    component: HomePageComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'convencionistas',
-    loadChildren: () =>
-      import('./convenciones/convencionistas/convencionistas.routes'),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'convenciones',
-    loadChildren: () =>
-      import('./convenciones/convenciones/convenciones.routes'),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'encuesta',
-    loadChildren: () => import('./convenciones/encuesta/encuesta.routes'),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'memorias-fotograficas',
-    loadChildren: () =>
-      import(
-        './convenciones/memorias-fotograficas/memorias-fotograficas.routes'
-      ),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'hoteles',
-    loadChildren: () => import('./convenciones/hoteles/hoteles.routes'),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'recomendaciones',
-    loadChildren: () =>
-      import('./convenciones/recomendaciones/recomendaciones.routes'),
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vuelos',
-    loadChildren: () => import('./convenciones/vuelos/vuelos.routes'),
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'cuenta',
     loadChildren: () => import('./account/account.routes'),
     canActivate: [AuthGuard],
   },
   {
-    path: 'actividades',
-    loadChildren: () => import('./convenciones/actividades/actividades.routes'),
-    canActivate: [AuthGuard],
-  },
-  {
     path: 'admin',
     loadChildren: () => import('./admin/admin.routes'),
+    canActivate: [AuthGuard],
+    // data: { roles: ['ADMIN'] },
+  },
+  {
+    path: '',
+    loadChildren: () => import('./convenciones/convenciones.routes'),
     canActivate: [AuthGuard],
     // data: { roles: ['ADMIN'] },
   },
