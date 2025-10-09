@@ -23,7 +23,7 @@ import type { Convencion } from '@convenciones/features/convenciones/interfaces/
 
 @Component({
   selector: 'convencionistas-update',
-  imports: [ReactiveFormsModule, NotFoundComponent],
+  imports: [ReactiveFormsModule, NotFoundComponent, UploadFileComponent],
   templateUrl: './convencionistas-update.component.html',
 })
 export class ConvencionistasUpdateComponent {
@@ -40,7 +40,7 @@ export class ConvencionistasUpdateComponent {
   convencionistaId = this.route.snapshot.params['id'];
   isEditMode = !!this.convencionistaId;
   formUtils = FormUtils;
-  selectedFile: File | null = null;
+  // selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
 
   myForm: FormGroup = this.fb.group({
@@ -144,42 +144,43 @@ export class ConvencionistasUpdateComponent {
   //   });
   // }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      if (!this.selectedFile.type.match('image.*')) {
-        alert('Solo se permiten imágenes');
-        return;
-      }
+  onFileSelected(event: File | null): void {
+    console.log("Mi archivo desde convencionistas: ", event)
+    // const input = event.target as HTMLInputElement;
+    // if (input.files && input.files.length > 0) {
+    //   this.selectedFile = input.files[0];
+    //   if (!this.selectedFile.type.match('image.*')) {
+    //     alert('Solo se permiten imágenes');
+    //     return;
+    //   }
       this.myForm.patchValue({
-        imagen: this.selectedFile,
+        imagen: event,
         url: '',
       });
-      this.myForm.get('imagen')?.markAsTouched();
-      this.myForm.get('imagen')?.updateValueAndValidity();
-
-      this.previewImage(this.selectedFile);
-    }
+      console.log("myForm: ", this.myForm.value);
+    //   this.myForm.get('imagen')?.markAsTouched();
+    //   this.myForm.get('imagen')?.updateValueAndValidity();
+    //   this.previewImage(this.selectedFile);
+    // }
   }
 
   private previewImage(file: File): void {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.imagePreview = e.target.result;
-    };
-    reader.readAsDataURL(file);
+    // const reader = new FileReader();
+    // reader.onload = (e: any) => {
+    //   this.imagePreview = e.target.result;
+    // };
+    // reader.readAsDataURL(file);
   }
 
-  limpiarImagen(inputRef: HTMLInputElement): void {
-    this.imagePreview = null;
-    inputRef.value = '';
-    this.selectedFile = null;
-    this.myForm.patchValue({
-      imagen: null,
-      url: '',
-    });
-    this.myForm.get('imagen')?.updateValueAndValidity();
+    limpiarImagen(inputRef: HTMLInputElement): void {
+    // this.imagePreview = null;
+    // inputRef.value = '';
+    // this.selectedFile = null;
+    // this.myForm.patchValue({
+    //   imagen: null,
+    //   url: '',
+    // });
+    // this.myForm.get('imagen')?.updateValueAndValidity();
   }
 
   onSubmit() {
@@ -189,6 +190,7 @@ export class ConvencionistasUpdateComponent {
     }
     if (this.myForm.get('imagen')?.value && !this.myForm.get('url')?.value) {
       const file: File = this.myForm.controls['imagen'].value;
+      console.log("archivo a subir: ", file);
       const nombreImagen = `${this.myForm.get('clave')?.value}-${String(
         Date.now()
       ).substring(0, 10)}`;

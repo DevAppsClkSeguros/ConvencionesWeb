@@ -96,7 +96,7 @@
       </div>
 
       <!-- Foto -->
-      <div>
+      <!-- <div>
         <label class="label">Foto</label>
         <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
           accept="image/*" />
@@ -109,7 +109,8 @@
           {{formUtils.getFieldError(myForm, 'imagen')}}
         </small>
         }
-      </div>
+      </div> -->
+      <shared-upload-file [preview]="imagePreview" (imagen)="onFileSelected($event)"></shared-upload-file>
 
       <!-- Convención -->
       <div>

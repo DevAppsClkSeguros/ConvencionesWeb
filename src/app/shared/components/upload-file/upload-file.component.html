@@ -2,11 +2,8 @@
   <label class="label">Foto</label>
   <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
     accept="image/*" />
-
-  @if (imagenUrl()) {
-  <img [src]="imagenUrl()" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
-  <button type="button" (click)="limpiar()" class="btn btn-error mt-2">
-    Quitar imagen
-  </button>
+  @if(imagePreview) {
+  <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
+  <button type="button" (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
   }
 </div>

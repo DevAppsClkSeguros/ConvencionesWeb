@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Output,
-  signal,
-  input,
-  effect,
-} from '@angular/core';
+import { Component, signal, input, effect, output } from '@angular/core';
 
 @Component({
   selector: 'shared-upload-file',
@@ -13,13 +6,11 @@ import {
 })
 export class UploadFileComponent {
   preview = input<string | ArrayBuffer | null>(null);
-  @Output() imagenSeleccionada = new EventEmitter<{
-    file: File | null;
-    preview: string | ArrayBuffer | null;
-  }>();
-
-  fileInputRef!: HTMLInputElement;
+  imagen = output<File | null>();
+  // fileInputRef!: HTMLInputElement;
   imagenUrl = signal<string | ArrayBuffer | null>(null);
+  imagePreview: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
 
   constructor() {
     console.log('Contructor');
@@ -27,12 +18,12 @@ export class UploadFileComponent {
       const currentPreview = this.preview();
       console.log('currentPreview: ', currentPreview);
       if (typeof currentPreview === 'string') {
-        // Si es string (url), le metemos cache busting
         this.imagenUrl.set(`${currentPreview}?n=${Math.random()}`);
+        this.imagePreview = `${currentPreview}?n=${Math.random()}`;
         console.log('this.imagenUrl: ', this.imagenUrl());
       } else {
-        // Si es ArrayBuffer o null
         this.imagenUrl.set(currentPreview);
+        this.imagePreview = currentPreview;
         console.log('this.array: ', this.imagenUrl());
       }
     });
@@ -41,31 +32,29 @@ export class UploadFileComponent {
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
-      const file = input.files[0];
-
-      if (!file.type.match('image.*')) {
+      this.selectedFile = input.files[0];
+      if (!this.selectedFile.type.match('image.*')) {
         alert('Solo se permiten imágenes');
-        this.limpiar();
         return;
       }
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        // this.imagenUrl.set(reader.result);
-        this.imagenSeleccionada.emit({ file, preview: reader.result });
-      };
-      reader.readAsDataURL(file);
+      this.previewImage(this.selectedFile);
+      this.imagen.emit(this.selectedFile);
     }
   }
 
-  limpiar(): void {
-    this.imagenSeleccionada.emit({ file: null, preview: null });
-    if (this.fileInputRef) {
-      this.fileInputRef.value = '';
-    }
+  private previewImage(file: File): void {
+    const reader = new FileReader();
+    console.log('File: ', file);
+    reader.onload = (e: any) => {
+      this.imagePreview = e.target.result;
+    };
+    reader.readAsDataURL(file);
   }
 
-  setInputRef(ref: HTMLInputElement) {
-    this.fileInputRef = ref;
+  limpiarImagen(inputRef: HTMLInputElement): void {
+    this.imagePreview = null;
+    inputRef.value = '';
+    this.selectedFile = null;
+    this.imagen.emit(null);
   }
 }
