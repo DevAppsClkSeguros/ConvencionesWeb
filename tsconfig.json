@@ -10,6 +10,7 @@
       ],
       "@core/*": ["src/app/core/*"],
       "@auth/*": ["src/app/auth/*"],
+      "@convenciones/*": ["src/app/convenciones/*"],
     },
     "outDir": "./dist/out-tsc",
     "strict": true,

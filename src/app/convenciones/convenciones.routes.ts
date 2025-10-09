@@ -11,42 +11,42 @@ export const ConvencionesRoutes: Routes = [
       {
         path: 'convencionistas',
         loadChildren: () =>
-          import('../convenciones/convencionistas/convencionistas.routes'),
+          import('../convenciones/features/convencionistas/convencionistas.routes'),
         canActivate: [AuthGuard],
       },
       {
         path: 'convenciones',
         loadChildren: () =>
-          import('../convenciones/convenciones/convenciones.routes'),
+          import('../convenciones/features/convenciones/convenciones.routes'),
         canActivate: [AuthGuard],
       },
       {
         path: 'encuesta',
-        loadChildren: () => import('../convenciones/encuesta/encuesta.routes'),
+        loadChildren: () => import('../convenciones/features/encuesta/encuesta.routes'),
         canActivate: [AuthGuard],
       },
       {
         path: 'memorias-fotograficas',
         loadChildren: () =>
           import(
-            '../convenciones/memorias-fotograficas/memorias-fotograficas.routes'
+            '../convenciones/features/memorias-fotograficas/memorias-fotograficas.routes'
           ),
         canActivate: [AuthGuard],
       },
       {
         path: 'hoteles',
-        loadChildren: () => import('../convenciones/hoteles/hoteles.routes'),
+        loadChildren: () => import('../convenciones/features/hoteles/hoteles.routes'),
         canActivate: [AuthGuard],
       },
       {
         path: 'recomendaciones',
         loadChildren: () =>
-          import('../convenciones/recomendaciones/recomendaciones.routes'),
+          import('../convenciones/features/recomendaciones/recomendaciones.routes'),
         canActivate: [AuthGuard],
       },
       {
         path: 'vuelos',
-        loadChildren: () => import('../convenciones/vuelos/vuelos.routes'),
+        loadChildren: () => import('../convenciones/features/vuelos/vuelos.routes'),
         canActivate: [AuthGuard],
       },
       {
@@ -57,14 +57,14 @@ export const ConvencionesRoutes: Routes = [
       {
         path: 'actividades',
         loadChildren: () =>
-          import('../convenciones/actividades/actividades.routes'),
+          import('../convenciones/features/actividades/actividades.routes'),
         canActivate: [AuthGuard],
       },
       {
         path: 'version-app',
         loadChildren: () =>
           import(
-            '../convenciones/configuracion/version-app/version-app.routes'
+            '../convenciones/features/configuracion/version-app/version-app.routes'
           ),
         canActivate: [AuthGuard],
         data: { roles: ['ADMIN'] },
@@ -72,14 +72,14 @@ export const ConvencionesRoutes: Routes = [
       {
         path: 'modulos',
         loadChildren: () =>
-          import('../convenciones/configuracion/modulos/modulos.routes'),
+          import('../convenciones/features/configuracion/modulos/modulos.routes'),
         canActivate: [AuthGuard],
         data: { roles: ['ADMIN'] },
       },
       {
         path: 'credencialesMicrosoft',
         loadChildren: () =>
-          import('../convenciones/configuracion/microsoft/microsoft.routes'),
+          import('../convenciones/features/configuracion/microsoft/microsoft.routes'),
         canActivate: [AuthGuard],
         data: { roles: ['ADMIN'] },
       },

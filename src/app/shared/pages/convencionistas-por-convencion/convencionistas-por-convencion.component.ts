@@ -1,8 +1,8 @@
 import { Component, effect, ElementRef, inject, input, output, ViewChild } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map, of } from 'rxjs';
-import { Convencionista } from 'src/app/convenciones/convencionistas/interfaces/convencionistas.interface';
-import { ConvencionistasService } from 'src/app/convenciones/convencionistas/services/convencionistas.service';
+import { Convencionista } from '@convenciones/features/convencionistas/interfaces/convencionistas.interface';
+import { ConvencionistasService } from '@convenciones/features/convencionistas/services/convencionistas.service';
 
 @Component({
   selector: 'shared-convencionistas-por-convencion',
