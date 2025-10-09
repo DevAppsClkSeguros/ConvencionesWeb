@@ -49,7 +49,6 @@ export class UsuariosService {
           firstName: usuario.firstName,
           lastName: usuario.lastName,
           email: usuario.email,
-          fechaCreacion: usuario.fechaCreacion,
           activo: usuario.activo,
           newPassword: usuario.password,
           roles: usuario.roles,

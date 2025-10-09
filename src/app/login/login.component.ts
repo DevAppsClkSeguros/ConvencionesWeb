@@ -30,7 +30,7 @@ export class LoginComponent {
     this.route.queryParams.subscribe((params) => {
       if (params['sessionExpired']) {
         this.notificacion.show(
-          'Tu sesión expiró, vuelve a iniciar sesión',
+          'Su sesión expiró, vuelva a iniciar sesión',
           'warning'
         );
         this.router.navigate([], {
@@ -53,7 +53,7 @@ export class LoginComponent {
     this.authService.login(this.myForm.value).subscribe({
       next: (data) => {
         if (data.status) {
-          this.router.navigateByUrl('/dashboard');
+          this.router.navigateByUrl('/convencionistas');
         } else {
           this.loginError = false;
           this.credencialesInvalidas = true;
@@ -61,7 +61,7 @@ export class LoginComponent {
       },
       error: (e) => {
         this.loading = false;
-        this.notificacion.show('Ocurrio un error al iniciar sesión, inténtelo nuevamente', 'error');
+        this.notificacion.show(`Ocurrio un error al iniciar sesión, inténtelo nuevamente`, 'error');
       },
       complete: () => {
         this.loading = false;

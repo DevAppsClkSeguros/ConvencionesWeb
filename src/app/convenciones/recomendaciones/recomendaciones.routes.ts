@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
-import { RecomendacionesListComponent } from './components/recomendaciones-list/recomendaciones-list.component';
-import { RecomendacionesUpdateComponent } from './components/recomendaciones-update/recomendaciones-update.component';
+import { AuthGuard } from '@core/guards/auth.guard';
 import { CategoriasListComponent } from './components/categorias-list/categorias-list.component';
 import { CategoriasUpdateComponent } from './components/categorias-update/categorias-update.component';
+import { RecomendacionesListComponent } from './components/recomendaciones-list/recomendaciones-list.component';
+import { RecomendacionesUpdateComponent } from './components/recomendaciones-update/recomendaciones-update.component';
 
 export const RecomendacionesRoutes: Routes = [
   {
@@ -20,14 +21,20 @@ export const RecomendacionesRoutes: Routes = [
   {
     path: 'categorias',
     component: CategoriasListComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['ADMIN'] },
   },
   {
     path: 'categorias/:id/edit',
     component: CategoriasUpdateComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['ADMIN'] },
   },
   {
     path: 'categorias/new',
     component: CategoriasUpdateComponent,
+    canActivate: [AuthGuard],
+    data: { roles: ['ADMIN'] },
   },
   {
     path: '**',

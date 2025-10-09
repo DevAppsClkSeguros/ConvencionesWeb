@@ -16,18 +16,6 @@ export const AdminRoutes: Routes = [
     component: UsuariosUpdateComponent,
   },
   {
-    path: 'modulos',
-    loadChildren: () => import('./modulos/modulos.routes'),
-  },
-  {
-    path: 'credencialesMicrosoft',
-    loadChildren: () => import('./microsoft/microsoft.routes'),
-  },
-  {
-    path: 'version-app',
-    loadChildren: () => import('./version-app/version-app.routes'),
-  },
-  {
     path: '**',
     redirectTo: 'usuarios',
   },

@@ -32,7 +32,14 @@ export const AuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
         'No tienes permiso para acceder a esa sección.',
         'error'
       );
-      router.navigate(['/dashboard']);
+      const currentUrl = router.url;
+      const tryingToAccessFromOutside =
+        currentUrl === '/' || currentUrl === '/login';
+      if (tryingToAccessFromOutside) {
+        router.navigate(['/convencionistas']);
+      }
+
+      // router.navigate(['/dashboard']);
       return false;
     }
   }

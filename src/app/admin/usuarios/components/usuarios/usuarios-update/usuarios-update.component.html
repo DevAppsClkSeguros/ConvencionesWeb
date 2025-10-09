@@ -96,7 +96,7 @@
         <div class="border border-base-200 bg-base-100 color">
           <select formControlName="roles" class=" w-full form-control" multiple>
             @for (rol of rolesResource.value(); track rol.id) {
-            <option [value]="rol.id">{{rol.name}}</option>
+            <option [value]="rol.name">{{rol.name}}</option>
             }
           </select>
         </div>

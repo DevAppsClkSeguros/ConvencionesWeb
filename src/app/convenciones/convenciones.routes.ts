@@ -8,10 +8,6 @@ export const ConvencionesRoutes: Routes = [
     path: '',
     component: ConvencionesLayoutComponent,
     children: [
-      // {
-      //   path: 'dashboard',
-      //   component: HomePageComponent,
-      // },
       {
         path: 'convencionistas',
         loadChildren: () =>
@@ -63,6 +59,29 @@ export const ConvencionesRoutes: Routes = [
         loadChildren: () =>
           import('../convenciones/actividades/actividades.routes'),
         canActivate: [AuthGuard],
+      },
+      {
+        path: 'version-app',
+        loadChildren: () =>
+          import(
+            '../convenciones/configuracion/version-app/version-app.routes'
+          ),
+        canActivate: [AuthGuard],
+        data: { roles: ['ADMIN'] },
+      },
+      {
+        path: 'modulos',
+        loadChildren: () =>
+          import('../convenciones/configuracion/modulos/modulos.routes'),
+        canActivate: [AuthGuard],
+        data: { roles: ['ADMIN'] },
+      },
+      {
+        path: 'credencialesMicrosoft',
+        loadChildren: () =>
+          import('../convenciones/configuracion/microsoft/microsoft.routes'),
+        canActivate: [AuthGuard],
+        data: { roles: ['ADMIN'] },
       },
     ],
   },

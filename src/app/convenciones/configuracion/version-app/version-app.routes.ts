@@ -4,16 +4,12 @@ import { VersionAppUpdateComponent } from './components/version-app-update/versi
 
 export const VersionAppRoutes: Routes = [
   {
-    path: 'list',
+    path: '',
     component: VersionAppListComponent,
   },
   {
-    path: ':id/edit',
+    path: ':id',
     component: VersionAppUpdateComponent,
-  },
-  {
-    path: '**',
-    redirectTo: 'list',
   },
 ];
 

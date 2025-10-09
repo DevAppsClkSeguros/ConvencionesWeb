@@ -4,15 +4,11 @@ import { ModulosUpdateComponent } from './components/modulos-update/modulos-upda
 
 export const ModulosAppRoutes: Routes = [
   {
-    path: 'list',
+    path: '',
     component: ModulosListComponent,
   },
   {
-    path: ':id/edit',
-    component: ModulosUpdateComponent,
-  },
-  {
-    path: 'new',
+    path: ':id',
     component: ModulosUpdateComponent,
   },
   {

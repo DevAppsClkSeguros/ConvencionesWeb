@@ -1,8 +1,13 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import {
+  Router,
+  RouterLink,
+  RouterLinkActive,
+  RouterOutlet,
+} from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
-import { FooterComponent } from "@shared/components/footer/footer.component";
 import { environment } from 'src/environments/environment';
+import { FooterComponent } from '@shared/components/footer/footer.component';
 
 @Component({
   selector: 'app-convenciones-layout',
@@ -11,6 +16,7 @@ import { environment } from 'src/environments/environment';
 })
 export class ConvencionesLayoutComponent {
   authService = inject(AuthService);
+  router = inject(Router);
   usuario: string = '';
   environment = environment;
 
@@ -19,6 +25,13 @@ export class ConvencionesLayoutComponent {
     reportes: false,
     usuarios: false,
   });
+
+  ngOnInit(): void {
+    const datosUsuario = this.authService.getUserData();
+    if (datosUsuario) {
+      this.usuario = `${datosUsuario.FirstName} ${datosUsuario.LastName}`;
+    }
+  }
 
   toggleMenu(menu: string) {
     this.menuState.update((state) => ({
@@ -31,10 +44,7 @@ export class ConvencionesLayoutComponent {
     return this.menuState()[menu];
   }
 
-  ngOnInit(): void {
-    const datosUsuario = this.authService.getUserData();
-    if (datosUsuario) {
-      this.usuario = datosUsuario.FirstName;
-    }
+  navegarModulo(modulo: string) {
+    this.router.navigateByUrl(`/${modulo}`);
   }
 }
