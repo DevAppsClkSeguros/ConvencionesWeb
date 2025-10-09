@@ -1,6 +1,6 @@
 import { CanActivateFn, ActivatedRouteSnapshot, Router } from '@angular/router';
 import { inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../auth/services/auth.service';
 import { NotificacionService } from '@shared/services/notificacion.service';
 
 export const AuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
@@ -10,7 +10,7 @@ export const AuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
 
   const user = authService.getUserData();
   if (!user) {
-    router.navigate(['/login']);
+    router.navigate(['/auth/login']);
     return false;
   }
 
@@ -34,7 +34,7 @@ export const AuthGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
       );
       const currentUrl = router.url;
       const tryingToAccessFromOutside =
-        currentUrl === '/' || currentUrl === '/login';
+        currentUrl === '/' || currentUrl === '/auth/login';
       if (tryingToAccessFromOutside) {
         router.navigate(['/convencionistas']);
       }

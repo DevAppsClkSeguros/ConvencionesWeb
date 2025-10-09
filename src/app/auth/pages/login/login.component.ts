@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../core/services/auth.service';
-import { FormUtils } from '../core/utils/form-utils';
-import { NotificacionService } from '../shared/services/notificacion.service';
+import { AuthService } from '../../services/auth.service';
+import { FormUtils } from '../../../core/utils/form-utils';
+import { NotificacionService } from '../../../shared/services/notificacion.service';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

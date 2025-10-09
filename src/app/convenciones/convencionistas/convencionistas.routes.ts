@@ -5,7 +5,7 @@ import { CategoriasListComponent } from './components/categorias/categorias-list
 import { CategoriasUpdateComponent } from './components/categorias/categorias-update/categorias-update.component';
 import { PerfilesListComponent } from './components/perfiles/perfiles-list/perfiles-list.component';
 import { PerfilesUpdateComponent } from './components/perfiles/perfiles-update/perfiles-update.component';
-import { AuthGuard } from '@core/guards/auth.guard';
+import { AuthGuard } from '@auth/guards/auth.guard';
 
 export const ConvencionistasRoutes: Routes = [
   {

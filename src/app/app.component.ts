@@ -19,15 +19,6 @@ import { LoadingComponent } from '@shared/components/loading/loading.component';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  title = 'convenciones-web-click-seguros';
-  showLayout: boolean = true;
 
-  constructor(private router: Router) {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        const rutasSinLayout = ['/login', '/register'];
-        this.showLayout = !rutasSinLayout.includes(event.urlAfterRedirects);
-      }
-    });
-  }
+  constructor(private router: Router) {}
 }

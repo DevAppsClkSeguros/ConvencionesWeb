@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { ConvencionesLayoutComponent } from './layouts/convenciones-layout/convenciones-layout.component';
 import { HomePageComponent } from '@shared/pages/home-page/home-page.component';
-import { AuthGuard } from '@core/guards/auth.guard';
+import { AuthGuard } from '@auth/guards/auth.guard';
 
 export const ConvencionesRoutes: Routes = [
   {

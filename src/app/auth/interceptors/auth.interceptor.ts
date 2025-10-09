@@ -29,7 +29,7 @@ export const authInterceptorFn: HttpInterceptorFn = (req, next) => {
       catchError((renewError) => {
         console.error('Renewal failed, logging out', renewError);
         auth.logOut();
-        router.navigate(['/login'], { queryParams: { sessionExpired: true } });
+        router.navigate(['/auth/login'], { queryParams: { sessionExpired: true } });
         return throwError(() => renewError);
       })
     );
@@ -56,7 +56,7 @@ export const authInterceptorFn: HttpInterceptorFn = (req, next) => {
             console.error('Renovación falló, cerrando sesión');
             auth.logOut();
             setTimeout(() => {
-              router.navigate(['/login'], {
+              router.navigate(['/auth/login'], {
                 queryParams: { sessionExpired: true },
               });
             });

@@ -6,7 +6,7 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { routes } from './app.routes';
-import { authInterceptorFn } from './core/interceptors/auth.interceptor';
+import { authInterceptorFn } from './auth/interceptors/auth.interceptor';
 import { loadingInterceptorFn } from '@core/interceptors/loading.interceptor';
 import { microsoftInterceptorFn } from '@core/interceptors/microsoft.interceptor';
 

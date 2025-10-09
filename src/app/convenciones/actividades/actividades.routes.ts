@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { ActividadesListComponent } from './components/actividades-list/actividades-list.component';
 import { ActividadesUpdateComponent } from './components/actividades-update/actividades-update.component';
-import { AuthGuard } from '@core/guards/auth.guard';
+import { AuthGuard } from '@auth/guards/auth.guard';
 import { CategoriasListComponent } from './components/categorias-list/categorias-list.component';
 import { CategoriasUpdateComponent } from './components/categorias-update/categorias-update.component';
 

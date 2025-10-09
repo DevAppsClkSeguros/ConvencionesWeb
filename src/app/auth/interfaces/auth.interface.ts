@@ -1,5 +1,5 @@
 export interface LoginResp {
-  token: string /* …otros campos si hay*/;
+  token: string
 }
 export interface RenewResp {
   token: string;

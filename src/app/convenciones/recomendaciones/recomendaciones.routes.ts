@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from '@core/guards/auth.guard';
+import { AuthGuard } from '@auth/guards/auth.guard';
 import { CategoriasListComponent } from './components/categorias-list/categorias-list.component';
 import { CategoriasUpdateComponent } from './components/categorias-update/categorias-update.component';
 import { RecomendacionesListComponent } from './components/recomendaciones-list/recomendaciones-list.component';

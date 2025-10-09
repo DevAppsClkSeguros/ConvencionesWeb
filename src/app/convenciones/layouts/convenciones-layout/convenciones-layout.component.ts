@@ -5,7 +5,7 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { FooterComponent } from '@shared/components/footer/footer.component';
 

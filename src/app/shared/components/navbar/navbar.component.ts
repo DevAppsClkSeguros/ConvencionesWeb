@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AppConfig } from '@shared/app-config';
-import { AuthService } from '@core/services/auth.service';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { environment } from 'src/environments/environment'
 
 @Component({
@@ -29,6 +29,6 @@ export class NavbarComponent implements OnInit {
 
   logOut() {
     this.authService.logOut();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 }

@@ -1,7 +1,7 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { switchMap, catchError, throwError } from 'rxjs';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../auth/services/auth.service';
 import { MicrosoftAuthService } from '../services/microsoft-auth.service';
 
 export const microsoftInterceptorFn: HttpInterceptorFn = (req, next) => {
