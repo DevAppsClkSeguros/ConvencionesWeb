@@ -44,15 +44,20 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
     }
     return groups;
   });
+  nombreConvencion = signal<string | null>(null);
+  isLoaded = signal(false);
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.tipoMedia = params['tipo'];
-      const nombreConvencion = params['convencion'];
+      this.nombreConvencion.set(params['convencion']);
       this.nextLink = null;
       this.trendingImagen.set([]);
       this.usedNextLinks.clear();
-      this.verificaMultimedia(this.tipoMedia, nombreConvencion);
+      console.log('Convención: ', this.nombreConvencion());
+      if (this.nombreConvencion()) {
+        this.verificaMultimedia(this.tipoMedia, this.nombreConvencion());
+      }
     });
   }
 
@@ -62,20 +67,19 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
     scrollDiv.scrollTop = this.scrollStateService.trendingScrollState();
   }
 
-  verificaMultimedia(media: string, nombreConvencion: string) {
+  verificaMultimedia(media: string, nombreConvencion: string | null) {
+    this.isLoaded.set(false);
     this.microsoftGraphService.archivosUnidadOneDriveMS().subscribe({
       next: (dataUnidad) => {
         if (dataUnidad) {
           let eventoPath = dataUnidad.value.filter(
             (v) => v.name === nombreConvencion
           )[0];
-          this.existeError.set(!eventoPath);
           if (eventoPath) {
             this.microsoftGraphService
               .archivosCarpetaOneDriveMS(eventoPath?.id)
               .subscribe({
                 next: (dataCarpeta) => {
-                  this.existeError.set(!dataCarpeta);
                   if (dataCarpeta) {
                     let imagenesPath = dataCarpeta.value.filter(
                       (v) => v.name === media
@@ -88,6 +92,8 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
                   this.existeError.set(true);
                 },
               });
+          } else {
+            this.isLoaded.set(true);
           }
         }
       },
@@ -129,7 +135,6 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
       next: (resp) => {
         const imagenes = ImageMapper.mapMicrosoftItemToImageArray(resp.value);
         if (imagenes.length === 0) {
-          this.existeError.set(true);
           this.trendingImagenLoading.set(false);
           return;
         }
@@ -143,6 +148,9 @@ export class MemoriasFotograficasComponent implements OnInit, AfterViewInit {
       error: (error) => {
         this.existeError.set(true);
       },
+      complete: () => {
+          this.isLoaded.set(true);
+      }
     });
   }
 

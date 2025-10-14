@@ -10,15 +10,25 @@
   <div class="hero-content text-center">
     <div class="max-w-md">
       <h1 class="text-5xl font-bold">Memorias</h1>
+      <p class="py-6 text-error">
+        No se pudo cargar el contenido multimedia. Vuelve a intentarlo más tarde.
+      </p>
+    </div>
+  </div>
+</div>
+} @else if (!nombreConvencion()) {
+<div class="hero min-h-[70vh]">
+  <div class="hero-content text-center">
+    <div class="max-w-md">
+      <h1 class="text-5xl font-bold">Memorias</h1>
       <p class="py-6">
-        Aún no hay contenido multimedia disponible. Vuelve a intentarlo más tarde.
+        Selecciona una convención.
       </p>
     </div>
   </div>
 </div>
 } @else {
-<div class="h-screen overflow-y-scroll grid grid-cols-2 md:grid-cols-4 gap-4" (scroll)="onScroll($event)"
-  #groupDiv>
+<div class="h-screen overflow-y-scroll grid grid-cols-2 md:grid-cols-4 gap-4" (scroll)="onScroll($event)" #groupDiv>
   @for (group of trendingImagenGroup(); track $index) {
   <div class="grid gap-4">
     @for (imagen of group; track imagen.id) {
@@ -27,6 +37,19 @@
     </div>
     }
   </div>
+  } @empty {
+  @if (isLoaded()){
+  <div class="hero min-h-[70vh] col-span-4">
+    <div class="hero-content text-center">
+      <div class="max-w-md">
+        <h1 class="text-5xl font-bold">Memorias</h1>
+        <p class="py-6">
+          Aún no hay contenido multimedia disponible. Vuelve a intentarlo más tarde.
+        </p>
+      </div>
+    </div>
+  </div>
+  }
   }
 </div>
 

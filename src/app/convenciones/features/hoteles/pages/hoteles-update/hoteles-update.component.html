@@ -3,8 +3,7 @@
 }
 @if (!hotelResource?.error()) {
 <div class="min-h-screen flex items-center justify-center bg-base-200 p-5">
-  <form [formGroup]="myForm" (ngSubmit)="onSubmit()"
-    class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
     <h2 class="text-3xl font-bold mb-6">Datos del Hotel</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -20,55 +19,35 @@
       <div>
         <label class="label">Hotel</label>
         <input type="text" formControlName="nombreHotel" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'nombreHotel')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'nombreHotel')}}
-        </small>
-        }
+        <shared-form-error-label [control]="myForm.get('nombreHotel')!"></shared-form-error-label>
       </div>
 
       <!-- Dirección -->
       <div>
         <label class="label">Dirección</label>
         <input type="text" formControlName="direccion" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'direccion')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'direccion')}}
-        </small>
-        }
+        <shared-form-error-label [control]="myForm.get('direccion')!"></shared-form-error-label>
       </div>
 
       <!-- Latitud -->
       <div>
         <label class="label">Latitud</label>
         <input type="number" formControlName="latitud" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'latitud')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'latitud')}}
-        </small>
-        }
+        <shared-form-error-label [control]="myForm.get('latitud')!"></shared-form-error-label>
       </div>
 
       <!-- Longitud -->
       <div>
         <label class="label">Longitud</label>
         <input type="number" formControlName="longitud" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'longitud')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'longitud')}}
-        </small>
-        }
+        <shared-form-error-label [control]="myForm.get('longitud')!"></shared-form-error-label>
       </div>
 
       <!-- Teléfono -->
       <div>
         <label class="label">Telefono</label>
         <input type="number" formControlName="telefono" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'telefono')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'telefono')}}
-        </small>
-        }
+        <shared-form-error-label [control]="myForm.get('telefono')!"></shared-form-error-label>
       </div>
 
       <!-- Convención -->
@@ -80,46 +59,25 @@
           <option [value]="convencion.id">{{convencion.nombreEvento}}</option>
           }
         </select>
-        @if (formUtils.isValidField(myForm, 'eventoId')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'eventoId')}}
-        </small> }
+        <shared-form-error-label [control]="myForm.get('eventoId')!"></shared-form-error-label>
       </div>
 
       <div class="md:col-span-2">
         <label class="label">Detalles</label>
         <textarea class="textarea w-full min-h-[150px]" formControlName="detalles"></textarea>
-        @if (formUtils.isValidField(myForm, 'detalles')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'detalles')}}
-        </small>
-        }
+        <shared-form-error-label [control]="myForm.get('detalles')!"></shared-form-error-label>
       </div>
 
       <!-- Foto -->
       <div>
-        <label class="label">Foto</label>
-        <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
-          accept="image/*" />
-        @if(imagePreview) {
-        <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
-        <button type="button" (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
-        }
-        @if (formUtils.isValidField(myForm, 'imagen')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'imagen')}}
-        </small>
-        }
+        <shared-upload-file [preview]="imagePreview" (imagen)="onFileSelected($event)"></shared-upload-file>
+        <shared-form-error-label [control]="myForm.get('imagen')!"></shared-form-error-label>
       </div>
 
       <shared-convencionistas-por-convencion class="md:col-span-2" [convencionId]="convencionId()"
         (convencionistasSeleccionados2)="seleccionaConvencionista($event)"
         [convencionistasPorVuelo]="myForm.get('convencionistasIds')?.value || []" />
-      @if (formUtils.isValidField(myForm, 'convencionistasIds')) {
-      <small class="text-error">
-        {{ formUtils.getFieldError(myForm, 'convencionistasIds') }}
-      </small>
-      }
+      <shared-form-error-label [control]="myForm.get('convencionistasIds')!"></shared-form-error-label>
     </div>
 
     <!-- Botones -->

@@ -12,6 +12,7 @@ import { map, tap } from 'rxjs';
 import { CdnService } from '@shared/services/cdn.service';
 import { ConvencionesService } from '@convenciones/features/convenciones/services/convenciones.service';
 import { ConvencionistasPorConvencionComponent } from '@shared/pages/convencionistas-por-convencion/convencionistas-por-convencion.component';
+import { FormErrorLabelComponent } from '@shared/components/form-error-label/form-error-label.component';
 import { FormUtils } from '@core/utils/form-utils';
 import { HotelesService } from '../../services/hoteles.service';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
@@ -25,6 +26,8 @@ import type { Hotel } from '../../interfaces/hoteles.interface';
     NotFoundComponent,
     ReactiveFormsModule,
     ConvencionistasPorConvencionComponent,
+    UploadFileComponent,
+    FormErrorLabelComponent,
   ],
   templateUrl: './hoteles-update.component.html',
 })
@@ -37,8 +40,7 @@ export class HotelesUpdateComponent {
   cdnService = inject(CdnService);
   location = inject(Location);
   formUtils = FormUtils;
-  selectedFile: File | null = null;
-  imagePreview: string | ArrayBuffer | null = null;
+  imagePreview: string | null = null;
   hotelId = this.route.snapshot.params['id'];
   isEditMode = !!this.hotelId;
   convencionId = signal<number>(0);
@@ -111,41 +113,12 @@ export class HotelesUpdateComponent {
     this.convencionId.set(hotel.eventoId);
   }
 
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      this.selectedFile = input.files[0];
-      if (!this.selectedFile.type.match('image.*')) {
-        alert('Solo se permiten imágenes');
-        return;
-      }
-      this.myForm.patchValue({
-        imagen: this.selectedFile,
-        url: '',
-      });
-      this.myForm.get('imagen')?.markAsTouched();
-      this.myForm.get('imagen')?.updateValueAndValidity();
-
-      this.previewImage(this.selectedFile);
-    }
-  }
-
-  private previewImage(file: File): void {
-    const reader = new FileReader();
-    reader.onload = (e: any) => {
-      this.imagePreview = e.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-
-  limpiarImagen(inputRef: HTMLInputElement): void {
-    this.imagePreview = null;
-    inputRef.value = '';
-    this.selectedFile = null;
+  onFileSelected(file: File | null): void {
     this.myForm.patchValue({
-      imagen: null,
-      url: null,
+      imagen: file,
+      url: '',
     });
+    this.myForm.get('imagen')?.markAsTouched();
     this.myForm.get('imagen')?.updateValueAndValidity();
   }
 
