@@ -19,12 +19,10 @@ export class ConvencionesLayoutComponent {
   router = inject(Router);
   usuario: string = '';
   environment = environment;
+  sidebarOpen = signal(false);
+  isSidebarOpen = false;
 
-  menuState = signal<{ [key: string]: boolean }>({
-    convencionistas: false,
-    reportes: false,
-    usuarios: false,
-  });
+  menuState = signal<{ [key: string]: boolean }>({});
 
   ngOnInit(): void {
     const datosUsuario = this.authService.getUserData();
@@ -35,7 +33,7 @@ export class ConvencionesLayoutComponent {
 
   toggleMenu(menu: string) {
     this.menuState.update((state) => ({
-      ...Object.fromEntries(Object.keys(state).map((k) => [k, false])), // cierra todos
+      ...Object.fromEntries(Object.keys(state).map((k) => [k, false])),
       [menu]: !state[menu],
     }));
   }
@@ -44,7 +42,11 @@ export class ConvencionesLayoutComponent {
     return this.menuState()[menu];
   }
 
-  navegarModulo(modulo: string) {
-    this.router.navigateByUrl(`/${modulo}`);
+  toggleSidebar() {
+    this.sidebarOpen.update((v) => !v);
+  }
+
+  closeSidebar() {
+    this.sidebarOpen.set(false);
   }
 }

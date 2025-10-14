@@ -1,8 +1,16 @@
 <div class="bg-white rounded-lg shadow-md">
+  <button
+    class="lg:hidden p-3 text-gray-600 hover:text-primary focus:outline-none fixed top-4 left-4 z-30 bg-white rounded-full shadow-md"
+    (click)="isSidebarOpen = !isSidebarOpen">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+      stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+
   <div class="flex overflow-hidden bg-white">
-    <aside id="sidebar"
-      class="fixed hidden z-20 h-full top-0 left-0  flex lg:flex flex-shrink-0 flex-col w-64 transition-width duration-75"
-      aria-label="Sidebar">
+    <aside id="sidebar" class="flex fixed z-20 top-0 left-0 h-full flex-shrink-0 flex-col w-64 transition-transform duration-300 ease-in-out transform bg-white border-r border-gray-200
+      lg:translate-x-0" [class.-translate-x-full]="!isSidebarOpen " aria-label="Sidebar">
 
       <div class="space-y-6 md:space-y-1 mt-4">
 
@@ -242,7 +250,6 @@
         </div>
       </div>
     </aside>
-    <div class="bg-gray-900 opacity-50 hidden fixed inset-0 z-10" id="sidebarBackdrop"></div>
     <div id="main-content" class="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
       <main class="m-auto flex-grow flex flex-col min-h-screen p-3">
         <router-outlet />
@@ -250,6 +257,7 @@
       <shared-footer />
     </div>
   </div>
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <script src="https://demo.themesberg.com/windster/app.bundle.js"></script>
+  <div class="fixed inset-0 z-10 bg-gray-50 bg-opacity-50 lg:hidden transition-opacity duration-300"
+    [class.hidden]="!isSidebarOpen" (click)="isSidebarOpen = false">
+  </div>
 </div>
