@@ -19,6 +19,7 @@ import { NotFoundComponent } from '@shared/components/not-found/not-found.compon
 import { NotificacionService } from '@shared/services/notificacion.service';
 import { UploadFileComponent } from '@shared/components/upload-file/upload-file.component';
 import type { Hotel } from '../../interfaces/hoteles.interface';
+import { MapaSelectorComponent } from "@convenciones/components/mapa-selector/mapa-selector.component";
 
 @Component({
   selector: 'app-hoteles-update',
@@ -28,6 +29,7 @@ import type { Hotel } from '../../interfaces/hoteles.interface';
     ConvencionistasPorConvencionComponent,
     UploadFileComponent,
     FormErrorLabelComponent,
+    MapaSelectorComponent,
   ],
   templateUrl: './hoteles-update.component.html',
 })
@@ -44,6 +46,7 @@ export class HotelesUpdateComponent {
   hotelId = this.route.snapshot.params['id'];
   isEditMode = !!this.hotelId;
   convencionId = signal<number>(0);
+  coordenadasDefault = { lat: 19.4280468, lng: -99.2423326 };
 
   myForm: FormGroup = this.fb.group({
     id: [0],
@@ -109,6 +112,10 @@ export class HotelesUpdateComponent {
       detalles: hotel.detalles,
       convencionistasIds: hotel.convencionistasIds,
     });
+    this.coordenadasDefault = {
+      lat: Number(hotel.latitud),
+      lng: Number(hotel.longitud),
+    };
     this.imagePreview = hotel.imagen;
     this.convencionId.set(hotel.eventoId);
   }
@@ -185,6 +192,13 @@ export class HotelesUpdateComponent {
   seleccionaConvencionista(convencionistas: number[]) {
     this.myForm.patchValue({
       convencionistasIds: convencionistas,
+    });
+  }
+  capturaCoordenadas(coordenadas: any) {
+    console.log('Valor Emitido: ', coordenadas);
+    this.myForm.patchValue({
+      latitud: coordenadas.lat,
+      longitud: coordenadas.lng,
     });
   }
 
