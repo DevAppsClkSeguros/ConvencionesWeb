@@ -10,17 +10,21 @@ import { UsuariosService } from '../../../services/usuarios.service';
 
 @Component({
   selector: 'app-usuarios-list',
-  imports: [IconRefreshComponent, IconAddComponent, RouterLink],
+  imports: [
+    IconRefreshComponent,
+    IconAddComponent,
+    RouterLink,
+    ConfirmModalComponent,
+  ],
   templateUrl: './usuarios-list.component.html',
 })
-
 export class UsuariosListComponent {
   usuariosService = inject(UsuariosService);
   notificacion = inject(NotificacionService);
   mensajeEliminar = '';
 
   @ViewChild('deleteModal') deleteModal!: ConfirmModalComponent;
-  convencionId: number = 0;
+  userName: string = '';
 
   usuariosResource = rxResource({
     request: () => ({}),
@@ -42,9 +46,25 @@ export class UsuariosListComponent {
     this.usuariosResource.reload();
   }
 
-  abrirModal(convencionId: number) {
-    this.convencionId = convencionId;
-    this.mensajeEliminar = `¿Está seguro de eliminar el registro ${convencionId}? Esta acción no se puede deshacer.`;
+  eliminaUsuario() {
+    this.usuariosService.eliminaUsuario(this.userName).subscribe({
+      next: (data) => {
+        if (data.status) {
+          this.notificacion.show('Usuario eliminado correctamente', 'success');
+          this.usuariosResource.update((usuarios) => {
+            return usuarios?.filter((usuario) => usuario.userName !== this.userName);
+          });
+        }
+      },
+      error: (e) => {
+        this.notificacion.show('Error al eliminar el usuario', 'error');
+      },
+    });
+  }
+
+  abrirModal(userName: string) {
+    this.userName = userName;
+    this.mensajeEliminar = `¿Está seguro de eliminar el registro ${userName}? Esta acción no se puede deshacer.`;
     this.deleteModal.show();
   }
 }

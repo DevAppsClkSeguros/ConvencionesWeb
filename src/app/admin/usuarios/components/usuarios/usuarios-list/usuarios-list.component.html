@@ -42,9 +42,15 @@
             <button class="btn btn-primary btn-xs"
               [routerLink]="[`${usuario.userName}/edit`]">Editar</button>
           </th>
+          <th>
+            <button class="btn btn-secondary btn-xs" (click)="abrirModal(usuario.userName)">Eliminar</button>
+          </th>
         </tr>
         }
       </tbody>
     </table>
   </div>
 </div>
+
+<shared-confirm-modal #deleteModal titulo="¡Confirmar Eliminación!" mensajeAceptar="Si, Eliminar"
+  mensaje="{{mensajeEliminar}}" (confirmar)="eliminaUsuario()" (cancelar)="userName = ''" />

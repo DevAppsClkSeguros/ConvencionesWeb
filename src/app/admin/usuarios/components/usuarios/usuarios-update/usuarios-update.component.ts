@@ -45,7 +45,7 @@ export class UsuariosUpdateComponent {
     ],
     password: ['', [FormUtils.passwordValidator()]],
     activo: [true],
-    roles: [[], Validators.required],
+    roles: [[]],
   });
 
   usuarioResource = this.isEditMode

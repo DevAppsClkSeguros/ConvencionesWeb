@@ -57,10 +57,10 @@ export class UsuariosService {
       .pipe(catchError(AppConfig.handleErrors));
   }
 
-  eliminaUsuario(nombreUsuario: number): Observable<UsuariosResponse> {
+  eliminaUsuario(nombreUsuario: string): Observable<UsuariosResponse> {
     return this.http
       .delete<UsuariosResponse>(
-        `${AppConfig.APIREST_URL}/api/Usuarios/EliminarEvento/${nombreUsuario}`
+        `${AppConfig.APIREST_URL}/api/Usuarios/Eliminar/${nombreUsuario}`
       )
       .pipe(catchError(AppConfig.handleErrors));
   }
