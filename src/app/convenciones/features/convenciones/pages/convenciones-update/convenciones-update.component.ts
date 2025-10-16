@@ -1,6 +1,6 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, effect, inject } from '@angular/core';
-import { DatePipe, Location } from '@angular/common';
+import { Component, effect, inject, signal } from '@angular/core';
+import { DatePipe, Location, SlicePipe } from '@angular/common';
 import { rxResource } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
@@ -15,10 +15,18 @@ import { ConvencionesService } from '../../services/convenciones.service';
 import { FormUtils } from '@core/utils/form-utils';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { NotificacionService } from '@shared/services/notificacion.service';
+import { MapaSelectorComponent } from '@convenciones/components/mapa-selector/mapa-selector.component';
+import { FormErrorLabelComponent } from '@shared/components/form-error-label/form-error-label.component';
 
 @Component({
   selector: 'evento-update',
-  imports: [ReactiveFormsModule, NotFoundComponent],
+  imports: [
+    ReactiveFormsModule,
+    NotFoundComponent,
+    MapaSelectorComponent,
+    FormErrorLabelComponent,
+    SlicePipe,
+  ],
   providers: [DatePipe],
   templateUrl: './convenciones-update.component.html',
 })
@@ -31,6 +39,8 @@ export class ConvencionesUpdateComponent {
   convencionesService = inject(ConvencionesService);
   datePipe = inject(DatePipe);
   formUtils = FormUtils;
+  coordenadasDefault = signal({ lat: 19.4280468, lng: -99.2423326 });
+  mostrarMapa = signal<boolean>(false);
 
   imagePreview: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
@@ -97,6 +107,10 @@ export class ConvencionesUpdateComponent {
       latitud: convencion.latitud,
       longitud: convencion.longitud,
       lugarDestino: convencion.lugarDestino,
+    });
+    this.coordenadasDefault.set({
+      lat: Number(convencion.latitud),
+      lng: Number(convencion.longitud),
     });
     this.imagePreview = `${convencion.imagen}?n=${Math.random()}`;
   }
@@ -198,6 +212,14 @@ export class ConvencionesUpdateComponent {
         );
       },
     });
+  }
+
+  capturaCoordenadas(coordenadas: any) {
+    this.myForm.patchValue({
+      latitud: coordenadas.lat,
+      longitud: coordenadas.lng,
+    });
+    this.coordenadasDefault.set({ lat: coordenadas.lat, lng: coordenadas.lng });
   }
 
   goBack() {

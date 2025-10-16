@@ -1,6 +1,6 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Location } from '@angular/common';
+import { Location, SlicePipe } from '@angular/common';
 import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import {
   FormBuilder,
@@ -17,10 +17,12 @@ import { map, tap } from 'rxjs';
 import { RecomendacionesService } from '../../services/recomendaciones.service';
 import type { Recomendacion } from '../../interfaces/recomendaciones.interface';
 import { CategoriasService } from '../../services/categorias.service';
+import { MapaSelectorComponent } from '@convenciones/components/mapa-selector/mapa-selector.component';
+import { FormErrorLabelComponent } from '@shared/components/form-error-label/form-error-label.component';
 
 @Component({
   selector: 'app-recomendaciones-update',
-  imports: [NotFoundComponent, ReactiveFormsModule],
+  imports: [NotFoundComponent, ReactiveFormsModule, MapaSelectorComponent, FormErrorLabelComponent, SlicePipe],
   templateUrl: './recomendaciones-update.component.html',
 })
 export class RecomendacionesUpdateComponent {
@@ -37,6 +39,8 @@ export class RecomendacionesUpdateComponent {
   imagePreview: string | ArrayBuffer | null = null;
   recomendacionId = this.route.snapshot.params['id'];
   isEditMode = !!this.recomendacionId;
+  coordenadasDefault = signal({ lat: 19.4280468, lng: -99.2423326 });
+  mostrarMapa = signal<boolean>(false);
 
   myForm: FormGroup = this.fb.group({
     id: [0],
@@ -105,6 +109,10 @@ export class RecomendacionesUpdateComponent {
       url: recomendacion.imagen,
       eventoId: recomendacion.eventoId,
       categoria_RecomendacionId: recomendacion.categoria_RecomendacionId,
+    });
+    this.coordenadasDefault.set({
+      lat: Number(recomendacion.latitud),
+      lng: Number(recomendacion.longitud),
     });
     this.imagePreview = `${recomendacion.imagen}?n=${Math.random()}`;
   }
@@ -207,6 +215,14 @@ export class RecomendacionesUpdateComponent {
         );
       },
     });
+  }
+
+  capturaCoordenadas(coordenadas: any) {
+    this.myForm.patchValue({
+      latitud: coordenadas.lat,
+      longitud: coordenadas.lng,
+    });
+    this.coordenadasDefault.set({ lat: coordenadas.lat, lng: coordenadas.lng });
   }
 
   goBack() {

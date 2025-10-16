@@ -19,11 +19,7 @@
       <div>
         <label class="label">Recomendación</label>
         <input type="text" formControlName="titulo" class="input input-bordered w-full" />
-        @if (formUtils.isValidField(myForm, 'titulo')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'titulo')}}
-        </small>
-        }
+        <shared-form-error-label [control]="myForm.get('titulo')!"></shared-form-error-label>
       </div>
 
       <!-- Categoría -->
@@ -35,14 +31,11 @@
           <option [value]="categoria.id">{{categoria.nombre}}</option>
           }
         </select>
-        @if (formUtils.isValidField(myForm, 'categoria_RecomendacionId')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'categoria_RecomendacionId')}}
-        </small> }
+        <shared-form-error-label [control]="myForm.get('categoria_RecomendacionId')!"></shared-form-error-label>
       </div>
 
       <!-- Latitud -->
-      <div>
+      <!-- <div>
         <label class="label">Latitud</label>
         <input type="number" formControlName="latitud" class="input input-bordered w-full" />
         @if (formUtils.isValidField(myForm, 'latitud')){
@@ -50,10 +43,10 @@
           {{formUtils.getFieldError(myForm, 'latitud')}}
         </small>
         }
-      </div>
+      </div> -->
 
       <!-- Longitud -->
-      <div>
+      <!-- <div>
         <label class="label">Longitud</label>
         <input type="number" formControlName="longitud" class="input input-bordered w-full" />
         @if (formUtils.isValidField(myForm, 'longitud')){
@@ -61,6 +54,19 @@
           {{formUtils.getFieldError(myForm, 'longitud')}}
         </small>
         }
+      </div> -->
+
+      <div>
+        <label class="label">Ubicación (Coordenadas)</label>
+        @if (!myForm.get('latitud')?.value) {
+        <button type="button" class="btn btn-outline btn-primary w-full" (click)="mostrarMapa.set(true)">Obtener
+          coordenadas en mapa</button>
+        } @else {
+        <button type="button" class="btn btn-outline btn-success w-full"
+          (click)="mostrarMapa.set(true)">{{coordenadasDefault().lat.toString() | slice:0:10}},
+          {{coordenadasDefault().lng.toString() | slice:0:10}}</button>
+        }
+        <shared-form-error-label [control]="myForm.get('latitud')!"></shared-form-error-label>
       </div>
 
       <!-- Convención -->
@@ -72,21 +78,14 @@
           <option [value]="convencion.id">{{convencion.nombreEvento}}</option>
           }
         </select>
-        @if (formUtils.isValidField(myForm, 'eventoId')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'eventoId')}}
-        </small> }
+        <shared-form-error-label [control]="myForm.get('eventoId')!"></shared-form-error-label>
       </div>
 
       <!-- Información -->
       <div class="md:col-span-2">
         <label class="label">Información</label>
         <textarea class="textarea w-full" formControlName="informacion"></textarea>
-        @if (formUtils.isValidField(myForm, 'informacion')){
-        <small class="text-error">
-          {{formUtils.getFieldError(myForm, 'informacion')}}
-        </small>
-        }
+        <shared-form-error-label [control]="myForm.get('informacion')!"></shared-form-error-label>
       </div>
 
       <!-- Foto -->
@@ -112,5 +111,14 @@
       <button type="submit" class="btn btn-primary">Guardar</button>
     </div>
   </form>
+</div>
+}
+<!-- Modal -->
+@if(mostrarMapa()) {
+<div class="fixed inset-0 bg-gray bg-opacity-700 flex items-center justify-center z-50">
+  <div class="bg-base-100 p-4 rounded-2xl shadow-xl max-w-5xl w-11/12 relative">
+    <app-mapa-selector (coordenadas)="capturaCoordenadas($event)" [coordenadasDefault]="coordenadasDefault()" />
+    <button class="btn btn-primary mt-2" (click)="mostrarMapa.set(false)">Aceptar</button>
+  </div>
 </div>
 }
