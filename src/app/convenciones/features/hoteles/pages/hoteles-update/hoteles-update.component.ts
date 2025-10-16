@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import { Location, SlicePipe } from '@angular/common';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map, tap } from 'rxjs';
 import { CdnService } from '@shared/services/cdn.service';
@@ -30,6 +30,7 @@ import { MapaSelectorComponent } from "@convenciones/components/mapa-selector/ma
     UploadFileComponent,
     FormErrorLabelComponent,
     MapaSelectorComponent,
+    SlicePipe,
   ],
   templateUrl: './hoteles-update.component.html',
 })
@@ -47,6 +48,7 @@ export class HotelesUpdateComponent {
   isEditMode = !!this.hotelId;
   convencionId = signal<number>(0);
   coordenadasDefault = signal({ lat: 19.4280468, lng: -99.2423326 });
+  mostrarMapa = signal<boolean>(false);
 
   myForm: FormGroup = this.fb.group({
     id: [0],
@@ -194,12 +196,13 @@ export class HotelesUpdateComponent {
       convencionistasIds: convencionistas,
     });
   }
+
   capturaCoordenadas(coordenadas: any) {
-    console.log('Valor Emitido: ', coordenadas);
     this.myForm.patchValue({
       latitud: coordenadas.lat,
       longitud: coordenadas.lng,
     });
+    this.coordenadasDefault.set({ lat: coordenadas.lat, lng: coordenadas.lng });
   }
 
   goBack() {

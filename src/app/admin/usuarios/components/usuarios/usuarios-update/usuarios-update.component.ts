@@ -1,19 +1,19 @@
-import { Location } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
+import { Location } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FormUtils } from '@core/utils/form-utils';
-import { UsuariosService } from '../../../services/usuarios.service';
-import { NotificacionService } from '@shared/services/notificacion.service';
-import { ActivatedRoute } from '@angular/router';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
 import { map, tap } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { FormUtils } from '@core/utils/form-utils';
+import { NotFoundComponent } from '@shared/components/not-found/not-found.component';
+import { NotificacionService } from '@shared/services/notificacion.service';
 import { RolesService } from '../../../services/roles.service';
+import { rxResource } from '@angular/core/rxjs-interop';
+import { UsuariosService } from '../../../services/usuarios.service';
 
 @Component({
   selector: 'app-usuarios-update',

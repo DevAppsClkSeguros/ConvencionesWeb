@@ -53,4 +53,4 @@
 </div>
 
 <shared-confirm-modal #deleteModal titulo="¡Confirmar Eliminación!" mensajeAceptar="Si, Eliminar"
-  mensaje="{{mensajeEliminar}}" (confirmar)="eliminaUsuario()" (cancelar)="userName = ''" />
+  mensaje="{{mensajeEliminar}}" (confirmar)="eliminaUsuario()" (cancelar)="userName.set('')" />
