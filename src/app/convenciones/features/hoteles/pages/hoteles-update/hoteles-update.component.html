@@ -80,7 +80,7 @@
       <shared-form-error-label [control]="myForm.get('convencionistasIds')!"></shared-form-error-label>
     </div>
 
-    <app-mapa-selector (coordenadas)="capturaCoordenadas($event)" [coordenadasDefault]="coordenadasDefault"/>
+    <app-mapa-selector (coordenadas)="capturaCoordenadas($event)" [coordenadasDefault]="coordenadasDefault()"/>
     <!-- Botones -->
     <div class="flex justify-end mt-8 gap-4">
       <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>

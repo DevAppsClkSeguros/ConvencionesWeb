@@ -20,10 +20,10 @@ import { GoogleMapsModule } from '@angular/google-maps';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './mapa-selector.component.html',
   styleUrls: ['./mapa-selector.component.css'],
-  encapsulation: ViewEncapsulation.None, // 👈 Importante
+  encapsulation: ViewEncapsulation.None,
 })
 export class MapaSelectorComponent {
-  coordenadasNuevas = output<any>();
+  coordenadas = output<any>();
   coordenadasDefault = input<{ lat: number; lng: number }>({ lat: 0, lng: 0 });
   lat = computed(() => {
     return this.coordenadasDefault()?.lat;
@@ -32,29 +32,28 @@ export class MapaSelectorComponent {
     return this.coordenadasDefault()?.lng;
   });
   markerPosition = signal<{ lat: number; lng: number } | null>(null);
-  zoom = signal(10);
+  zoom = signal(15);
 
   mapOptions: google.maps.MapOptions = {
-    mapId: 'DEMO_MAP_ID',
+    mapId: 'ConvencionesID',
+    zoom: 15,
   };
 
   @ViewChild('placeAutocomplete', { static: false })
   placeAutocompleteRef!: ElementRef<HTMLElement>;
 
   constructor(private ngZone: NgZone) {
-    console.log('coordenadasDefault: ', this.coordenadasDefault());
     afterNextRender(() => {
       this.initPlaceAutocomplete();
     });
   }
 
   onMapClick(event: google.maps.MapMouseEvent) {
-    console.log('coordenadasDefault: ', this.coordenadasDefault());
     if (event.latLng) {
       const lat = event.latLng.lat();
       const lng = event.latLng.lng();
       this.markerPosition.set({ lat, lng });
-      this.coordenadasNuevas.emit({ lat, lng });
+      this.coordenadas.emit({ lat, lng });
     }
   }
 
@@ -69,13 +68,8 @@ export class MapaSelectorComponent {
 
     autocompleteElement.addEventListener('gmp-select', async (event: any) => {
       this.ngZone.run(async () => {
-        // ✅ Obtener placePrediction del evento
         const placePrediction = event.placePrediction;
-
-        // ✅ Convertir a Place
         const place = placePrediction.toPlace();
-
-        // ✅ Obtener los campos necesarios
         await place.fetchFields({
           fields: ['location', 'displayName', 'formattedAddress'],
         });
@@ -86,8 +80,6 @@ export class MapaSelectorComponent {
 
           console.log('✅ Nueva ubicación:', { lat, lng });
 
-          // this.lat.set(lat);
-          // this.lng.set(lng);
           this.markerPosition.set({ lat, lng });
           this.zoom.set(16);
         } else {
@@ -95,11 +87,5 @@ export class MapaSelectorComponent {
         }
       });
     });
-  }
-
-  copyCoords() {
-    const coords = `${this.lat()}, ${this.lng()}`;
-    navigator.clipboard.writeText(coords);
-    alert(`Coordenadas copiadas: ${coords}`);
   }
 }

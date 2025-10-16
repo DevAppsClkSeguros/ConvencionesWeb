@@ -46,7 +46,7 @@ export class HotelesUpdateComponent {
   hotelId = this.route.snapshot.params['id'];
   isEditMode = !!this.hotelId;
   convencionId = signal<number>(0);
-  coordenadasDefault = { lat: 19.4280468, lng: -99.2423326 };
+  coordenadasDefault = signal({ lat: 19.4280468, lng: -99.2423326 });
 
   myForm: FormGroup = this.fb.group({
     id: [0],
@@ -112,10 +112,10 @@ export class HotelesUpdateComponent {
       detalles: hotel.detalles,
       convencionistasIds: hotel.convencionistasIds,
     });
-    this.coordenadasDefault = {
+    this.coordenadasDefault.set({
       lat: Number(hotel.latitud),
       lng: Number(hotel.longitud),
-    };
+    });
     this.imagePreview = hotel.imagen;
     this.convencionId.set(hotel.eventoId);
   }
