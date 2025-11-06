@@ -39,6 +39,13 @@
     </ul>
   </div>
   <div class="navbar-end">
+    <a class="btn btn-outline btn-primary tooltip tooltip-info" data-tip="Cargar seguros de viajero"
+      (click)="mostrarModal.set(true)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5c0-2.64-2.05-4.78-4.65-4.96M14 13v4h-4v-4H7l4.65-4.65c.2-.2.51-.2.71 0L17 13z" />
+      </svg>
+    </a>
     <section class="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
       <div class="flex flex-col justify-end items-end w-full sm:w-full">
         <fieldset class="fieldset h-10">
@@ -54,3 +61,7 @@
     </section>
   </div>
 </div>
+@if (mostrarModal()) {
+<shared-upload-file-modal (cerrarModal)="cerrarModal()" (subirArchivos)="enviarArchivosAlBackend($event)"
+[titulo]="'Cargar memorias fotográficas'" [tipoMultimedia]="'Imagenes'"/>
+}

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output, input, signal } from '@angular/core';
+import { Component, EventEmitter, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,28 +7,34 @@ import { CommonModule } from '@angular/common';
   templateUrl: './upload-file-modal.component.html',
 })
 export class UploadFileModalComponent {
-  archivosSeleccionados = signal<File[]>([]);
-
-  @Output() cerrarModal = new EventEmitter<void>();
-  @Output() subirArchivos = new EventEmitter<File[]>();
+  cerrarModal = output<void>();
+  subirArchivos = output<File[]>();
+  tipoMultimedia = input<'Imagenes' | 'PDF'>('Imagenes');
+  titulo = input<string>('Seleccionar archivos');
+  archivosSeleccionados: File[] = [];
 
   seleccionarArchivos(event: Event) {
     const target = event.target as HTMLInputElement;
     const archivos = target.files;
     if (!archivos) return;
-
-    const archivosArray = Array.from(archivos);
-    this.archivosSeleccionados.set(archivosArray);
   }
 
-  cargar() {
-    if (this.archivosSeleccionados().length > 0) {
-      this.subirArchivos.emit(this.archivosSeleccionados());
-      this.cerrarModal.emit(); // cerrar después de cargar
-    }
-  }
+  cargar() {}
 
   cancelar() {
+    this.cerrarModal.emit();
+  }
+
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (!input.files) return;
+
+    this.archivosSeleccionados = Array.from(input.files);
+  }
+
+  enviarArchivos() {
+    if (this.archivosSeleccionados.length === 0) return;
+    this.subirArchivos.emit(this.archivosSeleccionados);
     this.cerrarModal.emit();
   }
 }

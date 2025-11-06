@@ -1,19 +1,24 @@
-<div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-  <div class="bg-white p-6 rounded-xl w-full max-w-lg shadow-lg">
-    <h2 class="text-xl font-bold mb-4">Seleccionar archivos PDF</h2>
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white rounded-xl shadow-lg w-11/12 sm:w-1/2 p-6 space-y-4">
+    <h2 class="text-xl font-bold mb-4">{{ titulo() }}</h2>
 
-    <input type="file" (change)="seleccionarArchivos($event)" multiple accept=".pdf"
-      class="file-input file-input-bordered w-full mb-4" />
+    <input type="file" multiple [accept]="tipoMultimedia() === 'Imagenes' ? 'image/*, video/*' : '.pdf'"
+      (change)="onFileSelected($event)" class="file-input file-input-bordered w-full" />
 
-    <ul class="mb-4 list-disc list-inside text-sm">
-      @for (archivo of archivosSeleccionados(); track archivo.name) {
-      <li>{{ archivo.name }}</li>
+    @if (archivosSeleccionados.length > 0) {
+    <div class="mt-4 space-y-2 max-h-48 overflow-y-auto">
+      @for (file of archivosSeleccionados; track file.name) {
+      <div class="flex items-center justify-between p-2 border rounded-lg">
+        <span class="truncate w-3/4">{{ file.name }}</span>
+        <span class="text-sm text-gray-500">{{ (file.size / 1024 / 1024) | number:'1.2-2' }} MB</span>
+      </div>
       }
-    </ul>
+    </div>
+    }
 
-    <div class="flex justify-end gap-3">
-      <button class="btn btn-error" (click)="cancelar()">Cancelar</button>
-      <button class="btn btn-primary" (click)="cargar()">Cargar archivos</button>
+    <div class="flex justify-end mt-4 gap-3">
+      <button type="button" class="btn btn-ghost" (click)="cerrarModal.emit()">Cancelar</button>
+      <button type="button" class="btn btn-primary" (click)="enviarArchivos()">Subir</button>
     </div>
   </div>
 </div>

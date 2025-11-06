@@ -5,14 +5,15 @@ import {
   RouterLink,
   RouterLinkActive,
 } from '@angular/router';
-import { ConvencionesService } from '@convenciones/features/convenciones/services/convenciones.service';
-import { NotificacionService } from '@shared/services/notificacion.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
+import { ConvencionesService } from '@convenciones/features/convenciones/services/convenciones.service';
+import { NotificacionService } from '@shared/services/notificacion.service';
+import { UploadFileModalComponent } from '@shared/components/upload-file-modal/upload-file-modal.component';
 
 @Component({
   selector: 'memoras-navbar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, UploadFileModalComponent],
   templateUrl: './memoras-navbar.component.html',
 })
 export class MemorasNavbarComponent {
@@ -21,6 +22,7 @@ export class MemorasNavbarComponent {
   private route = inject(ActivatedRoute);
   eventosService = inject(ConvencionesService);
   convencionSeleccionada = signal<string | null>(null);
+  mostrarModal = signal(false);
 
   convencionesResource = rxResource({
     loader: ({}) => {
@@ -57,5 +59,18 @@ export class MemorasNavbarComponent {
       },
       queryParamsHandling: 'merge',
     });
+  }
+
+  abrirModalArchivos() {
+    this.mostrarModal.set(true);
+  }
+
+  cerrarModal() {
+    this.mostrarModal.set(false);
+  }
+
+  enviarArchivosAlBackend(archivos: File[]) {
+    const formData = new FormData();
+    archivos.forEach((file) => formData.append('archivos', file));
   }
 }
