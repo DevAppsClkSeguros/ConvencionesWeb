@@ -1,7 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { AppConfig } from '@shared/app-config';
-import { AuthService } from '@core/interceptor/auth.service';
+import { AuthService } from 'src/app/auth/services/auth.service';
+import { environment } from 'src/environments/environment'
 
 @Component({
   selector: 'shared-navbar',
@@ -11,12 +12,13 @@ import { AuthService } from '@core/interceptor/auth.service';
 export class NavbarComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
-  nombreUsuario: string = '';
+  usuario: string = '';
+  environment = environment;
 
   ngOnInit(): void {
     const datosUsuario = this.authService.getUserData();
     if (datosUsuario) {
-      this.nombreUsuario = datosUsuario.Nombre;
+      this.usuario = datosUsuario.FirstName;
     }
   }
 
@@ -27,6 +29,6 @@ export class NavbarComponent implements OnInit {
 
   logOut() {
     this.authService.logOut();
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 }

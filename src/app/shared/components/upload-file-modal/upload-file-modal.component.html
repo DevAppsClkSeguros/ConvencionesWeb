@@ -1,0 +1,59 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white p-6 rounded-xl">
+    <h2 class="text-xl font-bold mb-4">{{ titulo() }}</h2>
+
+    <input type="file" multiple class="file-input file-input-bordered w-full mb-4" (change)="onFileSelected($event)"
+      [accept]="
+        tipoMultimedia() === 'Imagenes'
+          ? 'image/*, video/*'
+          : 'application/pdf'
+      " />
+
+    @if (uploads.length > 0) {
+    <div class="space-y-3 max-h-80 overflow-y-auto">
+      @for (u of uploads; track u.file.name) {
+      <div class="border border-base-300 rounded-lg p-3 shadow-sm bg-base-200">
+        <div class="flex justify-between items-center mb-1">
+          <span class="truncate font-medium text-sm w-2/3">{{ u.file.name }}</span>
+
+          @if (u.status === 'uploading') {
+          <span class="text-xs text-info font-semibold">{{ u.progress }}%</span>
+          }
+          @if (u.status === 'done') {
+          <span class="text-success text-sm font-bold">✔️</span>
+          }
+          @if (u.status === 'error') {
+          <span class="text-error text-xs font-semibold">❌ {{ u.error }}</span>
+          }
+        </div>
+
+        <div class="h-2 bg-base-300 rounded overflow-hidden">
+          <div class="h-full bg-primary transition-all duration-300" [style.width.%]="u.progress"></div>
+        </div>
+
+        @if (u.status === 'done') {
+        <p class="text-xs mt-1 text-success">Archivo cargado correctamente.</p>
+        }
+      </div>
+      }
+    </div>
+    } @else {
+    <div class="text-center text-sm text-gray-500 italic py-6">
+      No hay archivos seleccionados.
+    </div>
+    }
+
+    <div class="flex justify-end gap-3 mt-6">
+      <button class="btn btn-outline btn-error" (click)="onClose()" [disabled]="isUploading">
+        Cerrar
+      </button>
+      <button class="btn btn-primary" (click)="onSubmit()" [disabled]="uploads.length === 0 || isUploading">
+        @if (isUploading) {
+        <span class="loading loading-spinner"></span> Subiendo...
+        } @else {
+        Subir archivos
+        }
+      </button>
+    </div>
+  </div>
+  </div>

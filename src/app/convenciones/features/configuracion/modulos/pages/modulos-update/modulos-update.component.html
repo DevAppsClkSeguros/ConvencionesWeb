@@ -1,0 +1,145 @@
+@if (modulosResource?.error()) {
+<shared-not-found mensaje="No se encontro el módulo seleccionado" />
+}
+@if (!modulosResource?.error()) {
+<div class="min-h-screen flex items-center justify-center bg-base-200 p-5">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
+    <h2 class="text-3xl font-bold mb-6">Datos del módulo</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @if (isEditMode) {
+      <div>
+        <label class="label">ID</label>
+        <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
+      </div>
+
+      <!-- Estatus -->
+      <div>
+        <label class="label w-full">Estatus</label>
+        <input type="checkbox" formControlName="status" class="toggle toggle-primary " />
+        @if (formUtils.isValidField(myForm, 'status')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'status')}}
+        </small>
+        }
+      </div>
+      }
+
+      <!-- masterKey -->
+      <div>
+        <label class="label">Módulo</label>
+        <input type="text" formControlName="masterKey" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'masterKey')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'masterKey')}}
+        </small>
+        }
+      </div>
+
+      <!-- keyCode -->
+      <div>
+        <label class="label">Clave</label>
+        <input type="text" formControlName="keyCode" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'keyCode')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'keyCode')}}
+        </small>
+        }
+      </div>
+
+      <!-- idTypeResp -->
+      <div>
+        <label class="label">Tipo de Respuesta</label>
+        <input type="number" formControlName="idTypeResp" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'idTypeResp')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'idTypeResp')}}
+        </small>
+        }
+      </div>
+
+      <!-- message -->
+      <div>
+        <label class="label">Mensaje</label>
+        <input type="text" formControlName="message" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'message')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'message')}}
+        </small>
+        }
+      </div>
+
+      <!-- fStart -->
+      <div>
+        <label class="label">Fecha Inicio</label>
+        <input type="date" formControlName="fStart" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'fStart')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'fStart')}}
+        </small>
+        }
+      </div>
+
+      <!-- fStop -->
+      <div>
+        <label class="label">Fecha Fin</label>
+        <input type="date" formControlName="fStop" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'fStop')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'fStop')}}
+        </small>
+        }
+      </div>
+
+      <!-- statusPopUp -->
+      <div>
+        <label class="label w-full">Estatus PopUp</label>
+        <input type="checkbox" formControlName="statusPopUp" class="toggle toggle-primary " />
+        @if (formUtils.isValidField(myForm, 'statusPopUp')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'statusPopUp')}}
+        </small>
+        }
+      </div>
+
+      <!-- idTypeRespPopUp -->
+      <div>
+        <label class="label">Tipo de Respuesta PopUp</label>
+        <input type="number" formControlName="idTypeRespPopUp" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'idTypeRespPopUp')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'idTypeRespPopUp')}}
+        </small>
+        }
+      </div>
+
+      <!-- messagePopUp -->
+      <div>
+        <label class="label">Mensaje PopUp</label>
+        <input type="text" formControlName="messagePopUp" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'messagePopUp')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'messagePopUp')}}
+        </small>
+        }
+      </div>
+
+      <div class="md:col-span-2">
+        <label class="label">Descripción</label>
+        <textarea class="textarea w-full min-h-[150px]" formControlName="descripcion"></textarea>
+        @if (formUtils.isValidField(myForm, 'descripcion')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'descripcion')}}
+        </small>
+        }
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end mt-8 gap-4">
+      <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+</div>
+}

@@ -1,0 +1,67 @@
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { catchError, map, Observable } from 'rxjs';
+import { AppConfig } from '@shared/app-config';
+import type { Hotel, HotelesResponse, HotelResponse } from '../interfaces/hoteles.interface';
+
+@Injectable({ providedIn: 'root' })
+export class HotelesService {
+  private http = inject(HttpClient);
+
+  obtieneHoteles(): Observable<HotelesResponse> {
+    return this.http
+      .get<HotelesResponse>(`${AppConfig.APIREST_URL}/api/Hotel/listado`)
+      .pipe(catchError(AppConfig.handleErrors));
+  }
+
+  obtieneHotel(hotelId: number): Observable<HotelResponse> {
+    return this.http
+      .get<HotelResponse>(
+        `${AppConfig.APIREST_URL}/api/Hotel/Detalles/${hotelId}`
+      )
+      .pipe(catchError(AppConfig.handleErrors));
+  }
+
+  nuevoHotel(hotel: Hotel): Observable<HotelesResponse> {
+    return this.http
+      .post<HotelesResponse>(`${AppConfig.APIREST_URL}/api/Hotel/Nuevo`, {
+        nombreHotel: hotel.nombreHotel,
+        telefono: hotel.telefono,
+        direccion: hotel.direccion,
+        latitud: hotel.latitud,
+        longitud: hotel.longitud,
+        imagen: hotel.url,
+        eventoId: hotel.eventoId,
+        detalles: hotel.detalles,
+        convencionistasIds: hotel.convencionistasIds,
+      })
+      .pipe(catchError(AppConfig.handleErrors));
+  }
+
+  actualizaHotel(hotel: Hotel): Observable<HotelesResponse> {
+    return this.http
+      .put<HotelesResponse>(
+        `${AppConfig.APIREST_URL}/api/Hotel/Actualizar/${hotel.id}`,
+        {
+          nombreHotel: hotel.nombreHotel,
+          telefono: hotel.telefono,
+          direccion: hotel.direccion,
+          latitud: hotel.latitud,
+          longitud: hotel.longitud,
+          imagen: hotel.url,
+          eventoId: hotel.eventoId,
+          detalles: hotel.detalles,
+          convencionistasIds: hotel.convencionistasIds,
+        }
+      )
+      .pipe(catchError(AppConfig.handleErrors));
+  }
+
+  eliminaHotel(HotelId: number): Observable<HotelesResponse> {
+    return this.http
+      .delete<HotelesResponse>(
+        `${AppConfig.APIREST_URL}/api/Hotel/${HotelId}`
+      )
+      .pipe(catchError(AppConfig.handleErrors));
+  }
+}

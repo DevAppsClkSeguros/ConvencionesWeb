@@ -1,13 +1,13 @@
 <div class="min-h-screen py-5 px-4 sm:px-6 lg:px-8">
   <!-- Título -->
   <div class="text-center mb-12">
-    <h1 class="text-4xl mb-4 text-shadow">¡Bienvenido al Administrador Convenciones Click!</h1>
+    <h1 class="text-4xl text-primary">¡Bienvenido al Administrador Convenciones Click!</h1>
   </div>
 
   <!-- Grid de Cards -->
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
     <!-- Card 1 -->
-      @for (card of cards; track card.title) {
+      @for (card of opcionesMenu; track card.title) {
     <app-card [card]="card"></app-card>
   }
   </div>

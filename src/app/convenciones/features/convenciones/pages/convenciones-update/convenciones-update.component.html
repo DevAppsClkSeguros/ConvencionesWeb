@@ -1,0 +1,115 @@
+@if (convencionResource?.error()) {
+<shared-not-found mensaje="{{convencionResource?.error()}}" />
+}
+@if (!convencionResource?.error()) {
+  <div class="min-h-screen flex items-center justify-center bg-base-200 p-5">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
+    <h2 class="text-3xl font-bold mb-6">Datos de la convención</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @if (isEditMode) {
+        <div>
+          <label class="label">ID</label>
+          <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
+        </div>
+
+        <!-- Estatus -->
+        <div>
+          <label class="label w-full">Estatus</label>
+          <input type="checkbox" formControlName="activo" class="toggle toggle-primary " />
+        </div>
+      }
+
+      <!-- Nombre -->
+      <div>
+        <label class="label">Nombre</label>
+        <input type="text" formControlName="nombreEvento" class="input input-bordered w-full" />
+        <shared-form-error-label [control]="myForm.get('nombreEvento')!"></shared-form-error-label>
+      </div>
+
+      <!-- Lugar destino -->
+      <div>
+        <label class="label">Lugar destino</label>
+        <input type="text" formControlName="lugarDestino" class="input input-bordered w-full" />
+        <shared-form-error-label [control]="myForm.get('lugarDestino')!"></shared-form-error-label>
+      </div>
+
+      <!-- Latitud -->
+      <!-- <div>
+        <label class="label">Latitud</label>
+        <input type="number" formControlName="latitud" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'latitud')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'latitud')}}
+        </small>
+        }
+      </div> -->
+
+      <!-- Longitud -->
+      <!-- <div>
+        <label class="label">Longitud</label>
+        <input type="number" formControlName="longitud" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'longitud')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'longitud')}}
+        </small>
+        }
+      </div> -->
+
+      <!-- Fecha inicio Encuesta-->
+      <div>
+        <label class="label">Fecha inicio de encuesta</label>
+        <input type="date" formControlName="fecha_inicio" class="input input-bordered w-full" />
+        <shared-form-error-label [control]="myForm.get('fecha_inicio')!"></shared-form-error-label>
+      </div>
+
+      <!-- Fecha fin Encuesta-->
+      <div>
+        <label class="label">Fecha fin de encuesta</label>
+        <input type="date" formControlName="fecha_fin" class="input input-bordered w-full" />
+        <shared-form-error-label [control]="myForm.get('fecha_fin')!"></shared-form-error-label>
+      </div>
+
+      <!-- Foto -->
+      <div>
+        <label class="label">Foto</label>
+        <input #fileInput type="file" class="file-input file-input-bordered w-full" (change)="onFileSelected($event)"
+          accept="image/*" />
+        @if(imagePreview) {
+        <img [src]="imagePreview" alt="Preview" class="max-h-[190px] w-auto object-cover mt-4 rounded-lg shadow-md" />
+        <button type="button" (click)="limpiarImagen(fileInput)" class="btn btn-error mt-2">Quitar imagen</button>
+        }
+        <shared-form-error-label [control]="myForm.get('imagen')!"></shared-form-error-label>
+      </div>
+
+      <div>
+        <label class="label">Ubicación (Coordenadas)</label>
+        @if (!myForm.get('latitud')?.value) {
+        <button type="button" class="btn btn-outline btn-primary w-full" (click)="mostrarMapa.set(true)">Obtener
+          coordenadas en mapa</button>
+        } @else {
+        <button type="button" class="btn btn-outline btn-success w-full"
+          (click)="mostrarMapa.set(true)">{{coordenadasDefault().lat.toString() | slice:0:10}},
+          {{coordenadasDefault().lng.toString() | slice:0:10}}</button>
+        }
+        <shared-form-error-label [control]="myForm.get('latitud')!"></shared-form-error-label>
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end mt-8 gap-4">
+      <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+</div>
+}
+<!-- Modal -->
+@if(mostrarMapa()) {
+<div class="fixed inset-0 bg-gray bg-opacity-700 flex items-center justify-center z-50">
+  <div class="bg-base-100 p-4 rounded-2xl shadow-xl max-w-5xl w-11/12 relative">
+    <app-mapa-selector (coordenadas)="capturaCoordenadas($event)" [coordenadasDefault]="coordenadasDefault()" />
+    <button class="btn btn-primary mt-2" (click)="mostrarMapa.set(false)">Aceptar</button>
+  </div>
+</div>
+}

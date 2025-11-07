@@ -1,14 +1,36 @@
 <div class="navbar bg-base-100 shadow-sm">
-  <!-- Izquierda -->
-  <div class="flex-1">
-    <a class="btn btn-ghost text-xl gap-2" [routerLink]="['/dashboard']">
-      <img src="assets/images/logos/logoConvencionesClick.webp" alt="Logo" class="h-12 w-auto" />
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+        </svg>
+      </div>
+      <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+        <li>
+          <a>Administración</a>
+          <ul class="p-2">
+            <li><a [routerLink]="['/admin/usuarios']">Gestión de usuarios</a></li>
+            <li><a (click)="abrirLinkApis()">Apis</a></li>
+          </ul>
+        </li>
+        <li><a>{{ usuario }}</a>
+          <ul class="p-2">
+            <!-- <li><a [routerLink]="['/cuenta/configuracion']">Ajustes</a></li> -->
+            <li><a (click)="logOut()">Cerrar sesión</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <a class="btn btn-ghost text-xl" [routerLink]="['/dashboard']">
       <span class="hidden md:inline">Convenciones Click</span>
+      <img src="assets/images/logos/logoConvencionesClick.webp" alt="Logo" class="h-12 w-auto" />
+      <span class="badge badge-ghost badge-xs">V-{{environment.version}}</span>
     </a>
   </div>
 
   <!-- Derecha -->
-  <div class="flex-none">
+  <div class="navbar-end hidden lg:flex">
     <ul class="menu menu-horizontal px-2 md:px-6">
 
       <!-- Dropdown Administración -->
@@ -50,18 +72,12 @@
           Administración
         </div>
         <ul tabindex="0" class="menu dropdown-content z-[1] bg-base-100 rounded-box w-52 p-2 shadow">
-          <li><a [routerLink]="['/admin']">
+          <li><a [routerLink]="['/admin/usuarios']">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <path fill="currentColor"
                   d="M12 5.5A3.5 3.5 0 0 1 15.5 9a3.5 3.5 0 0 1-3.5 3.5A3.5 3.5 0 0 1 8.5 9A3.5 3.5 0 0 1 12 5.5M5 8c.56 0 1.08.15 1.53.42c-.15 1.43.27 2.85 1.13 3.96C7.16 13.34 6.16 14 5 14a3 3 0 0 1-3-3a3 3 0 0 1 3-3m14 0a3 3 0 0 1 3 3a3 3 0 0 1-3 3c-1.16 0-2.16-.66-2.66-1.62a5.54 5.54 0 0 0 1.13-3.96c.45-.27.97-.42 1.53-.42M5.5 18.25c0-2.07 2.91-3.75 6.5-3.75s6.5 1.68 6.5 3.75V20h-13zM0 20v-1.5c0-1.39 1.89-2.56 4.45-2.9c-.59.68-.95 1.62-.95 2.65V20zm24 0h-3.5v-1.75c0-1.03-.36-1.97-.95-2.65c2.56.34 4.45 1.51 4.45 2.9z" />
               </svg>
               Gestión de usuarios</a></li>
-          <li><a>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
-                <path fill="currentColor"
-                  d="M13.5 2a4.5 4.5 0 0 0-4.417 5.36l-6.426 6.658a2.357 2.357 0 0 0 3.374 3.293L9.004 14.3a5.5 5.5 0 0 1 7.833-4.78a4.51 4.51 0 0 0 1.05-4.03a.5.5 0 0 0-.841-.242L14.5 7.793L12.208 5.5l2.545-2.545a.5.5 0 0 0-.242-.84A4.5 4.5 0 0 0 13.501 2m-2.865 11.92a2 2 0 0 0 1.43-2.478l-.155-.557q.382-.293.821-.497l.338.358a2 2 0 0 0 2.91.001l.324-.344q.448.212.835.519l-.126.422a2 2 0 0 0 1.456 2.519l.349.082a4.7 4.7 0 0 1 .01 1.017l-.46.118a2 2 0 0 0-1.431 2.478l.156.556q-.383.295-.822.498l-.338-.358a2 2 0 0 0-2.909-.002l-.325.345a4.3 4.3 0 0 1-.835-.518l.127-.423a2 2 0 0 0-1.456-2.52l-.35-.082a4.7 4.7 0 0 1-.01-1.016zm2.865.58a1 1 0 1 0 2 0a1 1 0 0 0-2 0" />
-              </svg>
-              Configuración</a></li>
           <li><a (click)="abrirLinkApis()">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
@@ -87,15 +103,15 @@
               </path>
             </g>
           </svg>
-          {{ nombreUsuario }}
+          {{ usuario }}
         </div>
         <ul tabindex="0" class="menu dropdown-content z-[1] bg-base-100 rounded-box w-52 p-2 shadow">
-          <li><a [routerLink]="['/cuenta/configuracion']">
+          <!-- <li><a [routerLink]="['/cuenta/configuracion']">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
                 <path fill="currentColor"
                   d="M13.5 2a4.5 4.5 0 0 0-4.417 5.36l-6.426 6.658a2.357 2.357 0 0 0 3.374 3.293L9.004 14.3a5.5 5.5 0 0 1 7.833-4.78a4.51 4.51 0 0 0 1.05-4.03a.5.5 0 0 0-.841-.242L14.5 7.793L12.208 5.5l2.545-2.545a.5.5 0 0 0-.242-.84A4.5 4.5 0 0 0 13.501 2m-2.865 11.92a2 2 0 0 0 1.43-2.478l-.155-.557q.382-.293.821-.497l.338.358a2 2 0 0 0 2.91.001l.324-.344q.448.212.835.519l-.126.422a2 2 0 0 0 1.456 2.519l.349.082a4.7 4.7 0 0 1 .01 1.017l-.46.118a2 2 0 0 0-1.431 2.478l.156.556q-.383.295-.822.498l-.338-.358a2 2 0 0 0-2.909-.002l-.325.345a4.3 4.3 0 0 1-.835-.518l.127-.423a2 2 0 0 0-1.456-2.52l-.35-.082a4.7 4.7 0 0 1-.01-1.016zm2.865.58a1 1 0 1 0 2 0a1 1 0 0 0-2 0" />
               </svg>
-              Ajustes</a></li>
+              Ajustes</a></li> -->
           <li><a (click)="logOut()">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                 <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">

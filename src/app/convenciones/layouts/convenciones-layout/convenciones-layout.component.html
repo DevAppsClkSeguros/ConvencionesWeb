@@ -1,0 +1,263 @@
+<div class="bg-white rounded-lg shadow-md">
+  <button
+    class="lg:hidden p-3 text-gray-600 hover:text-primary focus:outline-none fixed top-4 left-4 z-30 bg-white rounded-full shadow-md"
+    (click)="isSidebarOpen = !isSidebarOpen">
+    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+      stroke-width="2">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+
+  <div class="flex overflow-hidden bg-white">
+    <aside id="sidebar" class="flex fixed z-20 top-0 left-0 h-full flex-shrink-0 flex-col w-64 transition-transform duration-300 ease-in-out transform bg-white border-r border-gray-200
+      lg:translate-x-0" [class.-translate-x-full]="!isSidebarOpen " aria-label="Sidebar">
+
+      <div class="space-y-6 md:space-y-1 mt-4">
+
+        <div class="text-center">
+          <a class="btn btn-ghost text-xl font-bold" [routerLink]="['/convencionistas']">
+            <span class="hidden md:inline">Convenciones Click</span>
+          </a>
+
+        </div>
+
+        <div id="profile" class="space-y-3">
+          <img src="/assets/images/logos/logoConvencionesClick.webp" alt="Avatar user"
+            class="w-16 h-16 md:w-24 md:h-24 rounded-full mx-auto object-cover" />
+          <div>
+            <h2 class="font-medium text-xs md:text-sm text-center text-accent">
+              {{usuario}}
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative flex-1 flex flex-col min-h-0 border-r border-gray-200 bg-white pt-0">
+        <div class="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
+          <div class="flex-1 px-3 bg-white divide-y space-y-1">
+            <ul class="space-y-2 pb-2">
+              <li>
+              </li>
+              <li>
+                <button (click)="toggleMenu('convencionistas')" routerLink="/convencionistas"
+                  routerLinkActive="bg-primary text-white"
+                  class="w-full flex items-center justify-between text-base text-gray-900 font-normal rounded-lg hover:bg-primary hover:text-white transition duration-75 p-2 group"
+                  aria-controls="dropdown-config" [attr.aria-expanded]="isOpen('convencionistas')">
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32">
+                      <path fill="currentColor"
+                        d="M21.053 20.8c-1.132-.453-1.584-1.698-1.584-1.698s-.51.282-.51-.51s.51.51 1.02-2.548c0 0 1.413-.397 1.13-3.68h-.34s.85-3.51 0-4.7c-.85-1.188-1.188-1.98-3.057-2.547s-1.188-.454-2.547-.396s-2.492.793-2.492 1.19c0 0-.85.056-1.188.396c-.34.34-.906 1.924-.906 2.32s.283 3.06.566 3.625l-.337.114c-.284 3.283 1.13 3.68 1.13 3.68c.51 3.058 1.02 1.756 1.02 2.548s-.51.51-.51.51s-.452 1.245-1.584 1.698s-7.416 2.886-7.927 3.396c-.512.51-.454 2.888-.454 2.888H29.43s.06-2.377-.452-2.888c-.51-.51-6.795-2.944-7.927-3.396z" />
+                    </svg>
+                    <span class="ml-3 flex-1 whitespace-nowrap">Convencionistas</span>
+                  </div>
+                  @if (authService.hasRole('ADMIN')) {
+                  <svg class="w-4 h-4 transition-transform duration-300" [class.rotate-180]="isOpen('convencionistas')"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  }
+                </button>
+
+                @if (authService.hasRole('ADMIN')) {
+                <ul id="dropdown-config" class="pl-10 mt-1 space-y-1" [class.hidden]="!isOpen('convencionistas')">
+                  <li>
+                    <a routerLink="/convencionistas/perfiles"
+                      class="block p-2 rounded-lg hover:bg-gray-100">Perfiles</a>
+                  </li>
+                  <li>
+                    <a routerLink="/convencionistas/categorias"
+                      class="block p-2 rounded-lg hover:bg-gray-100">Categorías</a>
+                  </li>
+                </ul>
+                }
+              </li>
+
+              <li>
+                <a routerLink="/convenciones" routerLinkActive="bg-primary text-white"
+                  class="text-base text-gray-900 font-normal rounded-lg hover:bg-primary hover:text-white hover:text-base flex items-center p-2 group ">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                    <path fill="currentColor" fill-rule="evenodd"
+                      d="M5 1a4 4 0 0 0-4 4v14a4 4 0 0 0 4 4h14a4 4 0 0 0 4-4V5a4 4 0 0 0-4-4zm7 3a5.53 5.53 0 0 0-3.698 1.436l2.355 2.339l3.07-3.493A5.4 5.4 0 0 0 12 4m2.765.754l-2.543 2.893c.931.094 1.69.775 1.901 1.667l2.487-2.832a5.7 5.7 0 0 0-1.845-1.728m2.395 2.754l-7.565 8.615q.226.288.45.587c.726.975 1.007 1.787 1.205 2.36c.205.592.322.93.75.93s.545-.338.75-.93c.198-.573.48-1.385 1.205-2.36c.315-.426.638-.83.955-1.226c1.387-1.734 2.655-3.32 2.655-5.919a5.4 5.4 0 0 0-.405-2.057m-5.386 4.48l-2.87 3.269c-.556-.696-1.083-1.377-1.507-2.12l2.478-2.82a2.18 2.18 0 0 0 1.9 1.671Zm-4.888.078l3.05-3.47L7.563 6.24a5.5 5.5 0 0 0-1.128 3.325c0 .95.169 1.764.45 2.5Z"
+                      clip-rule="evenodd" />
+                  </svg>
+                  <span class="ml-3 flex-1 whitespace-nowrap">Convenciones</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/encuesta/preguntas" routerLinkActive="bg-primary text-white"
+                  class="text-base text-gray-900 font-normal rounded-lg hover:bg-primary hover:text-white hover:text-base flex items-center p-2 group ">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 36 36">
+                    <path fill="currentColor"
+                      d="M21 12H7a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1M8 10h12V7.94H8Z"
+                      class="clr-i-outline clr-i-outline-path-1" />
+                    <path fill="currentColor"
+                      d="M21 14.08H7a1 1 0 0 0-1 1V19a1 1 0 0 0 1 1h11.36L22 16.3v-1.22a1 1 0 0 0-1-1M20 18H8v-2h12Z"
+                      class="clr-i-outline clr-i-outline-path-2" />
+                    <path fill="currentColor"
+                      d="M11.06 31.51v-.06l.32-1.39H4V4h20v10.25l2-1.89V3a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v28a1 1 0 0 0 1 1h8a3.4 3.4 0 0 1 .06-.49"
+                      class="clr-i-outline clr-i-outline-path-3" />
+                    <path fill="currentColor" d="m22 19.17l-.78.79a1 1 0 0 0 .78-.79"
+                      class="clr-i-outline clr-i-outline-path-4" />
+                    <path fill="currentColor"
+                      d="M6 26.94a1 1 0 0 0 1 1h4.84l.3-1.3l.13-.55v-.05H8V24h6.34l2-2H7a1 1 0 0 0-1 1Z"
+                      class="clr-i-outline clr-i-outline-path-5" />
+                    <path fill="currentColor"
+                      d="m33.49 16.67l-3.37-3.37a1.61 1.61 0 0 0-2.28 0L14.13 27.09L13 31.9a1.61 1.61 0 0 0 1.26 1.9a1.6 1.6 0 0 0 .31 0a1.2 1.2 0 0 0 .37 0l4.85-1.07L33.49 19a1.6 1.6 0 0 0 0-2.27ZM18.77 30.91l-3.66.81l.89-3.63L26.28 17.7l2.82 2.82Zm11.46-11.52l-2.82-2.82L29 15l2.84 2.84Z"
+                      class="clr-i-outline clr-i-outline-path-6" />
+                    <path fill="none" d="M0 0h36v36H0z" />
+                  </svg>
+                  <span class="ml-3 flex-1 whitespace-nowrap">Encuesta</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/hoteles" routerLinkActive="bg-primary text-white"
+                  class="text-base text-gray-900 font-normal rounded-lg hover:bg-primary hover:text-white hover:text-base flex items-center p-2 group ">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32">
+                    <path fill="currentColor" fill-rule="evenodd"
+                      d="M21.15 5.02h6.69c.998 0 1.826.776 2.078 1.826c.067.284.077.522-.094.775a.9.9 0 0 1-.744.399H29V30H3V8.02h-.1a.9.9 0 0 1-.755-.416c-.17-.264-.148-.52-.075-.812c.253-1.023 1.07-1.772 2.05-1.772h6.69A5.95 5.95 0 0 1 15.98 2a5.95 5.95 0 0 1 5.17 3.02M10 29.62c0-.34.28-.62.621-.62H11V8.02h-1zM21.379 29H21V8.02h1v21.6c0-.34-.28-.62-.621-.62M15.99 3h.005zM6 21.306v2.383c0 .17-.14.311-.32.311H4.31c-.17 0-.31-.14-.31-.31v-2.384c0-.17.14-.31.31-.31h1.38c.17 0 .31.14.31.31m3 0v2.383c0 .17-.14.311-.32.311H7.31c-.17 0-.31-.14-.31-.31v-2.384c0-.17.14-.31.31-.31h1.38c.17 0 .31.14.31.31m-3-5.008v2.384c0 .17-.14.31-.32.31H4.31c-.17 0-.31-.14-.31-.31v-2.384c0-.17.14-.31.31-.31h1.38c.17 0 .31.14.31.31m3 0v2.384c0 .17-.14.31-.32.31H7.31c-.17 0-.31-.14-.31-.31v-2.384c0-.17.14-.31.31-.31h1.38c.17 0 .31.14.31.31m-3-4.987v2.383c0 .17-.14.31-.32.31H4.31c-.17 0-.31-.14-.31-.31V11.31c0-.17.14-.31.31-.31h1.38c.17 0 .31.14.31.31m3 0v2.383c0 .17-.14.31-.32.31H7.31c-.17 0-.31-.14-.31-.31V11.31c0-.17.14-.31.31-.31h1.38c.17 0 .31.14.31.31m15.994 9.995v2.383c0 .17-.14.311-.31.311H23.31a.31.31 0 0 1-.311-.31v-2.384c0-.17.14-.31.31-.31h1.373c.17 0 .311.14.311.31m3.006 0v2.383c0 .17-.14.311-.31.311h-1.373a.31.31 0 0 1-.311-.31v-2.384c0-.17.14-.31.31-.31h1.373c.17 0 .311.14.311.31m-3.006-5.008v2.384c0 .17-.14.31-.31.31H23.31a.31.31 0 0 1-.311-.31v-2.384c0-.17.14-.31.31-.31h1.373c.17 0 .311.14.311.31m3.006 0v2.384c0 .17-.14.31-.31.31h-1.373a.31.31 0 0 1-.311-.31v-2.384c0-.17.14-.31.31-.31h1.373c.17 0 .311.14.311.31m-3.006-4.987v2.383c0 .17-.14.31-.31.31H23.31a.31.31 0 0 1-.311-.31V11.31c0-.17.14-.31.31-.31h1.373c.17 0 .311.14.311.31m3.006 0v2.383c0 .17-.14.31-.31.31h-1.373a.31.31 0 0 1-.311-.31V11.31c0-.17.14-.31.31-.31h1.373c.17 0 .311.14.311.31M15 13.31v2.38c0 .17-.14.31-.312.31h-1.376a.31.31 0 0 1-.312-.31v-2.38c0-.17.14-.31.312-.31h1.376c.171 0 .312.14.312.31M15.137 27h-1.774a.365.365 0 0 1-.363-.37v-4.628h2.5v4.629c0 .21-.167.369-.363.369m1.363-5.998V21h-1v.002H13V21h-1.046a.45.45 0 0 1-.454-.45c0-.08.03-.15.06-.21q.009-.008.01-.011v-.009a5.16 5.16 0 0 1 4.44-2.53a5.16 5.16 0 0 1 4.44 2.53q.006.008.005.02t.005.02c.03.05.04.12.04.19a.45.45 0 0 1-.454.45H19v.002zm0 1v4.629c0 .21.167.369.363.369h1.774c.196 0 .363-.16.363-.37v-4.628zM19 15.69v-2.38c0-.17-.14-.31-.312-.31h-1.376a.313.313 0 0 0-.312.31v2.38c0 .17.14.31.312.31h1.376c.171 0 .312-.14.312-.31M17.511 6h-.02a.49.49 0 0 0-.488.49V8h-2.005V6.49a.49.49 0 0 0-.49-.49h-.02a.49.49 0 0 0-.488.49v4.02c0 .27.22.49.489.49h.02a.49.49 0 0 0 .489-.49v-1.5h2.005v1.5c0 .27.219.49.488.49h.02a.49.49 0 0 0 .489-.49V6.49a.49.49 0 0 0-.489-.49"
+                      clip-rule="evenodd" />
+                  </svg>
+                  <span class="ml-3 flex-1 whitespace-nowrap">hoteles</span>
+                </a>
+              </li>
+              <li>
+                <a routerLink="/vuelos" routerLinkActive="bg-primary text-white"
+                  class="text-base text-gray-900 font-normal rounded-lg hover:bg-primary hover:text-white hover:text-base flex items-center p-2 group ">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                    <path fill="currentColor"
+                      d="m9.983 20.048l-2.09-3.946l-3.966-2.11l1.083-1.077l3.452.587l3.05-3.05L4.01 7.25l1.388-1.38l9.125 1.565l3.12-3.139q.42-.421 1.03-.421t1.03.421q.422.421.422 1.028t-.421 1.028l-3.145 3.125l1.566 9.12l-1.394 1.394l-3.189-7.502l-3.05 3.05l.573 3.427z" />
+                  </svg>
+                  <span class="ml-3 flex-1 whitespace-nowrap">Vuelos</span>
+                </a>
+              </li>
+              <li>
+                <button (click)="toggleMenu('actividades')" routerLink="/actividades"
+                  routerLinkActive="bg-primary text-white"
+                  class="w-full flex items-center justify-between text-base text-gray-900 font-normal rounded-lg hover:bg-primary hover:text-white transition duration-75 p-2 group"
+                  aria-controls="dropdown-config" [attr.aria-expanded]="isOpen('actividades')">
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                      <path fill="currentColor"
+                        d="M8 17q.425 0 .713-.288T9 16t-.288-.712T8 15t-.712.288T7 16t.288.713T8 17m0-4q.425 0 .713-.288T9 12t-.288-.712T8 11t-.712.288T7 12t.288.713T8 13m0-4q.425 0 .713-.288T9 8t-.288-.712T8 7t-.712.288T7 8t.288.713T8 9m4 8h4q.425 0 .713-.288T17 16t-.288-.712T16 15h-4q-.425 0-.712.288T11 16t.288.713T12 17m0-4h4q.425 0 .713-.288T17 12t-.288-.712T16 11h-4q-.425 0-.712.288T11 12t.288.713T12 13m0-4h4q.425 0 .713-.288T17 8t-.288-.712T16 7h-4q-.425 0-.712.288T11 8t.288.713T12 9M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm0-2h14V5H5zM5 5v14z" />
+                    </svg>
+                    <span class="ml-3 flex-1 whitespace-nowrap">Actividades</span>
+                  </div>
+                  @if (authService.hasRole('ADMIN')) {
+                  <svg class="w-4 h-4 transition-transform duration-300" [class.rotate-180]="isOpen('actividades')"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  }
+                </button>
+
+                @if (authService.hasRole('ADMIN')) {
+                <ul id="dropdown-config" class="pl-10 mt-1 space-y-1" [class.hidden]="!isOpen('actividades')">
+                  <li>
+                    <a routerLink="/actividades/categorias"
+                      class="block p-2 rounded-lg hover:bg-gray-100">Categorías</a>
+                  </li>
+                </ul>
+                }
+              </li>
+              <li>
+                <button (click)="toggleMenu('recomendaciones')" routerLink="/recomendaciones"
+                  routerLinkActive="bg-primary text-white"
+                  class="w-full flex items-center justify-between text-base text-gray-900 font-normal rounded-lg hover:bg-primary hover:text-white transition duration-75 p-2 group"
+                  aria-controls="dropdown-config" [attr.aria-expanded]="isOpen('recomendaciones')">
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                      <path fill="currentColor" fill-rule="evenodd"
+                        d="M7.245 2h9.51c1.159 0 1.738 0 2.206.163a3.05 3.05 0 0 1 1.881 1.936C21 4.581 21 5.177 21 6.37v14.004c0 .858-.985 1.314-1.608.744a.946.946 0 0 0-1.284 0l-.483.442a1.657 1.657 0 0 1-2.25 0a1.657 1.657 0 0 0-2.25 0a1.657 1.657 0 0 1-2.25 0a1.657 1.657 0 0 0-2.25 0a1.657 1.657 0 0 1-2.25 0l-.483-.442a.946.946 0 0 0-1.284 0c-.623.57-1.608.114-1.608-.744V6.37c0-1.193 0-1.79.158-2.27c.3-.913.995-1.629 1.881-1.937C5.507 2 6.086 2 7.245 2M7 6.75a.75.75 0 0 0 0 1.5h.5a.75.75 0 0 0 0-1.5zm3.5 0a.75.75 0 0 0 0 1.5H17a.75.75 0 0 0 0-1.5zM7 10.25a.75.75 0 0 0 0 1.5h.5a.75.75 0 0 0 0-1.5zm3.5 0a.75.75 0 0 0 0 1.5H17a.75.75 0 0 0 0-1.5zM7 13.75a.75.75 0 0 0 0 1.5h.5a.75.75 0 0 0 0-1.5zm3.5 0a.75.75 0 0 0 0 1.5H17a.75.75 0 0 0 0-1.5z"
+                        clip-rule="evenodd" />
+                    </svg>
+                    <span class="ml-3 flex-1 whitespace-nowrap">Recomendaciones</span>
+                  </div>
+                  @if (authService.hasRole('ADMIN')) {
+                  <svg class="w-4 h-4 transition-transform duration-300" [class.rotate-180]="isOpen('recomendaciones')"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                  }
+                </button>
+
+                @if (authService.hasRole('ADMIN')) {
+                <ul id="dropdown-config" class="pl-10 mt-1 space-y-1" [class.hidden]="!isOpen('recomendaciones')">
+                  <li>
+                    <a routerLink="/recomendaciones/categorias"
+                      class="block p-2 rounded-lg hover:bg-gray-100">Categorías</a>
+                  </li>
+                </ul>
+                }
+              </li>
+              <li>
+                <a routerLink="/memorias-fotograficas" routerLinkActive="bg-primary text-white"
+                  class="text-base text-gray-900 font-normal rounded-lg hover:bg-primary hover:text-white hover:text-base flex items-center p-2 group ">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 20 20">
+                    <path fill="currentColor"
+                      d="M4.5 2A2.5 2.5 0 0 0 2 4.5v6A2.5 2.5 0 0 0 4.5 13H7v-2.5A3.5 3.5 0 0 1 10.5 7H14V4.5A2.5 2.5 0 0 0 11.5 2zm0 2a.5.5 0 0 1 .5.5V5a.5.5 0 0 1-1 0v-.5a.5.5 0 0 1 .5-.5m7.5.5V5a.5.5 0 0 1-1 0v-.5a.5.5 0 0 1 1 0M4.5 6.75a.5.5 0 0 1 .5.5v.5a.5.5 0 0 1-1 0v-.5a.5.5 0 0 1 .5-.5M5 10v.5a.5.5 0 0 1-1 0V10a.5.5 0 0 1 1 0m3 .5A2.5 2.5 0 0 1 10.5 8h5a2.5 2.5 0 0 1 2.5 2.5v5c0 .51-.152.983-.414 1.379l-3.377-3.377a1.71 1.71 0 0 0-2.418 0L8.414 16.88A2.5 2.5 0 0 1 8 15.5zm6 .5a1 1 0 1 0 2 0a1 1 0 0 0-2 0m-4.88 6.586c.396.262.87.414 1.379.414h5c.51 0 .983-.152 1.379-.414l-3.377-3.377a.71.71 0 0 0-1.004 0z" />
+                  </svg>
+                  <span class="ml-4">Memorias fotográficas</span>
+                </a>
+              </li>
+            </ul>
+            <div class="space-y-2 pt-2">
+              @if (authService.hasRole('ADMIN')) {
+              <li>
+                <button (click)="toggleMenu('configuracion')" routerLinkActive="bg-primary text-white"
+                  class="w-full flex items-center justify-between text-base text-gray-900 font-normal rounded-lg hover:bg-primary hover:text-white transition duration-17 p-2 group"
+                  aria-controls="dropdown-config" [attr.aria-expanded]="isOpen('configuracion')">
+                  <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                      <path fill="currentColor"
+                        d="M8 17q.425 0 .713-.288T9 16t-.288-.712T8 15t-.712.288T7 16t.288.713T8 17m0-4q.425 0 .713-.288T9 12t-.288-.712T8 11t-.712.288T7 12t.288.713T8 13m0-4q.425 0 .713-.288T9 8t-.288-.712T8 7t-.712.288T7 8t.288.713T8 9m4 8h4q.425 0 .713-.288T17 16t-.288-.712T16 15h-4q-.425 0-.712.288T11 16t.288.713T12 17m0-4h4q.425 0 .713-.288T17 12t-.288-.712T16 11h-4q-.425 0-.712.288T11 12t.288.713T12 13m0-4h4q.425 0 .713-.288T17 8t-.288-.712T16 7h-4q-.425 0-.712.288T11 8t.288.713T12 9M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h14q.825 0 1.413.588T21 5v14q0 .825-.587 1.413T19 21zm0-2h14V5H5zM5 5v14z" />
+                    </svg>
+                    <span class="ml-3 flex-1 whitespace-nowrap">Configuración</span>
+                  </div>
+
+                  <svg class="w-4 h-4 transition-transform duration-300" [class.rotate-180]="isOpen('configuracion')"
+                    fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                <ul id="dropdown-config" class="pl-10 mt-1 space-y-1" [class.hidden]="!isOpen('configuracion')">
+                  <li><a routerLink="/version-app" routerLinkActive="bg-primary text-white"
+                      class="block p-2 rounded-lg hover:bg-primary hover:text-white">Versión App</a></li>
+                  <li><a routerLink="/modulos" routerLinkActive="bg-primary text-white"
+                      class="block p-2 rounded-lg hover:bg-primary hover:text-white">Control de módulos</a>
+                  </li>
+                  <li><a routerLink="/credencialesMicrosoft" routerLinkActive="bg-primary text-white"
+                      class="block p-2 rounded-lg hover:bg-primary hover:text-white">Credenciales
+                      Microsoft</a></li>
+                </ul>
+              </li>
+              }
+
+              <a routerLink="/auth/login"
+                class="text-base text-gray-900 font-normal rounded-lg hover:bg-gray-100 group transition duration-75 flex items-center p-2">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20">
+                  <path fill="currentColor"
+                    d="m19 10l-6-5v3H6v4h7v3zM3 3h8V1H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H3z" />
+                </svg>
+                <span class="ml-3" (click)="authService.logOut()">Cerrar sesión</span>
+              </a>
+
+              <div class="text-center">
+                <span class="badge badge-ghost badge-xs">Version-{{environment.version}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <div id="main-content" class="h-full w-full bg-gray-50 relative overflow-y-auto lg:ml-64">
+      <main class="m-auto flex-grow flex flex-col min-h-screen p-3">
+        <router-outlet />
+      </main>
+      <shared-footer />
+    </div>
+  </div>
+  <div class="fixed inset-0 z-10 bg-gray-50 bg-opacity-50 lg:hidden transition-opacity duration-300"
+    [class.hidden]="!isSidebarOpen" (click)="isSidebarOpen = false">
+  </div>
+</div>

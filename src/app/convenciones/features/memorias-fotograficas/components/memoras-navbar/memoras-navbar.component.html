@@ -1,0 +1,67 @@
+<div class="navbar bg-base-100 shadow-sm mb-3">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" />
+        </svg>
+      </div>
+      <ul tabindex="0" class="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow">
+        <li><a routerLink="/memorias-fotograficas"
+            [queryParams]="{ tipo: 'imagenes', convencion: convencionSeleccionada() }"
+            class="btn btn-ghost cursor-pointer" routerLinkActive="text-primary">
+            Imágenes
+          </a></li>
+        <li>
+          <a routerLink="/memorias-fotograficas"
+            [queryParams]="{ tipo: 'videos', convencion: convencionSeleccionada() }" class="btn btn-ghost"
+            routerLinkActive="text-primary">
+            Videos
+          </a>
+        </li>
+      </ul>
+    </div>
+    <label class="btn btn-ghost text-xl">Memorias</label>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li><a routerLink="/memorias-fotograficas"
+          [queryParams]="{ tipo: 'imagenes', convencion: convencionSeleccionada() }"
+          class="btn btn-ghost cursor-pointer" routerLinkActive="text-primary">
+          Imágenes
+        </a></li>
+      <li>
+        <a routerLink="/memorias-fotograficas" [queryParams]="{ tipo: 'videos', convencion: convencionSeleccionada() }"
+          class="btn btn-ghost" routerLinkActive="text-primary">
+          Videos
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="navbar-end">
+    <a class="btn btn-outline btn-primary tooltip tooltip-info" data-tip="Cargar seguros de viajero"
+      (click)="mostrarModal.set(true)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+        <path fill="currentColor"
+          d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5c0-2.64-2.05-4.78-4.65-4.96M14 13v4h-4v-4H7l4.65-4.65c.2-.2.51-.2.71 0L17 13z" />
+      </svg>
+    </a>
+    <section class="flex flex-col md:flex-row items-center justify-between gap-4 p-4">
+      <div class="flex flex-col justify-end items-end w-full sm:w-full">
+        <fieldset class="fieldset h-10">
+          <select #convencionSelect class="select" (change)="onChange($event)">
+            <option value="" selected>Selecciona una convención </option>
+            @for (convencion of convencionesResource.value(); track convencion.id) {
+            <option [value]="convencion.nombreEvento" [selected]="convencionSeleccionada() === convencion.nombreEvento">
+              {{convencion.nombreEvento}}</option>
+            }
+          </select>
+        </fieldset>
+      </div>
+    </section>
+  </div>
+</div>
+@if (mostrarModal()) {
+<shared-upload-file-modal (cerrarModal)="cerrarModal()" (subirArchivos)="enviarArchivosAlBackend($event)"
+[titulo]="'Cargar memorias fotográficas'" [tipoMultimedia]="'Imagenes'"/>
+}

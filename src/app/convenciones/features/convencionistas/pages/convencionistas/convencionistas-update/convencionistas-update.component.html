@@ -1,0 +1,124 @@
+@if (convencionistaResource?.error()) {
+<shared-not-found mensaje="No se encontro el convencionista solicitado" />
+}
+@if (!convencionistaResource?.error()) {
+<div class="min-h-screen flex items-center justify-center p-5">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl">
+    <h2 class="text-3xl font-bold mb-6">Datos del convencionista</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      @if (isEditMode) {
+      <div>
+        <label class="label">ID</label>
+        <input type="text" formControlName="id" class="input input-bordered w-full" readonly />
+      </div>
+
+      <!-- Estatus -->
+      <div>
+        <label class="label w-full">Estatus</label>
+        <input type="checkbox" formControlName="activo" class="toggle toggle-primary " />
+        @if (formUtils.isValidField(myForm, 'activo')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'activo')}}
+        </small>
+        }
+      </div>
+      }
+
+      <!-- Clave -->
+      <div>
+        <label class="label">Clave</label>
+        <input type="text" formControlName="clave" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'clave')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'clave')}}
+        </small>
+        }
+      </div>
+
+      <!-- Nombre completo -->
+      <div>
+        <label class="label">Nombre completo</label>
+        <input type="text" formControlName="nombreCompleto" class="input input-bordered w-full"
+          placeholder="Nombre y apellidos" />
+        @if (formUtils.isValidField(myForm, 'nombreCompleto')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'nombreCompleto')}}
+        </small>
+        }
+      </div>
+
+      <!-- Puesto -->
+      <div>
+        <label class="label">Puesto</label>
+        <input type="text" formControlName="puesto" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'puesto')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'puesto')}}
+        </small>
+        }
+      </div>
+
+      <!-- Teléfono -->
+      <div>
+        <label class="label">Teléfono</label>
+        <input type="number" formControlName="telefono" class="input input-bordered w-full" />
+      </div>
+
+      <!-- Perfil -->
+      <div>
+        <label class="label">Perfil</label>
+        <select formControlName="perfilId" class="select select-bordered w-full">
+          <option value="" selected>Selecciona un perfil</option>
+          @for (perfil of perfilesResouce.value(); track perfil.id) {
+          <option [value]="perfil.id">{{perfil.nombre}}</option>
+          }
+        </select>
+        @if (formUtils.isValidField(myForm, 'perfilId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'perfilId')}}
+        </small> }
+      </div>
+
+      <!-- Categoría -->
+      <div>
+        <label class="label">Categoría</label>
+        <select formControlName="categoriaId" class="select select-bordered w-full">
+          <option value="" selected>Selecciona una categoria</option>
+          @for (categoria of categoriasResource.value(); track categoria.id) {
+          <option [value]="categoria.id">{{categoria.nombre}}</option>
+          }
+        </select>
+        @if (formUtils.isValidField(myForm, 'categoriaId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'categoriaId')}}
+        </small> }
+      </div>
+
+      <shared-upload-file [preview]="imagePreview" (imagen)="onFileSelected($event)"></shared-upload-file>
+
+      <!-- Convención -->
+      <div>
+        <label class="label">Convención</label>
+        <select formControlName="eventoId" class="select select-bordered w-full">
+          <option value="" selected>Selecciona una convención</option>
+          @for (convencion of convencionesResource.value(); track convencion.id) {
+          <option [value]="convencion.id">{{convencion.nombreEvento}}</option>
+          }
+        </select>
+        @if (formUtils.isValidField(myForm, 'eventoId')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'eventoId')}}
+        </small>
+        }
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end mt-8 gap-4">
+      <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+</div>
+}

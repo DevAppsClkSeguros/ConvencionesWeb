@@ -1,0 +1,118 @@
+@if (usuarioResource?.error()) {
+<shared-not-found mensaje="{{usuarioResource?.error()}}" />
+}
+@if (!usuarioResource?.error()) {
+<div class="min-h-screen flex items-center justify-center bg-base-200 p-5">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()"
+    class="bg-base-100 p-8 rounded-2xl shadow-lg w-full max-w-4xl ">
+    <h2 class="text-3xl font-bold mb-6">Datos del usuario</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+      @if (isEditMode) {
+      <!-- Estatus -->
+      <div>
+        <label class="label w-full">Estatus</label>
+        <input type="checkbox" formControlName="activo" class="toggle toggle-primary " />
+        @if (formUtils.isValidField(myForm, 'activo')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'activo')}}
+        </small>
+        }
+      </div>
+      }
+      <!-- Nombre de usuario -->
+      <div>
+        <label class="label">Nombre de usuario</label>
+        <input type="text" formControlName="userName" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'userName')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'userName')}}
+        </small>
+        }
+      </div>
+
+      <!-- Nombre -->
+      <div>
+        <label class="label">Nombre</label>
+        <input type="text" formControlName="firstName" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'firstName')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'firstName')}}
+        </small>
+        }
+      </div>
+
+      <!-- Apellidos -->
+      <div>
+        <label class="label">Apellidos</label>
+        <input type="text" formControlName="lastName" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'lastName')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'lastName')}}
+        </small>
+        }
+      </div>
+
+      <div>
+        <label class="label">Correo electrónico</label>
+        <input type="email" formControlName="email" class="input input-bordered w-full" />
+        @if (formUtils.isValidField(myForm, 'email')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'email')}}
+        </small>
+        }
+      </div>
+
+      <!-- Contraseña -->
+      <div>
+        <label class="label">Contraseña</label>
+        <input type="password" formControlName="password" class="input input-bordered w-full" placeholder="******" />
+        <!-- @if (formUtils.isValidField(myForm, 'password')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'password')}}
+        </small>
+        } -->
+        @if (formUtils.isValidField(myForm, 'password')) {
+        <ul class="text-sm text-error mt-3">
+          @if (passwordErrors['minlength']) {
+          <li>- {{ formUtils.getTextError({ minlength: passwordErrors['minlength'] }) }}</li>
+          }
+          @if (passwordErrors['uppercase']) {
+          <li>- La contraseña {{ formUtils.getTextError({ uppercase: true }) }}</li>
+          }
+          @if (passwordErrors['number']) {
+          <li>- La contraseña {{ formUtils.getTextError({ number: true }) }}</li>
+          }
+          @if (passwordErrors['special']) {
+          <li>- La contraseña {{ formUtils.getTextError({ special: true }) }}</li>
+          }
+        </ul>
+        }
+      </div>
+
+      <div>
+        <label class="label">Roles</label>
+        <div class="border border-base-200 bg-base-100 color">
+          <select formControlName="roles" class=" w-full form-control" multiple>
+            @for (rol of rolesResource.value(); track rol.id) {
+            <option [value]="rol.name">{{rol.name}}</option>
+            }
+          </select>
+        </div>
+        @if (formUtils.isValidField(myForm, 'roles')){
+        <small class="text-error">
+          {{formUtils.getFieldError(myForm, 'roles')}}
+        </small>
+        }
+      </div>
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-end mt-8 gap-4">
+      <button type="button" class="btn btn-neutral" (click)="goBack()">Cancelar</button>
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </div>
+  </form>
+</div>
+}

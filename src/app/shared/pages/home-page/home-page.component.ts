@@ -1,6 +1,7 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CardComponent } from "../../components/card/card.component";
 import type { Card } from '../../interfaces/card.interface';
+import { AuthService } from '../../../auth/services/auth.service';
 
 @Component({
   selector: 'app-home-page',
@@ -9,10 +10,11 @@ import type { Card } from '../../interfaces/card.interface';
   styleUrls: ['./home-page.component.css'],
 })
 export class HomePageComponent implements OnInit {
-  // cards = signal<Card[]>([]);
+  authService = inject(AuthService);
   cards: Card[] = [
     {
       title: 'Convenciones click',
+      roles: ['ADMIN', 'MARKETING', 'Admin'],
       description:
         'Configuración inicial de la convención, creación de encuesta para la evaluación del evento y registro de asistentes.',
       imageUrl: 'assets/images/convenciones/destino.webp',
@@ -21,12 +23,13 @@ export class HomePageComponent implements OnInit {
       visible: true,
       subMenu: [
         { title: 'Convenciones', route: '/convenciones' },
-        { title: 'Encuesta', route: '/preguntas' },
+        { title: 'Encuesta', route: '/encuesta/preguntas' },
         { title: 'Convencionistas', route: '/convencionistas' },
       ],
     },
     {
-      title: 'Información general',
+      title: 'Hoteles',
+      roles: ['ADMIN', 'MARKETING'],
       description: 'Selección del destino, elección del alojamiento y viajeros',
       imageUrl: 'assets/images/convenciones/informacion.webp',
       buttonText: 'Contratar',
@@ -36,6 +39,7 @@ export class HomePageComponent implements OnInit {
     },
     {
       title: 'Vuelos',
+      roles: ['ADMIN', 'MARKETING'],
       description: 'Detalles específicos sobre los vuelos.',
       imageUrl: 'assets/images/convenciones/vuelos.webp',
       buttonText: 'Contratar',
@@ -44,12 +48,13 @@ export class HomePageComponent implements OnInit {
       subMenu: [
         {
           title: 'Vuelos',
-          route: 'cs-dat-evn-vuelos',
+          route: '/vuelos',
         },
       ],
     },
     {
       title: 'Actividades',
+      roles: ['ADMIN', 'MARKETING'],
       description: 'Lista organizada de actividades y lugares a visitar.',
       imageUrl: 'assets/images/convenciones/actividad2.webp',
       buttonText: 'Contratar',
@@ -57,13 +62,14 @@ export class HomePageComponent implements OnInit {
       visible: true,
       subMenu: [
         {
-          title: '',
-          route: '',
+          title: 'Actividades',
+          route: '/actividades',
         },
       ],
     },
     {
       title: 'Recomendaciones',
+      roles: ['ADMIN', 'MARKETING'],
       description:
         'Recomendaciones de restaurantes y atracciones, sugerencias valiosas para los viajeros que desean aprovechar al máximo su visita.',
       imageUrl: 'assets/images/convenciones/recomendacion.webp',
@@ -79,6 +85,7 @@ export class HomePageComponent implements OnInit {
     },
     {
       title: 'Configuración',
+      roles: ['ADMIN', 'MARKETING'],
       description:
         'Configuración y control de módulos, actualización de versión de app y registro detallado de las actividades y eventos que ocurren dentro de un sistema.',
       imageUrl: 'assets/images/convenciones/configuracion.webp',
@@ -86,17 +93,40 @@ export class HomePageComponent implements OnInit {
       redirectTo: '',
       visible: true,
       subMenu: [
-        { title: 'Version App', route: 'cs-evn-cat-version-app' },
-        { title: 'Control de módulos', route: 'cs-cat-evn-modulos' },
+        { title: 'Version App', route: '/admin/version-app/list' },
+        { title: 'Control de módulos', route: '/admin/modulos/list' },
         { title: 'Log de eventos', route: 'log-eventos' },
-        { title: 'Perfil de usuario', route: 'cs-cat-evn-perfil' },
-        { title: 'Tipo usuario', route: 'cat-tipo-usuario' },
-        { title: 'Categoría de actividades', route: 'cat-eventos' },
-        { title: 'Categoría de recomendaciones', route: 'cat-recomendaciones' },
+        {
+          title: 'Perfil de convencionistas',
+          route: '/convencionistas/perfiles',
+        },
+        {
+          title: 'Categoría de convencionistas',
+          route: '/convencionistas/categorias',
+        },
+        {
+          title: 'Categoría de actividades',
+          route: '/actividades/categorias',
+        },
+        {
+          title: 'Categoría de recomendaciones',
+          route: '/recomendaciones/categorias',
+        },
+        {
+          title: 'Credenciales Microsoft',
+          route: '/admin/credencialesMicrosoft/edit',
+        },
       ],
     },
   ];
-  opcionesMenu: any = [];
 
-  ngOnInit() {}
+  opcionesMenu: Card[] = [];
+
+  ngOnInit() {
+    const roles = this.authService.getUserData();
+    this.opcionesMenu = this.cards.filter((card) => {
+      if (!card.roles || card.roles.length === 0) return true;
+      return card.roles.some((r) => roles?.Roles.includes(r));
+    });
+  }
 }

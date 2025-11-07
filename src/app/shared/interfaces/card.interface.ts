@@ -7,6 +7,7 @@ export interface Card {
   redirectTo: string;
   visible: boolean;
   subMenu: SubMenu[];
+  roles: string[];
 }
 
 export interface SubMenu {
