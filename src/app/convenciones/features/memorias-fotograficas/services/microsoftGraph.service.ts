@@ -1,11 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
-import { AppConfig } from '@shared/app-config';
-import type { MicrosoftResponse } from '../interfaces/microsoftGraph.interface';
-import type { Imagen } from '../interfaces/imagen.interface';
-import { ImageMapper } from '../mapper/memorias-fotograficas.mapper';
 import { Observable, firstValueFrom } from 'rxjs';
+import { AppConfig } from '@shared/app-config';
+import { ImageMapper } from '../mapper/memorias-fotograficas.mapper';
+import type { Imagen } from '../interfaces/imagen.interface';
+import type { MicrosoftResponse } from '../interfaces/microsoftGraph.interface';
 
 @Injectable({ providedIn: 'root' })
 export class MicrosoftGraphService {
@@ -97,11 +97,11 @@ export class MicrosoftGraphService {
   async uploadSmallFile(
     token: string,
     file: File,
-    destPath: string,
+    destPath: string
   ): Promise<any> {
     const url = `${
       AppConfig.APIREST_MICROSOFT
-    }/b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/root:/${encodeURI(
+    }b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/root:/${encodeURI(
       destPath
     )}:/content`;
     const headers = new HttpHeaders({
@@ -132,7 +132,7 @@ export class MicrosoftGraphService {
     userId?: string
   ): Promise<{ uploadUrl: string }> {
     const encodedPath = encodeURI(`${parentPath}/${fileName}`);
-    const url = `${AppConfig.APIREST_MICROSOFT}/b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/root:/${encodedPath}:/createUploadSession`;
+    const url = `${AppConfig.APIREST_MICROSOFT}b0666858-080f-443d-80b6-2fcb4eed0f9a/drive/root:/${encodedPath}:/createUploadSession`;
     const headers = new HttpHeaders({
       // Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
@@ -158,6 +158,7 @@ export class MicrosoftGraphService {
   async uploadLargeFileWithSession(
     uploadUrl: string,
     file: File,
+    onProgress?: (progress: number) => void,
     chunkSizeBytes = 5 * 1024 * 1024
   ): Promise<any> {
     const block = 327680; // 320 KiB
@@ -168,6 +169,7 @@ export class MicrosoftGraphService {
     const fileSize = file.size;
     let start = 0;
     let end = Math.min(start + chunkSizeBytes, fileSize) - 1;
+    let uploadedBytes = 0;
 
     while (start <= fileSize - 1) {
       const blob = file.slice(start, end + 1);
@@ -183,9 +185,19 @@ export class MicrosoftGraphService {
       });
 
       if (resp.status === 202) {
-        // cargando
-        // opcional: leer resp.json() para nextExpectedRanges
+        // Chunk aceptado parcialmente (sigue subiendo)
+        uploadedBytes = end + 1;
+        const progress = Math.min(
+          Math.round((uploadedBytes / fileSize) * 100),
+          100
+        );
+        if (onProgress) onProgress(progress);
+
+        // Opcional: podrías leer nextExpectedRanges del JSON
+        // const json = await resp.json();
       } else if (resp.status === 201 || resp.status === 200) {
+        // Upload completo
+        if (onProgress) onProgress(100);
         const completed = await resp.json();
         return completed;
       } else {
@@ -196,7 +208,7 @@ export class MicrosoftGraphService {
       start = end + 1;
       end = Math.min(start + chunkSizeBytes, fileSize) - 1;
     }
-    // Si termina sin retornar, devolvemos null
+
     return null;
   }
 
@@ -238,7 +250,6 @@ export class MicrosoftGraphService {
         results.push({ file: file.name, error: (err as Error).message });
       }
     }
-
     return results;
   }
 }

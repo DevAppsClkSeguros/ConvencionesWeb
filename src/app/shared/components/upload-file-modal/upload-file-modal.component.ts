@@ -24,6 +24,7 @@ export class UploadFileModalComponent {
   uploads: FileUploadProgress[] = [];
   private microsoftGraphService = inject(MicrosoftGraphService);
   token = ''; // obtenlo desde tu AuthService o similar
+  isUploading = false;
 
   seleccionarArchivos(event: Event) {
     const target = event.target as HTMLInputElement;
@@ -71,47 +72,60 @@ export class UploadFileModalComponent {
     }));
   }
 
-  async startUpload(token: string) {
+  async startUpload() {
+    this.isUploading = true;
+
     for (const upload of this.uploads) {
       upload.status = 'uploading';
       try {
-        // Diferenciar tamaño como en servicio
+        const tipoArchivo = upload.file.type;
+        let carpetaDestino = 'imagenes';
+
+        if (tipoArchivo.startsWith('image/')) {
+          carpetaDestino = 'imagenes';
+        } else if (tipoArchivo.startsWith('video/')) {
+          carpetaDestino = 'videos';
+        }
+        const ruta = `Los Cabos/${carpetaDestino}/${upload.file.name}`;
+
         if (upload.file.size <= 4 * 1024 * 1024) {
           const res = await this.microsoftGraphService.uploadSmallFile(
-            token,
+            this.token,
             upload.file,
-            `Los Cabos/imagenes/${upload.file.name}`
+            ruta
           );
           upload.result = res;
+          upload.progress = 100;
         } else {
           const session = await this.microsoftGraphService.createUploadSession(
-            token,
+            this.token,
             upload.file.name,
-            'Los Cabos/imagenes'
+            `Los Cabos/${carpetaDestino}`
           );
           const completed =
             await this.microsoftGraphService.uploadLargeFileWithSession(
               session.uploadUrl,
-              upload.file
+              upload.file,
+              (progress: number) => (upload.progress = progress)
             );
           upload.result = completed;
         }
-        upload.progress = 100;
         upload.status = 'done';
       } catch (err: any) {
         upload.error = err.message || 'Error desconocido';
         upload.status = 'error';
       }
     }
-    // Emitir al padre los archivos que se subieron o con errores
+
+    this.isUploading = false;
     this.subirArchivos.emit(this.archivosSeleccionados);
   }
 
-  onSubmit(token: string) {
-    this.startUpload(token);
+  onSubmit() {
+    this.startUpload();
   }
 
   onClose() {
-    this.cerrarModal.emit();
+    if (!this.isUploading) this.cerrarModal.emit();
   }
 }
